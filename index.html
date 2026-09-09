@@ -25,8 +25,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=2.0">
 <script>document.documentElement.className += " js";</script>
 
 <script type="application/ld+json">
@@ -85,7 +85,7 @@
       </ul>
     </nav>
 
-    <button class="btn btn-red btn-sm header-cta js-book" type="button">Book Now</button>
+    <button class="btn btn-sm header-cta js-book" type="button">Book Now</button>
 
     <button class="hamburger" id="menuToggle" aria-expanded="false" aria-controls="mobileNav">
       <span class="hamburger-box" aria-hidden="true"><span class="hamburger-bar"></span></span>
@@ -117,191 +117,99 @@
 <main id="main" tabindex="-1">
 
 <!-- ============================ HERO ============================ -->
-<section class="hero" aria-labelledby="heroTitle">
-  <div class="hero-bg-glow" aria-hidden="true"></div>
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <div class="hero-tag-pill">
-        <span class="live-pulse"></span>
-        <span>Puducherry's Premier Two-Wheeler Rental &bull; Est. 1973</span>
+<section class="hero-light-banner" aria-labelledby="heroTitle">
+  <div class="hero-light-backdrop">
+    <img src="assets/bikes/hero_pondicherry_vespa.png"
+         alt="Red Vespa scooter parked on Puducherry street"
+         class="hero-light-bg-img"
+         fetchpriority="high" decoding="async">
+    <div class="hero-light-fade-overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="wrap hero-light-container">
+    <div class="hero-light-content">
+
+      <!-- Location Badge Pill -->
+      <div class="hero-location-pill">
+        <span class="pill-pin">📍</span>
+        <span class="pill-text">Pondicherry &bull; Trusted Since 1973</span>
       </div>
-      <h1 id="heroTitle">Explore Pondicherry.<br><em>Your Ride. Your Freedom.</em></h1>
-      <p class="lede">Discover French Quarter streets, yellow colonial villas, and seaside promenades with Pondicherry's most trusted bike rental store. Instant booking with just &#8377;500 advance!</p>
-      
-      <div class="hero-actions">
-        <button class="btn btn-red btn-lg js-book" type="button" data-bike="Vespa">
-          Rent a Bike Now &bull; &#8377;500 Advance &rarr;
+
+      <!-- Main Headline -->
+      <h1 id="heroTitle" class="hero-light-headline">
+        Pondicherry&rsquo;s Pioneer in<br>
+        <em>Two-Wheeler</em> Rentals
+      </h1>
+
+      <!-- Description Paragraph -->
+      <p class="hero-light-sub">
+        Explore Pondicherry on your terms with well-maintained scooters &amp; bikes, instant online booking, and a hassle-free rental experience.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="hero-light-actions">
+        <button class="btn-light-red js-book" type="button" data-bike="Vespa">
+          Book Your Ride <span class="btn-arrow">&rarr;</span>
         </button>
-        <a class="btn btn-outline btn-lg" href="#fleet">
-          View 14+ Rental Bikes
+        <a class="btn-light-outline" href="#fleet">
+          Explore Fleet
         </a>
       </div>
 
-      <ul class="hero-trust-bar">
-        <li>
-          <div class="trust-ic">🛡️</div>
-          <div>
-            <strong>No Deposit</strong>
-            <span>Original ID only</span>
+      <!-- 3 Horizontal Stat Badges with Red Icon Circles -->
+      <div class="hero-light-stats">
+        <div class="light-stat-item">
+          <div class="stat-ic-circle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-        </li>
-        <li>
-          <div class="trust-ic">🛵</div>
           <div>
-            <strong>Helmets Free</strong>
-            <span>Clean & disinfected</span>
+            <strong class="light-stat-val">50+</strong>
+            <span class="light-stat-lbl">YEARS OF TRUST</span>
           </div>
-        </li>
-        <li>
-          <div class="trust-ic">⭐</div>
-          <div>
-            <strong>4.9/5 Rating</strong>
-            <span>2,400+ happy riders</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <div class="hero-media">
-      <figure class="hero-figure">
-        <img src="assets/bikes/hero-pondicherry.png"
-             alt="A stylish red Vespa scooter parked in French Quarter White Town Pondicherry"
-             width="800" height="800" fetchpriority="high" decoding="async">
-      </figure>
-
-      <div class="hero-float-badge badge-top">
-        <span class="badge-icon">⚡</span>
-        <div>
-          <strong>Flat &#8377;500 Advance</strong>
-          <span class="badge-sub">No Security Deposit Required</span>
         </div>
+
+        <div class="light-stat-item">
+          <div class="stat-ic-circle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <strong class="light-stat-val">50K+</strong>
+            <span class="light-stat-lbl">HAPPY RIDERS</span>
+          </div>
+        </div>
+
+        <div class="light-stat-item">
+          <div class="stat-ic-circle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div>
+            <strong class="light-stat-val">100%</strong>
+            <span class="light-stat-lbl">WELL MAINTAINED</span>
+          </div>
       </div>
 
-      <div class="hero-float-badge badge-bottom">
-        <div class="badge-years">
-          <span class="badge-num">53+</span>
-          <span class="badge-label">Years</span>
-        </div>
-        <div class="badge-divider"></div>
-        <div class="badge-info">
-          <strong>Vijay Arya Bike Rentals</strong>
-          <span>Pondicherry &bull; Est. 1973</span>
-        </div>
+    </div>
+
+    <!-- Cursive Tagline Positioned Beside Vespa Scooter -->
+    <div class="hero-vespa-tagline-wrap">
+      <div class="hero-cursive-tagline">
+        <span class="cursive-txt">More Rides</span>
+        <span class="cursive-txt cursive-sub">Brighter Memories <span class="red-line-art"></span></span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================ STATS COUNTER ============================ -->
-<section class="stats-section" aria-label="Key highlights and statistics">
-  <div class="wrap stats-grid">
-    <div class="stat-card reveal">
-      <span class="stat-num" data-count="53" data-suffix="+">53+</span>
-      <span class="stat-label">Years of Trust</span>
-    </div>
-    <div class="stat-card reveal">
-      <span class="stat-num" data-count="14" data-suffix="+">14+</span>
-      <span class="stat-label">Fleet Models</span>
-    </div>
-    <div class="stat-card reveal">
-      <span class="stat-num" data-count="50000" data-suffix="+">50,000+</span>
-      <span class="stat-label">Happy Riders</span>
-    </div>
-    <div class="stat-card reveal">
-      <span class="stat-num" data-count="500" data-suffix=" ₹">₹500</span>
-      <span class="stat-label">Advance Booking</span>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ HERITAGE / SINCE 1973 ============================ -->
-<section class="heritage" aria-labelledby="heritageTitle">
-  <div class="wrap heritage-grid">
-    <div class="heritage-lead">
-      <p class="eyebrow">Our story</p>
-      <h2 id="heritageTitle" class="display-num">Since <span class="num-red">1973</span></h2>
-      <p class="heritage-line">Over five decades of helping visitors discover Pondicherry on two wheels.</p>
-    </div>
-
-    <ol class="track">
-      <li class="track-step">
-        <span class="dot" aria-hidden="true"></span>
-        <span class="year">1973</span>
-        <span class="note">The shop opens in Puducherry, renting two-wheelers to the town&rsquo;s first visitors.</span>
-      </li>
-      <li class="track-step">
-        <span class="dot" aria-hidden="true"></span>
-        <span class="year">Through the years</span>
-        <span class="note">Generations of travellers, students and families ride out from the same doorstep.</span>
-      </li>
-      <li class="track-step">
-        <span class="dot dot-red" aria-hidden="true"></span>
-        <span class="year">Today</span>
-        <span class="note">A maintained fleet of Vespas and scooters. <span data-years-phrase>More than fifty years</span> of local know-how.</span>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ============================ ABOUT ============================ -->
-<section class="section about" id="about" aria-labelledby="aboutTitle">
-  <div class="wrap about-grid">
-    <figure class="about-media reveal">
-      <!-- Real photo: the shopfront on Thennanjalai Road -->
-      <img src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry.JPG"
-           alt="The Vijay Arya Bike Rentals shopfront and signboard on Thennanjalai Road, Puducherry"
-           width="303" height="405" loading="lazy" decoding="async">
-      <figcaption class="media-tag">Thennanjalai Road, Puducherry</figcaption>
-    </figure>
-
-    <div class="about-copy reveal">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>About us</p>
-      <h2 id="aboutTitle">Vijay Arya Bike Rentals</h2>
-      <p>Vijay Arya Bike Rental has been the go-to source for bike rentals in Pondicherry since 1973. Our reputation speaks for itself, with hundreds of delighted customers who return year after year and strongly recommend us.</p>
-      <p>We offer a well-maintained fleet of bikes and scooters that are perfect for exploring the city at your own pace. Our warm and friendly staff are always on hand to help you choose the perfect bike for your needs.</p>
-      <dl class="about-facts">
-        <div><dt>Established</dt><dd>1973</dd></div>
-        <div><dt>Based in</dt><dd>Puducherry 605001</dd></div>
-        <div><dt>Rentals from</dt><dd>One day upwards</dd></div>
-      </dl>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ EXPERIENCE PONDICHERRY ============================ -->
-<section class="section section-tint experience" aria-labelledby="expTitle">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>On the road</p>
-      <h2 id="expTitle">Experience Pondicherry with Our Bikes</h2>
-      <p class="section-sub">At Vijay Arya Bike Rentals, we pride ourselves on offering a wide range of bikes for rent at affordable prices. We rent for a day, a week and longer periods of time. Our friendly staff will help you find the perfect bike for your needs and ensure that you have a safe and enjoyable ride.</p>
-    </div>
-
-    <div class="exp-grid">
-      <figure class="exp-figure reveal">
-        <!-- Real photo: rental Vespa outside a heritage house in the French Quarter -->
-        <img src="assets/gallery/2022-06-11.jpg"
-             alt="Vespas from the Vijay Arya rental fleet parked outdoors in Pondicherry"
-             width="303" height="373" loading="lazy" decoding="async">
-      </figure>
-
-      <ul class="exp-list reveal">
-        <li><span class="exp-k">Daily rentals</span><span class="exp-v">Take a scooter for the day and cover the Promenade, the French Quarter and the markets at your own pace.</span></li>
-        <li><span class="exp-k">Weekly rentals</span><span class="exp-v">Staying longer? Weekly rentals suit visitors settling in for a slower trip.</span></li>
-        <li><span class="exp-k">Longer stays</span><span class="exp-v">We also rent for longer periods &mdash; talk to us about what you need.</span></li>
-        <li><span class="exp-k">Easy pickup</span><span class="exp-v">Minimum formalities at the counter, and you are on the road.</span></li>
-        <li><span class="exp-k">Local guidance</span><span class="exp-v">Ask us about routes, timings and where to eat. We have been here a while.</span></li>
-      </ul>
-
-      <figure class="exp-figure exp-figure-2 reveal">
-        <!-- Real photo: rental Vespa on the Pondicherry seafront -->
-        <img src="assets/gallery/2023-01-31.jpg"
-             alt="Riders enjoying a scooter trip along Pondicherry road"
-             width="302" height="317" loading="lazy" decoding="async">
-      </figure>
-    </div>
-  </div>
-</section>
+<!-- Floating WhatsApp Action Button (Matching reference image bottom left) -->
+<a href="https://wa.me/919600334488?text=Hi%20Vijay%20Arya%20Bike%20Rentals,%20I%20want%20to%20rent%20a%20bike"
+   target="_blank" rel="noopener"
+   class="floating-whatsapp-btn"
+   aria-label="Chat on WhatsApp with Vijay Arya Bike Rentals">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382C17.11 14.201 15.33 13.325 14.999 13.204C14.667 13.084 14.426 13.024 14.185 13.385C13.944 13.746 13.253 14.558 13.042 14.8C12.831 15.041 12.62 15.071 12.259 14.89C11.898 14.709 10.735 14.329 9.356 13.099C8.275 12.134 7.545 10.943 7.334 10.582C7.123 10.221 7.312 10.026 7.493 9.846C7.656 9.684 7.855 9.423 8.036 9.212C8.217 9.001 8.277 8.851 8.397 8.61C8.517 8.369 8.457 8.159 8.367 7.978C8.277 7.797 7.555 6.022 7.254 5.3C6.961 4.597 6.663 4.693 6.444 4.682C6.237 4.671 5.996 4.67 5.755 4.67C5.514 4.67 5.123 4.76 4.792 5.121C4.461 5.482 3.52 6.364 3.52 8.169C3.52 9.974 4.833 11.72 5.014 11.961C5.195 12.202 7.595 15.897 11.272 17.485C12.147 17.863 12.832 18.089 13.364 18.258C14.241 18.537 15.041 18.497 15.674 18.403C16.38 18.298 17.846 17.515 18.147 16.672C18.448 15.829 18.448 15.108 18.358 14.957C18.268 14.806 18.033 14.716 17.672 14.535H17.472Z" fill="white"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12C2 13.892 2.525 15.661 3.439 17.175L2.052 21.733L6.772 20.395C8.232 21.237 9.923 21.714 11.727 21.714H11.732C17.253 21.714 21.73 17.237 21.73 11.714C21.73 6.477 17.253 2 12 2ZM12 3.818C16.251 3.818 19.912 7.479 19.912 11.73C19.912 15.981 16.251 19.642 12 19.642C10.364 19.642 8.814 19.123 7.534 18.243L7.227 18.032L4.426 18.826L5.234 16.124L5.002 15.755C4.041 14.226 3.527 12.457 3.527 10.636C3.527 6.385 7.188 3.818 12 3.818Z" fill="white"/>
+  </svg>
+</a>
 
 <!-- ============================ FLEET / RATES ============================ -->
 <section class="section fleet" id="fleet" aria-labelledby="fleetTitle">
@@ -661,26 +569,6 @@
   </div>
 </section>
 
-<!-- ============================ TRUST ============================ -->
-<section class="section trust" aria-labelledby="trustTitle">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Why choose us</p>
-      <h2 id="trustTitle">Rent with Trust</h2>
-      <p class="section-sub">At Vijay Arya Bike Rental, we take your safety seriously. Our scooters undergo regular maintenance and safety checks to ensure they are in good condition, and we strictly comply with all safety regulations. We also provide helmets free of cost and other safety equipment. Our staff will assist you in selecting the right bike for your needs and ensure that you receive proper instructions about its usage. Rent a bike with Vijay Arya Bike Rental and enjoy the beauty of Pondicherry with complete peace of mind.</p>
-    </div>
-
-    <ul class="trust-grid">
-      <li class="reveal"><span class="trust-i" aria-hidden="true">01</span><h3>Regular maintenance</h3><p>Our scooters go through routine servicing and safety checks before they go out.</p></li>
-      <li class="reveal"><span class="trust-i" aria-hidden="true">02</span><h3>Helmets at no cost</h3><p>Helmets are provided free of cost, along with other safety equipment.</p></li>
-      <li class="reveal"><span class="trust-i" aria-hidden="true">03</span><h3>Proper instructions</h3><p>We explain how the vehicle works before you ride away &mdash; no guesswork.</p></li>
-      <li class="reveal"><span class="trust-i" aria-hidden="true">04</span><h3>The right bike for you</h3><p>Staff help you pick a vehicle that matches your comfort and your plans.</p></li>
-      <li class="reveal"><span class="trust-i" aria-hidden="true">05</span><h3>Simple formalities</h3><p>Original photo ID on deposit, no security deposit, and you are on your way.</p></li>
-      <li class="reveal"><span class="trust-i" aria-hidden="true">06</span><h3>Local knowledge</h3><p><span data-years-phrase>More than fifty years</span> of answering the question: where should I go today?</p></li>
-    </ul>
-  </div>
-</section>
-
 <!-- ============================ TESTIMONIALS ============================ -->
 <section class="section section-dark testimonials" aria-labelledby="testTitle">
   <div class="wrap">
@@ -753,150 +641,6 @@
     </div>
 
     <p class="test-more"><a class="link-red-light" href="https://maps.app.goo.gl/qNWcjq3TyVif53Ld9" target="_blank" rel="noopener">Read more reviews &rarr;</a></p>
-  </div>
-</section>
-
-<!-- ============================ SAFETY / PLEASE NOTE ============================ -->
-<section class="section safety" id="safety" aria-labelledby="safeTitle">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Please note</p>
-      <h2 id="safeTitle">Safety &amp; General Instructions</h2>
-      <p class="section-sub">A short list worth reading before you ride out. It keeps your trip smooth and everyone safe.</p>
-    </div>
-
-    <div class="safety-cols">
-      <section class="safety-block safety-block-red">
-        <h3>Timings</h3>
-        <ul class="tick-list">
-          <li>Please return to your hotel by <strong>10:00 pm</strong>.</li>
-          <li>On the ECR road, do not drive later than <strong>9:00 pm</strong> on the road to Auroville.</li>
-          <li>The rental office closes at <strong>9:00 pm</strong> on all days. Plan your return accordingly.</li>
-        </ul>
-      </section>
-
-      <section class="safety-block">
-        <h3>On the road</h3>
-        <ul class="tick-list">
-          <li>Do not drink and drive.</li>
-          <li>Always wear a helmet.</li>
-          <li>Carry your driving licence at all times.</li>
-          <li>Be alert at all times and avoid rash driving.</li>
-          <li>Double-check before taking a right, left or U-turn.</li>
-        </ul>
-      </section>
-
-      <section class="safety-block">
-        <h3>Looking after yourself</h3>
-        <ul class="tick-list">
-          <li>Do not leave valuables in the scooter storage.</li>
-          <li>Do not drink and swim at the beaches. Stay safe and be alert.</li>
-        </ul>
-      </section>
-
-      <section class="safety-block">
-        <h3>Where you can ride</h3>
-        <ul class="tick-list">
-          <li>Scooters are for local sightseeing only.</li>
-          <li>Maximum range: <strong>20 km</strong>.</li>
-          <li>Driving to Pichavaram and Mahabalipuram is not allowed.</li>
-        </ul>
-      </section>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ REQUIREMENTS + KEY RULES ============================ -->
-<section class="section section-tint rules" aria-labelledby="reqTitle">
-  <div class="wrap rules-grid">
-    <section class="req" aria-labelledby="reqTitle">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Before you ride</p>
-      <h2 id="reqTitle">You Will Have To</h2>
-      <ol class="req-list">
-        <li>
-          <h3>Deposit your original valid photo ID</h3>
-          <p>Accepted examples:</p>
-          <ul class="pill-list">
-            <li>Aadhaar Card</li>
-            <li>Voter Card</li>
-            <li>Driving Licence</li>
-            <li>Passport (foreign visitors)</li>
-          </ul>
-        </li>
-        <li>
-          <h3>No security deposit</h3>
-          <p>We do not collect a separate security deposit.</p>
-        </li>
-        <li>
-          <h3>Pay the rental in advance</h3>
-          <p>The total rental amount is payable in advance.</p>
-        </li>
-      </ol>
-    </section>
-
-    <section class="keyrules" aria-labelledby="keyRulesTitle">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Rental terms</p>
-      <h2 id="keyRulesTitle">Key Rental Rules</h2>
-      <ul class="rule-list">
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Obey all traffic rules.</strong> No Entry, One Way and No Parking rules must be followed.</p></li>
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Traffic violations</strong> are the renter&rsquo;s responsibility.</p></li>
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Park securely at night.</strong> Lock the vehicle and park it in a secure place.</p></li>
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Lost key or lock set: &#8377;900.</strong></p></li>
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Lost helmet: &#8377;500.</strong></p></li>
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Loss, damage or theft</strong> of the vehicle or its parts is the renter&rsquo;s responsibility.</p></li>
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Do not drive triples.</strong></p></li>
-        <li><span class="rule-ic" aria-hidden="true"></span><p><strong>Punctures:</strong> get the puncture sealed. Please do not change the tube or tyre expecting reimbursement.</p></li>
-      </ul>
-    </section>
-  </div>
-</section>
-
-<!-- ============================ FAQ ============================ -->
-<section class="section faq" id="faq" aria-labelledby="faqTitle">
-  <div class="wrap wrap-narrow">
-    <div class="section-head">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>FAQ</p>
-      <h2 id="faqTitle">Questions, answered</h2>
-    </div>
-
-    <div class="acc" id="faqAcc">
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>What documents do I need to rent a scooter?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>You deposit an original valid photo ID &mdash; an Aadhaar Card, Voter Card or Driving Licence, or a Passport for foreign visitors. Please also carry your driving licence with you at all times while riding.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>Is there a security deposit?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>No security deposit is collected. The total rental amount is payable in advance.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>How long can I rent for?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>We rent for a day, a week and for longer periods of time. Call us with your dates and we will tell you what is available.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>Do you provide helmets?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>Yes &mdash; helmets are provided free of cost, along with other safety equipment. Always wear one. A lost helmet is charged at &#8377;500.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>How far can I ride?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>Scooters are for local sightseeing only, with a maximum range of 20 km. Driving to Pichavaram and Mahabalipuram is not allowed. On the ECR, please do not drive later than 9:00 pm on the road to Auroville.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>What time does the office close?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>The rental office closes at 9:00 pm on all days, so please plan your return accordingly. We also ask that you are back at your hotel by 10:00 pm.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>What happens if I get a puncture?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>Please get the puncture sealed. Do not change the tube or tyre expecting reimbursement. If anything else comes up, call us.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>Who is responsible for damage or traffic fines?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>Traffic violations, and any loss, damage or theft of the vehicle or its parts, are the renter&rsquo;s responsibility. Please lock the vehicle and park it in a secure place at night. A lost key or lock set is charged at &#8377;900.</p></div></div>
-      </div>
-      <div class="acc-item">
-        <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>What does it cost?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>Whichever bike or scooter you choose, the advance booking amount is &#8377;500 only. No security deposit required! The advance is adjusted against your balance when you collect the vehicle.</p></div></div>
-      </div>
-    </div>
   </div>
 </section>
 
