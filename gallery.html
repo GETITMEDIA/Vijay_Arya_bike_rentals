@@ -560,12 +560,14 @@
           <div class="field-row">
             <div class="field">
               <label for="bkPhone">WhatsApp Number</label>
-              <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric"
-                placeholder="10-digit mobile" required>
+              <div class="input-prefix-group">
+                <span class="prefix-text">+91</span>
+                <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Enter mobile number" required>
+              </div>
             </div>
             <div class="field">
               <label for="bkEmail">Email <span class="field-hint" style="display:inline">(Optional)</span></label>
-              <input type="email" id="bkEmail" name="email" autocomplete="email" placeholder="name@example.com">
+              <input type="email" id="bkEmail" name="email" autocomplete="email" placeholder="Enter email address">
             </div>
           </div>
         </section>
@@ -602,8 +604,7 @@
         <p class="field-error" id="bkError" role="alert" hidden></p>
 
         <div class="drawer-footer">
-          <button class="btn btn-red btn-block btn-lg" type="submit" id="bkSubmitBtn">Continue &middot; Advance
-            &#8377;500 &rarr;</button>
+          <button class="btn btn-red btn-block btn-lg" type="submit" id="bkSubmitBtn">Continue</button>
           <p class="drawer-fineprint">Carry original photo ID (Aadhaar, Driving Licence or Passport). No security
             deposit required.</p>
         </div>
