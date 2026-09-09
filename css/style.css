@@ -532,66 +532,182 @@ body.nav-open { overflow: hidden; }
 }
 .exp-v { display: block; color: var(--muted); font-size: 15.5px; }
 
-/* ---------- 10. Fleet ---------- */
+/* ---------- 10. Fleet Cards (User Reference Matching) ---------- */
+.fleet { background: #FAF7F2; padding: clamp(60px, 8vw, 96px) 0; }
 .fleet-grid {
-  display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
 }
+@media (max-width: 1024px) {
+  .fleet-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .fleet-grid { grid-template-columns: 1fr; }
+}
+
 .ride-card {
-  display: flex; flex-direction: column;
-  background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg);
-  overflow: hidden; box-shadow: var(--shadow-sm);
-  transition: transform .35s cubic-bezier(.34, 1.56, .64, 1),
-              box-shadow .35s cubic-bezier(.34, 1.56, .64, 1),
-              border-color .3s var(--ease);
+  background: #FFFFFF;
+  border: 1px solid #EAE6DF;
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  transition: transform .32s cubic-bezier(.34, 1.56, .64, 1),
+              box-shadow .32s cubic-bezier(.34, 1.56, .64, 1),
+              border-color .28s ease;
+  position: relative;
 }
 .ride-card:hover {
-  transform: translateY(-8px) scale(1.015);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.12), 0 0 25px rgba(239, 49, 56, 0.12);
-  border-color: rgba(239, 49, 56, 0.35);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: #D6CEC1;
 }
+
+.ride-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #475569;
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+.cat-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #64748B;
+}
+
 .ride-media {
-  background: var(--off-white); overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  min-height: 180px; padding: 20px;
-  border-bottom: 1px solid var(--border);
-  perspective: 600px;
+  background: #FFFFFF;
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  margin-bottom: 16px;
+  border-radius: 16px;
 }
 .ride-media img {
-  width: 140px; max-width: 100%; height: auto;
-  object-fit: contain; mix-blend-mode: multiply;
-  transition: transform .4s cubic-bezier(.34, 1.56, .64, 1), filter .3s ease;
+  width: 85%;
+  max-width: 260px;
+  height: 160px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.14));
+  transition: transform 0.4s cubic-bezier(.34, 1.56, .64, 1);
 }
 .ride-card:hover .ride-media img {
-  transform: translateY(-8px) scale(1.1) rotate(-2deg);
-  filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.15));
+  transform: scale(1.08) translateY(-4px);
 }
-.ride-body { padding: 22px 24px 26px; display: flex; flex-direction: column; flex: 1; }
-.ride-cat {
-  font-size: 11.5px; font-weight: 700; letter-spacing: .13em;
-  text-transform: uppercase; color: var(--muted-soft); margin-bottom: 8px;
-}
-.ride-name { font-size: 22px; margin-bottom: 8px; font-family: var(--serif); color: var(--black); }
-.ride-models { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
 
-.ride-price-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: linear-gradient(135deg, rgba(239, 49, 56, 0.08) 0%, rgba(239, 49, 56, 0.03) 100%);
-  border: 1px solid rgba(239, 49, 56, 0.25);
-  color: var(--red-ink); font-weight: 600; font-size: 14.5px;
-  padding: 6px 14px; border-radius: 20px;
-  margin-bottom: 20px; width: fit-content;
-  transition: all .3s var(--ease);
+.ride-card-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
 }
-.ride-price-badge strong {
-  font-size: 17px; font-weight: 700; color: var(--red-btn);
+.ride-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
 }
-.ride-card:hover .ride-price-badge {
-  background: var(--red-btn); color: #fff; border-color: var(--red-btn);
-  box-shadow: 0 4px 12px rgba(239, 49, 56, 0.3);
+.ride-name {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 700;
+  color: #1C1917;
+  margin: 0;
+  line-height: 1.2;
 }
-.ride-card:hover .ride-price-badge strong { color: #fff; }
-.ride-body .btn { margin-top: auto; align-self: flex-start; }
+.ride-price {
+  text-align: right;
+  flex: none;
+}
+.price-label {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #78716C;
+  margin-bottom: 2px;
+}
+.price-val {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #1C1917;
+  line-height: 1;
+}
+.price-val small {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: #78716C;
+}
+
+.ride-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 10px;
+}
+.btn-card-outline {
+  background: #F7F5F0;
+  border: 1px solid #E5E0D8;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1C1917;
+  cursor: pointer;
+  transition: all .2s var(--ease);
+  text-align: center;
+}
+.btn-card-outline:hover {
+  background: #EFECE6;
+  border-color: #D6CEC1;
+}
+
+.btn-card-dark {
+  background: #1E293B;
+  border: 1px solid #1E293B;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all .2s var(--ease);
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.2);
+}
+.btn-card-dark:hover {
+  background: var(--red-btn);
+  border-color: var(--red-btn);
+  box-shadow: 0 6px 18px rgba(239, 49, 56, 0.35);
+  transform: translateY(-1px);
+}
 
 .ride-note {
   background: var(--black); color: #fff; border-radius: var(--r-lg);
