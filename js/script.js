@@ -924,3 +924,19 @@
     });
   })();
 })();
+
+  /* ------------------------------------------------------------------
+     18. Hero Background Carousel
+     ------------------------------------------------------------------ */
+  (function heroCarousel() {
+    var images = document.querySelectorAll('.hero-light-bg-img');
+    if (images.length < 2) return;
+    
+    var current = 0;
+    setInterval(function() {
+      images[current].classList.remove('active');
+      current = (current + 1) % images.length;
+      images[current].classList.add('active');
+    }, 4000);
+  })();
+

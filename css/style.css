@@ -413,6 +413,12 @@ body.nav-open { overflow: hidden; }
   height: 100%;
   object-fit: cover;
   object-position: center center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hero-light-bg-img.active {
+  opacity: 1;
 }
 
 .hero-light-fade-overlay {
