@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="pageTitle">Vehicle Details | Vijay Arya Bike Rentals Pondicherry</title>
+<meta name="description" id="pageMetaDesc" content="Rent well-maintained scooters and bikes in Pondicherry with Vijay Arya Bike Rentals. Trusted since 1973.">
+<meta name="theme-color" content="#EF3138">
+
+<!-- Favicon: the Vijay Arya logo -->
+<link rel="icon" href="assets/logo/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/logo/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>document.documentElement.className += " js";</script>
+</head>
+<body id="top" class="detail-page-body">
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============================ HEADER ============================ -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html" aria-label="Vijay Arya Bike Rentals, home">
+      <img src="assets/logo/logo.png" alt="Vijay Arya Bike Rentals logo" width="142" height="111" class="brand-mark">
+      <span class="brand-text">
+        <span class="brand-name">Vijay Arya</span>
+        <span class="brand-sub">Bike Rentals &middot; Since 1973</span>
+      </span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+
+    <button class="btn btn-red btn-sm header-cta js-book" type="button">Book Now</button>
+
+    <button class="hamburger" id="menuToggle" aria-expanded="false" aria-controls="mobileNav">
+      <span class="hamburger-box" aria-hidden="true"><span class="hamburger-bar"></span></span>
+      <span class="hamburger-label">Menu</span>
+    </button>
+  </div>
+</header>
+
+<div class="nav-overlay" id="navOverlay" hidden></div>
+
+<nav class="nav-mobile" id="mobileNav" aria-label="Mobile" hidden>
+  <div class="nav-mobile-head">
+    <span class="eyebrow">Est. 1973 &middot; Pondicherry</span>
+    <button class="nav-close" id="menuClose" type="button" aria-label="Close menu">&times;</button>
+  </div>
+  <ul>
+    <li><a href="index.html" class="nav-link-m">Home</a></li>
+    <li><a href="about.html" class="nav-link-m">About</a></li>
+    <li><a href="gallery.html" class="nav-link-m">Gallery</a></li>
+    <li><a href="contact.html" class="nav-link-m">Contact</a></li>
+  </ul>
+  <div class="nav-mobile-foot">
+    <button class="btn btn-red btn-block js-book" type="button">Book Now</button>
+    <a class="btn btn-ghost btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
+    <a class="btn btn-ghost btn-block" href="https://maps.app.goo.gl/qNWcjq3TyVif53Ld9" target="_blank" rel="noopener">Get Directions</a>
+  </div>
+</nav>
+
+<!-- ============================ MAIN DETAIL SECTION ============================ -->
+<main id="main" tabindex="-1" class="detail-main-wrapper">
+  <div class="wrap">
+    
+    <!-- Top Back Link -->
+    <div class="detail-top-nav">
+      <a href="index.html#fleet" class="detail-back-link">
+        &larr; BACK TO FLEET
+      </a>
+    </div>
+
+    <!-- Detail Two Column Grid -->
+    <div class="detail-grid">
+
+      <!-- LEFT COLUMN: Image Showcase & Gallery -->
+      <div class="detail-media-container">
+        <div class="detail-media-card">
+          <div class="detail-status-badge">
+            <span class="detail-status-dot"></span>
+            AVAILABLE
+          </div>
+
+          <div class="detail-main-img-box">
+            <img id="detailMainImg" src="assets/rentel-bikes/dio.png" alt="Vehicle image" width="450" height="300">
+          </div>
+
+          <div class="detail-thumbs-bar">
+            <button class="detail-thumb-nav-btn" id="thumbPrev" type="button" aria-label="Previous image">&larr;</button>
+            <div class="detail-thumbs-list" id="detailThumbsList">
+              <!-- Thumbnails populated by JS -->
+            </div>
+            <button class="detail-thumb-nav-btn" id="thumbNext" type="button" aria-label="Next image">&rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Details, Specs, Price & Policies -->
+      <div class="detail-info-box">
+        
+        <div class="detail-head-group">
+          <span class="detail-cat-tag" id="detailCatTag">SCOOTER &middot; PREMIUM</span>
+          <h1 class="detail-title" id="detailTitle">Honda Dio 125</h1>
+          <p class="detail-subtitle" id="detailSubtitle">Sporty, lightweight scooter built for effortless city rides.</p>
+          <span class="detail-color-tag" id="detailColorTag">COLOUR &middot; STANDARD</span>
+          <p class="detail-description" id="detailDescription">
+            Rent the Honda Dio 125 in Pondicherry for a stylish, fuel-efficient, and comfortable ride. Perfect for city commuting, sightseeing, beaches, cafés, and daily travel.
+          </p>
+        </div>
+
+        <!-- Specifications Section -->
+        <div class="detail-sec-block">
+          <h2 class="detail-sec-title">Specifications</h2>
+          <div class="detail-check-grid" id="detailSpecsGrid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- What's included Section -->
+        <div class="detail-sec-block">
+          <h2 class="detail-sec-title">What's included</h2>
+          <div class="detail-check-grid" id="detailIncludedGrid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Special Pricing Card -->
+        <div class="detail-price-card">
+          <div class="detail-price-info">
+            <span class="detail-price-tag-sm">SPECIAL</span>
+            <div class="detail-price-row">
+              <span class="detail-strike-price" id="detailOriginalPrice">&#8377;500</span>
+              <strong class="detail-curr-price" id="detailPrice">&#8377;700 <small>/ day</small></strong>
+            </div>
+            <p class="detail-price-sub">Rental charge &middot; per day &middot; no deposit</p>
+          </div>
+          <button class="detail-book-btn js-book" type="button" id="detailBookBtn" data-bike="Honda Dio">Book Now</button>
+        </div>
+
+        <!-- Rental Policy Card -->
+        <div class="detail-info-card-box">
+          <div class="detail-card-head">
+            <span class="detail-card-head-ic">&#128221;</span>
+            RENTAL POLICY
+          </div>
+          <div class="detail-policy-list">
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Operating Hours: 9:00 AM &ndash; 9:00 PM</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Rental Charge: Per Day</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>No Security Deposit</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Please keep your Original Driving License and a Photo ID (Aadhaar/Voter ID) ready at the time of pickup.</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Vehicles will not be provided without a valid Driving Licence.</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Helmet is provided.</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Wearing the helmet is mandatory.</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Drink and Drive is strictly prohibited.</span>
+            </div>
+            <div class="detail-policy-item">
+              <span class="detail-check-ic">&check;</span>
+              <span>Triple riding is strictly prohibited.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pickup Information Card -->
+        <div class="detail-info-card-box">
+          <div class="detail-card-head">
+            <span class="detail-card-head-ic">&#128205;</span>
+            PICKUP INFORMATION
+          </div>
+          <p class="detail-info-card-text">
+            Pickup available from Vijay Arya Bike Rental, Pondicherry. Please carry a valid driving licence and ID proof at the time of pickup.
+          </p>
+        </div>
+
+        <!-- Return Information Card -->
+        <div class="detail-info-card-box">
+          <div class="detail-card-head">
+            <span class="detail-card-head-ic">&#128336;</span>
+            RETURN INFORMATION
+          </div>
+          <p class="detail-info-card-text">
+            Kindly return the scooter before the agreed rental time. Late returns may incur additional charges. Please return the vehicle in good condition.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="assets/logo/logo.png" alt="Vijay Arya logo" width="80" height="63">
+        <div>
+          <h3>Vijay Arya Bike Rentals</h3>
+          <p>Serving Pondicherry visitors since 1973</p>
+        </div>
+      </div>
+      <p class="footer-desc">Your trusted local partner for two-wheeler rentals in Puducherry. Affordable rates, well-maintained bikes, and friendly service.</p>
+    </div>
+
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contact &amp; Location</h4>
+      <address>
+        No: 31A, Thennanjalai Road,<br>
+        Near Government Veterinary Clinic / Passport Office,<br>
+        Puducherry &ndash; 605001
+      </address>
+      <p style="margin-top: 10px;">Phone: <a href="tel:+919600334488">+91 9600 33 44 88</a></p>
+    </div>
+  </div>
+
+  <div class="footer-bottom wrap">
+    <p>&copy; <span id="year">2026</span> Vijay Arya Bike Rentals. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ============================ BOOKING MODAL DRAWER ============================ -->
+<div class="booking-modal-backdrop" id="bookModal" role="dialog" aria-modal="true" aria-labelledby="bookTitle" hidden>
+  <div class="booking-modal-overlay" data-book-close></div>
+
+  <div class="booking-drawer">
+    <button class="drawer-close" id="bookClose" type="button" aria-label="Close booking modal">&times;</button>
+
+    <header class="drawer-header">
+      <div class="drawer-eyebrow">NEW BOOKING</div>
+      <h2 id="bookTitle" class="drawer-title">Vespa</h2>
+      <p id="bookDesc" class="drawer-sub">Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.</p>
+      <div class="drawer-price-tag">Advance: <strong>&#8377;500</strong></div>
+    </header>
+
+    <div class="guest-box">
+      <span class="guest-box-title">&#128737;&#FE0F; BOOKING AS A GUEST</span>
+      <p>Instant reservation confirmation via WhatsApp. No account or signup needed.</p>
+    </div>
+
+    <!-- STEP 1 -->
+    <form class="booking-step is-active" id="bookStep1" novalidate>
+      <select id="bkBike" name="bike" hidden>
+        <option value="Vespa">Vespa</option>
+        <option value="Honda Activa">Honda Activa</option>
+        <option value="Honda Activa (Matte Grey)">Honda Activa (Matte Grey)</option>
+        <option value="Honda Activa (Imperial Red)">Honda Activa (Imperial Red)</option>
+        <option value="TVS Jupiter">TVS Jupiter</option>
+        <option value="Suzuki Access 125">Suzuki Access 125</option>
+        <option value="Honda Dio">Honda Dio</option>
+        <option value="Yamaha Fascino">Yamaha Fascino</option>
+        <option value="Yamaha Ray">Yamaha Ray</option>
+        <option value="Honda Cliq">Honda Cliq</option>
+        <option value="Honda Navi">Honda Navi</option>
+        <option value="Hero Splendor">Hero Splendor</option>
+        <option value="Yamaha FZ">Yamaha FZ</option>
+        <option value="Royal Enfield GT 650">Royal Enfield GT 650</option>
+      </select>
+
+      <section class="drawer-section">
+        <h3 class="section-num-title">01 &middot; RENTAL WINDOW</h3>
+        <div class="field-row">
+          <div class="field">
+            <label for="bkStartDate">Start Date</label>
+            <input type="date" id="bkStartDate" name="startDate" required>
+          </div>
+          <div class="field">
+            <label for="bkEndDate">End Date</label>
+            <input type="date" id="bkEndDate" name="endDate" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="bkStartTime">Pickup Time</label>
+            <input type="time" id="bkStartTime" name="startTime" value="09:00" required>
+          </div>
+          <div class="field">
+            <label for="bkEndTime">Return Time</label>
+            <input type="time" id="bkEndTime" name="endTime" value="19:00" required>
+          </div>
+        </div>
+      </section>
+
+      <section class="drawer-section">
+        <h3 class="section-num-title">02 &middot; NUMBER OF VEHICLES</h3>
+        <div class="qty-card">
+          <div class="qty-info">
+            <h4 id="qtyLabel">How many vehicles?</h4>
+            <p>Select total number of vehicles</p>
+          </div>
+          <div class="qty-counter">
+            <button type="button" class="qty-btn" id="qtyMinus" aria-label="Decrease quantity">&minus;</button>
+            <span class="qty-num" id="qtyVal">1</span>
+            <button type="button" class="qty-btn" id="qtyPlus" aria-label="Increase quantity">&plus;</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="drawer-section">
+        <h3 class="section-num-title">03 &middot; YOUR DETAILS</h3>
+        <div class="field">
+          <label for="bkName">Full Name</label>
+          <input type="text" id="bkName" name="name" autocomplete="name" placeholder="Enter your full name" required>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="bkPhone">WhatsApp Number</label>
+            <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile" required>
+          </div>
+          <div class="field">
+            <label for="bkEmail">Email <span class="field-hint" style="display:inline">(Optional)</span></label>
+            <input type="email" id="bkEmail" name="email" autocomplete="email" placeholder="name@example.com">
+          </div>
+        </div>
+      </section>
+
+      <section class="drawer-section">
+        <h3 class="section-num-title">04 &middot; KYC DOCUMENTS</h3>
+        <p class="kyc-sub">Required for vehicle handover at shop during pickup</p>
+        <div class="kyc-grid">
+          <div class="kyc-card">
+            <span class="kyc-label">AADHAAR / ID IMAGE</span>
+            <p class="kyc-hint" id="kycIdStatus">No file attached</p>
+            <input type="file" id="kycIdFile" accept="image/*" class="sr-only" style="display:none">
+            <input type="file" id="kycIdCam" accept="image/*" capture="environment" class="sr-only" style="display:none">
+            <div class="kyc-actions">
+              <button type="button" class="kyc-btn" id="kycIdBtn">📁 Upload file</button>
+              <button type="button" class="kyc-btn" id="kycIdCamBtn">📷 Take photo</button>
+            </div>
+          </div>
+          <div class="kyc-card">
+            <span class="kyc-label">DRIVING LICENCE IMAGE</span>
+            <p class="kyc-hint" id="kycDlStatus">No file attached</p>
+            <input type="file" id="kycDlFile" accept="image/*" class="sr-only" style="display:none">
+            <input type="file" id="kycDlCam" accept="image/*" capture="environment" class="sr-only" style="display:none">
+            <div class="kyc-actions">
+              <button type="button" class="kyc-btn" id="kycDlBtn">📁 Upload file</button>
+              <button type="button" class="kyc-btn" id="kycDlCamBtn">📷 Take photo</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="field-error" id="bkError" role="alert" hidden></p>
+
+      <div class="drawer-footer">
+        <button class="btn btn-red btn-block btn-lg" type="submit" id="bkSubmitBtn">Continue &middot; Advance &#8377;500 &rarr;</button>
+        <p class="drawer-fineprint">Carry original photo ID (Aadhaar, Driving Licence or Passport). No security deposit required.</p>
+      </div>
+    </form>
+
+    <!-- STEP 2 -->
+    <div class="booking-step" id="bookStep2">
+      <div class="booking-summary" id="bkSummary"></div>
+
+      <div class="pay-grid">
+        <figure class="pay-qr">
+          <img src="assets/logo/WhatsApp%20Image%202026-09-09%20at%202.18.27%20PM.jpeg"
+               alt="Google Pay QR code for Vijay Arya Bike Rentals, UPI ID 7200011799@okbizaxis"
+               width="848" height="1205" loading="lazy" decoding="async">
+        </figure>
+
+        <div class="pay-copy">
+          <p class="pay-amount"><span>Advance to pay</span><strong>&#8377;500</strong></p>
+          <p class="pay-note">Adjusted against total rental. Pay balance at shop when collecting vehicle.</p>
+
+          <a class="btn btn-red btn-block" id="bkUpi" href="#">Pay &#8377;500 via UPI App</a>
+          <p class="pay-hint">Opens GPay, PhonePe, Paytm or BHIM on mobile. On PC, scan QR code.</p>
+
+          <div class="pay-upi">
+            <span class="pay-upi-label">UPI ID</span>
+            <code id="bkUpiId">7200011799@okbizaxis</code>
+            <button class="pay-copy-btn" id="bkCopy" type="button">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pay-send">
+        <h4 style="margin: 0 0 8px; font-family: var(--serif); font-size: 18px;">Send booking on WhatsApp</h4>
+        <p style="font-size: 13.5px; color: #57534E; margin: 0 0 16px;">We confirm your booking instantly. Availability changes daily.</p>
+        <div class="booking-actions" style="display: grid; gap: 10px;">
+          <a class="btn btn-red btn-block" id="bkWhats" href="#" target="_blank" rel="noopener">Send Details on WhatsApp</a>
+          <a class="btn btn-outline btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
+        </div>
+      </div>
+
+      <button class="booking-back" id="bkBack" type="button" style="margin-top: 20px; background: none; border: 0; color: #78716C; cursor: pointer; font-size: 13.5px;">&larr; Back to details</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var BIKES_DATA = {
+    'honda-dio': {
+      id: 'honda-dio',
+      bikeName: 'Honda Dio',
+      title: 'Honda Dio 125',
+      category: 'SCOOTER · PREMIUM',
+      subtitle: 'Sporty, lightweight scooter built for effortless city rides.',
+      color: 'COLOUR · STANDARD',
+      description: 'Rent the Honda Dio 125 in Pondicherry for a stylish, fuel-efficient, and comfortable ride. Perfect for city commuting, sightseeing, beaches, cafés, and daily travel.',
+      price: '₹700',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/dio.png',
+        'assets/rentel-bikes/honda-activa-.png',
+        'assets/bikes/2022-06-11.jpg'
+      ],
+      specs: [
+        '123.92 cc engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 48–52 kmpl',
+        'Comfortable seating for 2 riders'
+      ],
+      included: [
+        'Sporty modern design',
+        'Excellent fuel efficiency',
+        'Comfortable seating',
+        'Large under-seat storage',
+        'Easy city handling',
+        'Regularly serviced'
+      ]
+    },
+    'vespa': {
+      id: 'vespa',
+      bikeName: 'Vespa',
+      title: 'Vespa S 125',
+      category: 'SCOOTER · PREMIUM',
+      subtitle: 'Iconic Italian design & smooth suburban cruising in Pondicherry.',
+      color: 'COLOUR · PEARL WHITE & METALLIC',
+      description: 'Rent the Vespa S 125 for an unmatched luxury ride through French Quarter streets, seaside promenades, and café strips. Elegant design with smooth acceleration.',
+      price: '₹750',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Vespa.jpg',
+        'assets/rentel-bikes/honda-activa-.png',
+        'assets/bikes/2022-06-11.jpg'
+      ],
+      specs: [
+        '124.45 cc engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric & Kick start',
+        'Mileage: 45–50 kmpl',
+        'Comfortable seating for 2 riders'
+      ],
+      included: [
+        'Iconic retro styling',
+        'Plush dual seat cushioning',
+        'Spacious under-seat storage',
+        'High stability body design',
+        'Easy city handling',
+        'Regularly serviced'
+      ]
+    },
+    'honda-activa': {
+      id: 'honda-activa',
+      bikeName: 'Honda Activa',
+      title: 'Honda Activa 6G',
+      category: 'SCOOTER · POPULAR',
+      subtitle: 'Pondicherry\'s #1 most trusted automatic scooter for families & tourists.',
+      color: 'COLOUR · DECENT BLUE METALLIC',
+      description: 'Rent India\'s favorite scooter, the Honda Activa. Extremely reliable, smooth engine, high fuel efficiency, and perfect for exploring Pondicherry hassle-free.',
+      price: '₹600',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/honda-activa-.png',
+        'assets/rentel-bikes/NewMATTE_AXIS_GREY_METALLIC.png',
+        'assets/rentel-bikes/Imperial_Red_Metallic_dev_three.png'
+      ],
+      specs: [
+        '109.51 cc PGM-FI engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 50–55 kmpl',
+        'Comfortable seating for 2 riders'
+      ],
+      included: [
+        'Telescopic front suspension',
+        'Superb fuel efficiency',
+        'Spacious footboard',
+        'Large under-seat storage',
+        'HET engine tech',
+        'Regularly serviced'
+      ]
+    },
+    'activa-matte-grey': {
+      id: 'activa-matte-grey',
+      bikeName: 'Honda Activa (Matte Grey)',
+      title: 'Activa Matte Grey',
+      category: 'SCOOTER · POPULAR',
+      subtitle: 'Sleek matte finish edition for modern urban rides.',
+      color: 'COLOUR · MATTE AXIS GREY',
+      description: 'Ride in style with the Matte Axis Grey Honda Activa. Smooth automatic drive, premium finish, and great fuel economy across Pondicherry streets.',
+      price: '₹600',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/NewMATTE_AXIS_GREY_METALLIC.png',
+        'assets/rentel-bikes/honda-activa-.png',
+        'assets/rentel-bikes/Imperial_Red_Metallic_dev_three.png'
+      ],
+      specs: [
+        '109.51 cc engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 50–55 kmpl',
+        'Comfortable seating for 2 riders'
+      ],
+      included: [
+        'Matte grey edition finish',
+        'Smooth automatic drive',
+        'Comfortable seating',
+        'Under-seat storage',
+        'Easy city handling',
+        'Regularly serviced'
+      ]
+    },
+    'activa-imperial-red': {
+      id: 'activa-imperial-red',
+      bikeName: 'Honda Activa (Imperial Red)',
+      title: 'Activa Imperial Red',
+      category: 'SCOOTER · POPULAR',
+      subtitle: 'Vibrant metallic red scooter for coastal rides & beach visits.',
+      color: 'COLOUR · IMPERIAL RED METALLIC',
+      description: 'Stand out on the road with the Imperial Red Honda Activa. Ideal for daily commuting, couple rides, and discovering Rock Beach and Auroville.',
+      price: '₹600',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Imperial_Red_Metallic_dev_three.png',
+        'assets/rentel-bikes/honda-activa-.png',
+        'assets/rentel-bikes/NewMATTE_AXIS_GREY_METALLIC.png'
+      ],
+      specs: [
+        '109.51 cc engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 50–55 kmpl',
+        'Comfortable seating for 2 riders'
+      ],
+      included: [
+        'Vibrant red metallic finish',
+        'Smooth automatic drive',
+        'Spacious footboard',
+        'Under-seat storage',
+        'Reliable performance',
+        'Regularly serviced'
+      ]
+    },
+    'tvs-jupiter': {
+      id: 'tvs-jupiter',
+      bikeName: 'TVS Jupiter',
+      title: 'TVS Jupiter 110',
+      category: 'SCOOTER · COMFORT',
+      subtitle: 'Zyada ka fayda — extra seat width, maximum comfort & stability.',
+      color: 'COLOUR · TITANIUM GREY / METALLIC',
+      description: 'Rent the TVS Jupiter for maximum legroom and plush seating comfort. Features external fuel filling, wide footboard, and effortless handling.',
+      price: '₹600',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/TVS%20Jupitor.png',
+        'assets/rentel-bikes/honda-activa-.png'
+      ],
+      specs: [
+        '109.7 cc ET-Fi engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 50–55 kmpl',
+        'Widest cushion seat in class'
+      ],
+      included: [
+        'External fuel cap convenience',
+        '21-litre under-seat storage',
+        'Plush dual seating comfort',
+        'Smooth gas-charged suspension',
+        'Eco mode indicator',
+        'Regularly serviced'
+      ]
+    },
+    'suzuki-access': {
+      id: 'suzuki-access',
+      bikeName: 'Suzuki Access 125',
+      title: 'Suzuki Access 125',
+      category: 'SCOOTER · EXECUTIVE',
+      subtitle: 'Powerful 125cc pickup with classic retro chrome styling.',
+      color: 'COLOUR · MATTE PLATINUM BRONZE',
+      description: 'Rent the Suzuki Access 125 for superior pickup and power. Comes with LED headlamp, long seat, and smooth ride quality for all-day touring.',
+      price: '₹650',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Suzuki%20Access.jpg',
+        'assets/rentel-bikes/dio.png'
+      ],
+      specs: [
+        '124 cc SEP engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Easy Start System (Electric)',
+        'Mileage: 48–52 kmpl',
+        'Comfortable long seat for 2'
+      ],
+      included: [
+        'Chrome LED headlamp',
+        'Quick 125cc pickup performance',
+        '21.8L under-seat storage',
+        'Front utility pocket',
+        'Alloy wheels & tubeless tires',
+        'Regularly serviced'
+      ]
+    },
+    'yamaha-fascino': {
+      id: 'yamaha-fascino',
+      bikeName: 'Yamaha Fascino',
+      title: 'Yamaha Fascino 125',
+      category: 'SCOOTER · RETRO CHIC',
+      subtitle: 'Fluid curves and European retro elegance for your coastal drive.',
+      color: 'COLOUR · SUAVE BLUE & CHROME',
+      description: 'Rent the Yamaha Fascino 125 for lightweight agility and high fuel efficiency. Stylish design looks stunning parked near Pondicherry beaches and heritage villas.',
+      price: '₹650',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Yamaha%20Fascino.jpg',
+        'assets/rentel-bikes/Vespa.jpg'
+      ],
+      specs: [
+        '125 cc Blue Core FI engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Silent Motor Start',
+        'Mileage: 52–58 kmpl',
+        'Comfortable plush seating'
+      ],
+      included: [
+        'Ultra-lightweight body (99kg)',
+        'Class-leading fuel economy',
+        'V-shaped LED tail lamp',
+        '21L under-seat storage',
+        'Retro chrome styling',
+        'Regularly serviced'
+      ]
+    },
+    'yamaha-ray': {
+      id: 'yamaha-ray',
+      bikeName: 'Yamaha Ray',
+      title: 'Yamaha Ray ZR 125',
+      category: 'SCOOTER · SPORTY',
+      subtitle: 'Aggressive streetfighter scooter styling with high agility.',
+      color: 'COLOUR · CYAN BLUE & BLACK',
+      description: 'Rent the Yamaha Ray ZR 125 for a bold, muscular look and crisp throttle response. Built with a tough frame for easy city navigation.',
+      price: '₹650',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Yamaha%20Ray.jpeg',
+        'assets/rentel-bikes/dio.png'
+      ],
+      specs: [
+        '125 cc Blue Core FI engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 50–55 kmpl',
+        'Sporty dual seat design'
+      ],
+      included: [
+        'Tough rugged design',
+        'Block pattern tires',
+        'Lightweight frame',
+        'Under-seat storage',
+        'Digital instrument cluster',
+        'Regularly serviced'
+      ]
+    },
+    'honda-cliq': {
+      id: 'honda-cliq',
+      bikeName: 'Honda Cliq',
+      title: 'Honda Cliq 110',
+      category: 'SCOOTER · PRACTICAL',
+      subtitle: 'Compact, lightweight scooter designed for easy urban navigation.',
+      color: 'COLOUR · MOROCCAN BLUE',
+      description: 'Rent the Honda Cliq for practical, easy riding with low seat height and wide footrest. Perfect for quick errands and effortless city travel.',
+      price: '₹550',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Honda%20Clic.webp',
+        'assets/rentel-bikes/honda-activa-.png'
+      ],
+      specs: [
+        '110 cc HET engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 55–60 kmpl',
+        'Low seat height for easy rider access'
+      ],
+      included: [
+        'Block pattern tires',
+        'Spacious floorboard',
+        'Combi brake system',
+        'Low maintenance design',
+        'Lightweight handling',
+        'Regularly serviced'
+      ]
+    },
+    'honda-navi': {
+      id: 'honda-navi',
+      bikeName: 'Honda Navi',
+      title: 'Honda Navi 110',
+      category: 'MINI BIKE · FUN',
+      subtitle: 'Fun crossover bike blending scooter ease with motorcycle thrill.',
+      color: 'COLOUR · PATRIOT RED',
+      description: 'Rent the Honda Navi for a unique, adventurous ride. Lightweight crossover design with automatic gearless drive and motorcycle riding feel.',
+      price: '₹600',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Honda%20Navi.jpg',
+        'assets/rentel-bikes/dio.png'
+      ],
+      specs: [
+        '109.19 cc engine',
+        'Automatic transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 50–55 kmpl',
+        'Comfortable seating for 2 riders'
+      ],
+      included: [
+        'Fun motorcycle ergonomics',
+        'Automatic gearless transmission',
+        'High ground clearance',
+        'Custom lockable storage box',
+        'Lightweight handling',
+        'Regularly serviced'
+      ]
+    },
+    'hero-splendor': {
+      id: 'hero-splendor',
+      bikeName: 'Hero Splendor',
+      title: 'Hero Splendor Plus',
+      category: 'MOTORCYCLE · UTILITY',
+      subtitle: 'India\'s most iconic fuel-efficient commuter motorcycle.',
+      color: 'COLOUR · BLACK & SILVER',
+      description: 'Rent the Hero Splendor Plus for maximum mileage and gear bike performance. Extremely smooth, reliable, and comfortable for long village & coastal tours.',
+      price: '₹600',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Hero%20Splendor.png',
+        'assets/rentel-bikes/Yamaha%20FZ.jpeg'
+      ],
+      specs: [
+        '97.2 cc xSens FI engine',
+        '4-speed manual gear transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 65–70 kmpl',
+        'Long flat comfort seat'
+      ],
+      included: [
+        'Unmatched fuel mileage',
+        'i3S idle stop-start system',
+        'Tubeless tires',
+        'Rear luggage carrier',
+        'Ultra-reliable engine',
+        'Regularly serviced'
+      ]
+    },
+    'yamaha-fz': {
+      id: 'yamaha-fz',
+      bikeName: 'Yamaha FZ',
+      title: 'Yamaha FZ FI 150',
+      category: 'MOTORCYCLE · SPORT',
+      subtitle: 'Muscular streetfighter bike built for highway & city cruising.',
+      color: 'COLOUR · METALLIC BLACK & BLUE',
+      description: 'Rent the Yamaha FZ FI for a powerful 150cc motorcycle ride. Features wide radial tires, mono-cross suspension, and ABS for superior braking control.',
+      price: '₹750',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/Yamaha%20FZ.jpeg',
+        'assets/rentel-bikes/Hero%20Splendor.png'
+      ],
+      specs: [
+        '149 cc Blue Core FI engine',
+        '5-speed manual gear transmission',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 45–50 kmpl',
+        'Step-up comfortable dual seat'
+      ],
+      included: [
+        'Single-channel ABS safety',
+        'Muscular tank & LED headlight',
+        'Monocross rear suspension',
+        'Wide radial rear tire',
+        'Digital LCD instrument cluster',
+        'Regularly serviced'
+      ]
+    },
+    'royal-enfield-gt650': {
+      id: 'royal-enfield-gt650',
+      bikeName: 'Royal Enfield GT 650',
+      title: 'Royal Enfield Continental GT 650',
+      category: 'CRUISER · LUXURY',
+      subtitle: 'Pure twin-cylinder café racer power for epic coastal rides.',
+      color: 'COLOUR · ROCKER RED & CHROME',
+      description: 'Rent the flagship Royal Enfield Continental GT 650 twin cylinder café racer. Powerful 47PS engine with iconic exhaust note for unforgettable highway trips.',
+      price: '₹1200',
+      originalPrice: '₹500',
+      images: [
+        'assets/rentel-bikes/P3F_GTred_003.png',
+        'assets/bikes/2022-06-11.jpg'
+      ],
+      specs: [
+        '648 cc parallel twin engine (47 PS)',
+        '6-speed manual with slipper clutch',
+        'Petrol engine',
+        'Electric start',
+        'Mileage: 25–30 kmpl',
+        'Café racer dual seat'
+      ],
+      included: [
+        'Twin cylinder 650cc power',
+        'Dual-channel ABS braking',
+        'Twin exhaust rumble sound',
+        'Premium clip-on handlebars',
+        'ByBre disc brakes',
+        'Regularly serviced'
+      ]
+    }
+  };
+
+  // 1. Get query parameter 'id' or default to 'honda-dio'
+  var urlParams = new URLSearchParams(window.location.search);
+  var bikeId = urlParams.get('id') || 'honda-dio';
+  var data = BIKES_DATA[bikeId] || BIKES_DATA['honda-dio'];
+
+  // 2. Populate page details
+  document.getElementById('pageTitle').textContent = data.title + ' Rent in Pondicherry | Vijay Arya Bike Rentals';
+  document.getElementById('pageMetaDesc').content = 'Rent the ' + data.title + ' in Pondicherry starting from ' + data.price + '/day with Vijay Arya Bike Rentals. Trusted since 1973.';
+
+  document.getElementById('detailCatTag').textContent = data.category;
+  document.getElementById('detailTitle').textContent = data.title;
+  document.getElementById('detailSubtitle').textContent = data.subtitle;
+  document.getElementById('detailColorTag').textContent = data.color;
+  document.getElementById('detailDescription').textContent = data.description;
+
+  document.getElementById('detailOriginalPrice').textContent = data.originalPrice;
+  document.getElementById('detailPrice').innerHTML = data.price + ' <small>/ day</small>';
+  
+  var bookBtn = document.getElementById('detailBookBtn');
+  bookBtn.setAttribute('data-bike', data.bikeName);
+
+  // 3. Populate Specs Grid
+  var specsGrid = document.getElementById('detailSpecsGrid');
+  specsGrid.innerHTML = '';
+  data.specs.forEach(function(specText) {
+    var item = document.createElement('div');
+    item.className = 'detail-check-item';
+    item.innerHTML = '<span class="detail-check-ic">&check;</span><span>' + specText + '</span>';
+    specsGrid.appendChild(item);
+  });
+
+  // 4. Populate Included Grid
+  var includedGrid = document.getElementById('detailIncludedGrid');
+  includedGrid.innerHTML = '';
+  data.included.forEach(function(incText) {
+    var item = document.createElement('div');
+    item.className = 'detail-check-item';
+    item.innerHTML = '<span class="detail-check-ic">&check;</span><span>' + incText + '</span>';
+    includedGrid.appendChild(item);
+  });
+
+  // 5. Setup Images & Thumbnails
+  var currentImgIdx = 0;
+  var mainImg = document.getElementById('detailMainImg');
+  var thumbsList = document.getElementById('detailThumbsList');
+  thumbsList.innerHTML = '';
+
+  function setMainImg(idx) {
+    if (idx < 0) idx = data.images.length - 1;
+    if (idx >= data.images.length) idx = 0;
+    currentImgIdx = idx;
+    
+    mainImg.style.opacity = '0.4';
+    mainImg.style.transform = 'scale(0.96)';
+    setTimeout(function() {
+      mainImg.src = data.images[currentImgIdx];
+      mainImg.style.opacity = '1';
+      mainImg.style.transform = 'scale(1)';
+    }, 120);
+
+    var allThumbs = thumbsList.querySelectorAll('.detail-thumb-item');
+    allThumbs.forEach(function(t, i) {
+      if (i === currentImgIdx) {
+        t.classList.add('is-active');
+      } else {
+        t.classList.remove('is-active');
+      }
+    });
+  }
+
+  data.images.forEach(function(imgSrc, i) {
+    var thumb = document.createElement('div');
+    thumb.className = 'detail-thumb-item' + (i === 0 ? ' is-active' : '');
+    thumb.innerHTML = '<img src="' + imgSrc + '" alt="Thumbnail ' + (i + 1) + '">';
+    thumb.addEventListener('click', function() {
+      setMainImg(i);
+    });
+    thumbsList.appendChild(thumb);
+  });
+
+  mainImg.src = data.images[0];
+
+  document.getElementById('thumbPrev').addEventListener('click', function() {
+    setMainImg(currentImgIdx - 1);
+  });
+  document.getElementById('thumbNext').addEventListener('click', function() {
+    setMainImg(currentImgIdx + 1);
+  });
+
+})();
+</script>
+</body>
+</html>
