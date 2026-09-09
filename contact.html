@@ -281,70 +281,127 @@
   <div class="booking-panel" role="document">
     <button class="booking-close" id="bookClose" type="button" aria-label="Close booking">&times;</button>
 
-    <header class="booking-head">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Book a ride</p>
-      <h2 id="bookTitle">Reserve your two-wheeler</h2>
-      <ol class="booking-steps" aria-label="Booking steps">
-        <li class="is-current" data-step-dot="1"><span>1</span>Your booking</li>
-        <li data-step-dot="2"><span>2</span>&#8377;500 advance</li>
-      </ol>
+    <header class="drawer-head">
+      <div class="drawer-eyebrow">NEW BOOKING</div>
+      <h2 id="bookTitle" class="drawer-title">Vespa</h2>
+      <p id="bookDesc" class="drawer-sub">Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.</p>
+      <div class="drawer-price-tag">Advance: <strong>&#8377;500</strong></div>
     </header>
+
+    <div class="guest-box">
+      <span class="guest-box-title">🛡️ BOOKING AS A GUEST</span>
+      <p>Instant reservation confirmation via WhatsApp. No account or signup needed.</p>
+    </div>
 
     <!-- STEP 1 -->
     <form class="booking-step is-active" id="bookStep1" novalidate>
-      <div class="field">
-        <label for="bkBike">Which ride?</label>
-        <select id="bkBike" name="bike" required>
-          <option value="Vespa">Vespa — Advance &#8377;500</option>
-          <option value="Honda Activa">Honda Activa — Advance &#8377;500</option>
-          <option value="Honda Activa (Matte Grey)">Honda Activa (Matte Grey) — Advance &#8377;500</option>
-          <option value="Honda Activa (Imperial Red)">Honda Activa (Imperial Red) — Advance &#8377;500</option>
-          <option value="TVS Jupiter">TVS Jupiter — Advance &#8377;500</option>
-          <option value="Suzuki Access 125">Suzuki Access 125 — Advance &#8377;500</option>
-          <option value="Honda Dio">Honda Dio — Advance &#8377;500</option>
-          <option value="Yamaha Fascino">Yamaha Fascino — Advance &#8377;500</option>
-          <option value="Yamaha Ray">Yamaha Ray — Advance &#8377;500</option>
-          <option value="Honda Cliq">Honda Cliq — Advance &#8377;500</option>
-          <option value="Honda Navi">Honda Navi — Advance &#8377;500</option>
-          <option value="Hero Splendor">Hero Splendor — Advance &#8377;500</option>
-          <option value="Yamaha FZ">Yamaha FZ — Advance &#8377;500</option>
-          <option value="Royal Enfield GT 650">Royal Enfield GT 650 — Advance &#8377;500</option>
-        </select>
-      </div>
+      <select id="bkBike" name="bike" hidden>
+        <option value="Vespa">Vespa</option>
+        <option value="Honda Activa">Honda Activa</option>
+        <option value="Honda Activa (Matte Grey)">Honda Activa (Matte Grey)</option>
+        <option value="Honda Activa (Imperial Red)">Honda Activa (Imperial Red)</option>
+        <option value="TVS Jupiter">TVS Jupiter</option>
+        <option value="Suzuki Access 125">Suzuki Access 125</option>
+        <option value="Honda Dio">Honda Dio</option>
+        <option value="Yamaha Fascino">Yamaha Fascino</option>
+        <option value="Yamaha Ray">Yamaha Ray</option>
+        <option value="Honda Cliq">Honda Cliq</option>
+        <option value="Honda Navi">Honda Navi</option>
+        <option value="Hero Splendor">Hero Splendor</option>
+        <option value="Yamaha FZ">Yamaha FZ</option>
+        <option value="Royal Enfield GT 650">Royal Enfield GT 650</option>
+      </select>
 
-      <div class="field-row">
-        <div class="field">
-          <label for="bkDate">Pickup date</label>
-          <input type="date" id="bkDate" name="date" required>
+      <section class="drawer-section">
+        <h3 class="section-num-title">01 &middot; RENTAL WINDOW</h3>
+        <div class="field-row">
+          <div class="field">
+            <label for="bkStartDate">Start Date</label>
+            <input type="date" id="bkStartDate" name="startDate" required>
+          </div>
+          <div class="field">
+            <label for="bkEndDate">End Date</label>
+            <input type="date" id="bkEndDate" name="endDate" required>
+          </div>
         </div>
-        <div class="field">
-          <label for="bkDays">How many days?</label>
-          <input type="number" id="bkDays" name="days" min="1" max="60" value="1" required>
+        <div class="field-row">
+          <div class="field">
+            <label for="bkStartTime">Pickup Time</label>
+            <input type="time" id="bkStartTime" name="startTime" value="09:00" required>
+          </div>
+          <div class="field">
+            <label for="bkEndTime">Return Time</label>
+            <input type="time" id="bkEndTime" name="endTime" value="19:00" required>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="field-row">
-        <div class="field">
-          <label for="bkName">Your name</label>
-          <input type="text" id="bkName" name="name" autocomplete="name" placeholder="Full name" required>
+      <section class="drawer-section">
+        <h3 class="section-num-title">02 &middot; NUMBER OF VEHICLES</h3>
+        <div class="qty-card">
+          <div class="qty-info">
+            <h4 id="qtyLabel">How many Vespa?</h4>
+            <p>Select total number of vehicles</p>
+          </div>
+          <div class="qty-counter">
+            <button type="button" class="qty-btn" id="qtyMinus" aria-label="Decrease quantity">&minus;</button>
+            <span class="qty-num" id="qtyVal">1</span>
+            <button type="button" class="qty-btn" id="qtyPlus" aria-label="Increase quantity">&plus;</button>
+          </div>
         </div>
-        <div class="field">
-          <label for="bkPhone">Phone number</label>
-          <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile" required>
-        </div>
-      </div>
+      </section>
 
-      <div class="field">
-        <label for="bkNote">Anything we should know? <span class="opt">Optional</span></label>
-        <input type="text" id="bkNote" name="note" placeholder="Hotel name, pickup time, helmet sizes…">
-      </div>
+      <section class="drawer-section">
+        <h3 class="section-num-title">03 &middot; YOUR DETAILS</h3>
+        <div class="field">
+          <label for="bkName">Full Name</label>
+          <input type="text" id="bkName" name="name" autocomplete="name" placeholder="Enter your full name" required>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="bkPhone">WhatsApp Number</label>
+            <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile" required>
+          </div>
+          <div class="field">
+            <label for="bkEmail">Email <span class="field-hint" style="display:inline">(Optional)</span></label>
+            <input type="email" id="bkEmail" name="email" autocomplete="email" placeholder="name@example.com">
+          </div>
+        </div>
+      </section>
+
+      <section class="drawer-section">
+        <h3 class="section-num-title">04 &middot; KYC DOCUMENTS</h3>
+        <p class="kyc-sub">Required for vehicle handover at shop during pickup</p>
+        <div class="kyc-grid">
+          <div class="kyc-card">
+            <span class="kyc-label">AADHAAR / ID IMAGE</span>
+            <p class="kyc-hint" id="kycIdStatus">No file attached</p>
+            <input type="file" id="kycIdFile" accept="image/*" class="sr-only" style="display:none">
+            <input type="file" id="kycIdCam" accept="image/*" capture="environment" class="sr-only" style="display:none">
+            <div class="kyc-actions">
+              <button type="button" class="kyc-btn" id="kycIdBtn">📁 Upload file</button>
+              <button type="button" class="kyc-btn" id="kycIdCamBtn">📷 Take photo</button>
+            </div>
+          </div>
+          <div class="kyc-card">
+            <span class="kyc-label">DRIVING LICENCE IMAGE</span>
+            <p class="kyc-hint" id="kycDlStatus">No file attached</p>
+            <input type="file" id="kycDlFile" accept="image/*" class="sr-only" style="display:none">
+            <input type="file" id="kycDlCam" accept="image/*" capture="environment" class="sr-only" style="display:none">
+            <div class="kyc-actions">
+              <button type="button" class="kyc-btn" id="kycDlBtn">📁 Upload file</button>
+              <button type="button" class="kyc-btn" id="kycDlCamBtn">📷 Take photo</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <p class="field-error" id="bkError" role="alert" hidden></p>
 
-      <div class="booking-actions">
-        <button class="btn btn-red btn-block" type="submit">Continue to advance &rarr;</button>
+      <div class="drawer-footer">
+        <button class="btn btn-red btn-block btn-lg" type="submit" id="bkSubmitBtn">Continue &middot; Advance &#8377;500 &rarr;</button>
+        <p class="drawer-fineprint">Carry original photo ID (Aadhaar, Driving Licence or Passport). No security deposit required.</p>
       </div>
-      <p class="booking-fineprint">Carry an original photo ID (Aadhaar, Voter Card, Driving Licence, or Passport for foreign visitors). No security deposit.</p>
     </form>
 
     <!-- STEP 2 -->
@@ -360,10 +417,10 @@
 
         <div class="pay-copy">
           <p class="pay-amount"><span>Advance to pay</span><strong>&#8377;500</strong></p>
-          <p class="pay-note">Adjusted against your total rental. The balance is payable at the shop when you collect the vehicle.</p>
+          <p class="pay-note">Adjusted against total rental. Pay balance at shop when collecting vehicle.</p>
 
-          <a class="btn btn-red btn-block" id="bkUpi" href="#">Pay &#8377;500 via UPI app</a>
-          <p class="pay-hint">On a phone this opens GPay, PhonePe, Paytm or any UPI app. On a computer, scan the code instead.</p>
+          <a class="btn btn-red btn-block" id="bkUpi" href="#">Pay &#8377;500 via UPI App</a>
+          <p class="pay-hint">Opens GPay, PhonePe, Paytm or BHIM on mobile. On PC, scan QR code.</p>
 
           <div class="pay-upi">
             <span class="pay-upi-label">UPI ID</span>
@@ -374,15 +431,15 @@
       </div>
 
       <div class="pay-send">
-        <h3>Then send us your booking</h3>
-        <p>We confirm the vehicle and the final rate on a quick call. Availability changes day to day, so this reserves your ride rather than issuing an instant confirmation.</p>
-        <div class="booking-actions">
-          <a class="btn btn-red" id="bkWhats" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
-          <a class="btn btn-outline" href="tel:+919600334488">Call 9600 33 44 88</a>
+        <h4 style="margin: 0 0 8px; font-family: var(--serif); font-size: 18px;">Send booking on WhatsApp</h4>
+        <p style="font-size: 13.5px; color: #57534E; margin: 0 0 16px;">We confirm your booking instantly. Availability changes daily.</p>
+        <div class="booking-actions" style="display: grid; gap: 10px;">
+          <a class="btn btn-red btn-block" id="bkWhats" href="#" target="_blank" rel="noopener">Send Details on WhatsApp</a>
+          <a class="btn btn-outline btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
         </div>
       </div>
 
-      <button class="booking-back" id="bkBack" type="button">&larr; Back to details</button>
+      <button class="booking-back" id="bkBack" type="button" style="margin-top: 20px; background: none; border: 0; color: #78716C; cursor: pointer; font-size: 13.5px;">&larr; Back to details</button>
     </div>
   </div>
 </div>

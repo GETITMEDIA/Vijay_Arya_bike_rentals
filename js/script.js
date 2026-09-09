@@ -512,11 +512,7 @@
   })();
 
   /* ------------------------------------------------------------------
-     14. Booking modal — details, Rs.500 advance, hand-off to the shop
-
-     This is a static site: there is no server and no payment gateway.
-     The advance is taken through the shop's own UPI ID / Google Pay QR,
-     and the booking details go to the shop over WhatsApp or a call.
+     14. Booking drawer — details, Rs.500 advance, hand-off to WhatsApp
      ------------------------------------------------------------------ */
   (function booking() {
     var modal   = document.getElementById('booking');
@@ -525,7 +521,6 @@
     var panel   = $('.booking-panel', modal);
     var step1   = document.getElementById('bookStep1');
     var step2   = document.getElementById('bookStep2');
-    var dots    = $$('[data-step-dot]', modal);
     var closeBt = document.getElementById('bookClose');
     var backBt  = document.getElementById('bkBack');
     var errBox  = document.getElementById('bkError');
@@ -535,52 +530,151 @@
     var copyBt  = document.getElementById('bkCopy');
     var upiIdEl = document.getElementById('bkUpiId');
 
+    var titleEl = document.getElementById('bookTitle');
+    var descEl  = document.getElementById('bookDesc');
+    var qtyLabelEl = document.getElementById('qtyLabel');
+
+    var qtyValEl = document.getElementById('qtyVal');
+    var qtyMinusBtn = document.getElementById('qtyMinus');
+    var qtyPlusBtn = document.getElementById('qtyPlus');
+
+    var kycIdFile = document.getElementById('kycIdFile');
+    var kycIdCam  = document.getElementById('kycIdCam');
+    var kycIdBtn  = document.getElementById('kycIdBtn');
+    var kycIdCamBtn = document.getElementById('kycIdCamBtn');
+    var kycIdStatus = document.getElementById('kycIdStatus');
+
+    var kycDlFile = document.getElementById('kycDlFile');
+    var kycDlCam  = document.getElementById('kycDlCam');
+    var kycDlBtn  = document.getElementById('kycDlBtn');
+    var kycDlCamBtn = document.getElementById('kycDlCamBtn');
+    var kycDlStatus = document.getElementById('kycDlStatus');
+
     var f = {
-      bike:  document.getElementById('bkBike'),
-      date:  document.getElementById('bkDate'),
-      days:  document.getElementById('bkDays'),
-      name:  document.getElementById('bkName'),
-      phone: document.getElementById('bkPhone'),
-      note:  document.getElementById('bkNote')
+      bike:      document.getElementById('bkBike'),
+      startDate: document.getElementById('bkStartDate'),
+      endDate:   document.getElementById('bkEndDate'),
+      startTime: document.getElementById('bkStartTime'),
+      endTime:   document.getElementById('bkEndTime'),
+      name:      document.getElementById('bkName'),
+      phone:     document.getElementById('bkPhone'),
+      email:     document.getElementById('bkEmail')
     };
 
+    var BIKE_DESCRIPTIONS = {
+      'Vespa': 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.',
+      'Honda Activa': 'India\'s most trusted automatic scooter for smooth city rides.',
+      'Honda Activa (Matte Grey)': 'Premium matte grey finish Activa with telescopic suspension.',
+      'Honda Activa (Imperial Red)': 'Vibrant red Activa edition for stylish Pondicherry exploration.',
+      'TVS Jupiter': 'High mileage, comfortable seating scooter perfect for long daily rides.',
+      'Suzuki Access 125': 'Powerful 125cc scooter with excellent pickup and spacious footboard.',
+      'Honda Dio': 'Sporty design and agile handling for easy navigating through narrow streets.',
+      'Yamaha Fascino': 'Retro-modern lightweight scooter with refined engine performance.',
+      'Yamaha Ray': 'Nimble and compact automatic scooter ideal for quick city errands.',
+      'Honda Cliq': 'Sturdy, practical and light runabout scooter.',
+      'Honda Navi': 'Fun mini-bike design with full automatic scooter convenience.',
+      'Hero Splendor': 'Legendary 100cc motorcycle with exceptional fuel efficiency.',
+      'Yamaha FZ': '150cc sporty motorcycle for enthusiastic road trips.',
+      'Royal Enfield GT 650': 'Twin-cylinder Cafe Racer motorcycle for unmatched highway cruiser feel.'
+    };
+
+    var currentQty = 1;
     var ADVANCE   = 500;
-    var UPI_ID    = upiIdEl ? upiIdEl.textContent.trim() : '';
+    var UPI_ID    = upiIdEl ? upiIdEl.textContent.trim() : '7200011799@okbizaxis';
     var PAYEE     = 'Vijay Arya Bike Rentals';
     var WHATSAPP  = '917200011799';
     var lastFocus = null;
 
-    // Pickup date cannot be in the past
-    if (f.date) {
-      var today = new Date();
-      var iso = today.getFullYear() + '-' +
-                String(today.getMonth() + 1).padStart(2, '0') + '-' +
-                String(today.getDate()).padStart(2, '0');
-      f.date.min = iso;
-      if (!f.date.value) f.date.value = iso;
+    // Date defaults Initialization
+    var today = new Date();
+    var tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    function toIso(d) {
+      return d.getFullYear() + '-' +
+        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+        String(d.getDate()).padStart(2, '0');
     }
+
+    if (f.startDate) {
+      f.startDate.min = toIso(today);
+      if (!f.startDate.value) f.startDate.value = toIso(today);
+    }
+    if (f.endDate) {
+      f.endDate.min = toIso(today);
+      if (!f.endDate.value) f.endDate.value = toIso(tomorrow);
+    }
+
+    // Quantity counter handlers
+    if (qtyMinusBtn && qtyPlusBtn && qtyValEl) {
+      qtyMinusBtn.addEventListener('click', function () {
+        if (currentQty > 1) {
+          currentQty--;
+          qtyValEl.textContent = String(currentQty);
+        }
+      });
+      qtyPlusBtn.addEventListener('click', function () {
+        if (currentQty < 10) {
+          currentQty++;
+          qtyValEl.textContent = String(currentQty);
+        }
+      });
+    }
+
+    // KYC Upload Handlers
+    function bindKyc(btn, camBtn, fileInput, camInput, statusEl) {
+      if (btn && fileInput) {
+        btn.addEventListener('click', function () { fileInput.click(); });
+      }
+      if (camBtn && camInput) {
+        camBtn.addEventListener('click', function () { camInput.click(); });
+      }
+      var handleChange = function (input, targetBtn) {
+        if (input.files && input.files[0]) {
+          var name = input.files[0].name;
+          if (statusEl) statusEl.textContent = '✓ Attached: ' + (name.length > 18 ? name.slice(0, 15) + '...' : name);
+          if (targetBtn) targetBtn.classList.add('is-uploaded');
+        }
+      };
+      if (fileInput) fileInput.addEventListener('change', function () { handleChange(fileInput, btn); });
+      if (camInput) camInput.addEventListener('change', function () { handleChange(camInput, camBtn); });
+    }
+
+    bindKyc(kycIdBtn, kycIdCamBtn, kycIdFile, kycIdCam, kycIdStatus);
+    bindKyc(kycDlBtn, kycDlCamBtn, kycDlFile, kycDlCam, kycDlStatus);
 
     function focusables() {
       return $$('a[href], button:not([disabled]), input, select, textarea', modal)
         .filter(function (el) { return el.offsetParent !== null; });
     }
 
-    function open(bike) {
+    function open(bikeName) {
       lastFocus = document.activeElement;
-      if (bike && f.bike) {
-        // match the card's bike to an option, falling back to the first match
+      var selectedBike = bikeName || 'Vespa';
+
+      if (f.bike) {
         var opts = $$('option', f.bike);
         for (var i = 0; i < opts.length; i++) {
-          if (opts[i].value === bike || opts[i].value.indexOf(bike) === 0) {
-            f.bike.value = opts[i].value; break;
+          if (opts[i].value === selectedBike || opts[i].value.indexOf(selectedBike) === 0) {
+            f.bike.value = opts[i].value;
+            selectedBike = opts[i].value;
+            break;
           }
         }
       }
+
+      if (titleEl) titleEl.textContent = selectedBike;
+      if (descEl) descEl.textContent = BIKE_DESCRIPTIONS[selectedBike] || 'Reliable two-wheeler rental in Pondicherry with ₹500 advance.';
+      if (qtyLabelEl) qtyLabelEl.textContent = 'How many ' + selectedBike + '?';
+
+      currentQty = 1;
+      if (qtyValEl) qtyValEl.textContent = '1';
+
       showStep(1);
       modal.hidden = false;
       window.requestAnimationFrame(function () { modal.classList.add('is-open'); });
       document.body.classList.add('bk-open');
-      window.setTimeout(function () { if (f.bike) f.bike.focus(); }, 60);
+      window.setTimeout(function () { if (f.name) f.name.focus(); }, 60);
     }
 
     function close() {
@@ -594,11 +688,6 @@
     function showStep(n) {
       step1.classList.toggle('is-active', n === 1);
       step2.classList.toggle('is-active', n === 2);
-      dots.forEach(function (d) {
-        var i = Number(d.dataset.stepDot);
-        d.classList.toggle('is-current', i === n);
-        d.classList.toggle('is-done', i < n);
-      });
       if (panel) panel.scrollTop = 0;
     }
 
@@ -613,39 +702,50 @@
       if (errBox) errBox.hidden = true;
       $$('.has-error', modal).forEach(function (el) { el.classList.remove('has-error'); });
 
-      if (!f.name.value.trim())  return fail('Please tell us your name.', f.name);
-      var phone = f.phone.value.replace(/\D/g, '');
-      if (phone.length < 10)     return fail('Please enter a valid phone number, at least 10 digits.', f.phone);
-      if (!f.date.value)         return fail('Please choose a pickup date.', f.date);
-      var days = parseInt(f.days.value, 10);
-      if (!days || days < 1)     return fail('Rentals start from one day.', f.days);
+      if (f.name && !f.name.value.trim()) return fail('Please enter your full name.', f.name);
+      if (f.phone) {
+        var phone = f.phone.value.replace(/\D/g, '');
+        if (phone.length < 10) return fail('Please enter a valid 10-digit WhatsApp phone number.', f.phone);
+      }
+      if (f.startDate && !f.startDate.value) return fail('Please choose a start date.', f.startDate);
+      if (f.endDate && !f.endDate.value) return fail('Please choose an end date.', f.endDate);
       return true;
     }
 
     function prettyDate(v) {
+      if (!v) return '';
       var d = new Date(v + 'T00:00:00');
       if (isNaN(d)) return v;
       return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
     function buildStep2() {
-      var days = parseInt(f.days.value, 10) || 1;
-      var bike = f.bike.value;
-      var note = f.note.value.trim();
+      var bike = f.bike ? f.bike.value : (titleEl ? titleEl.textContent : 'Vespa');
+      var sDate = f.startDate ? f.startDate.value : '';
+      var eDate = f.endDate ? f.endDate.value : '';
+      var sTime = f.startTime ? f.startTime.value : '09:00';
+      var eTime = f.endTime ? f.endTime.value : '19:00';
+      var name = f.name ? f.name.value.trim() : '';
+      var phone = f.phone ? f.phone.value.trim() : '';
+      var email = f.email ? f.email.value.trim() : '';
+
+      var idAttached = (kycIdFile && kycIdFile.files.length) || (kycIdCam && kycIdCam.files.length);
+      var dlAttached = (kycDlFile && kycDlFile.files.length) || (kycDlCam && kycDlCam.files.length);
 
       if (summary) {
         summary.innerHTML =
           '<dl>' +
-          '<dt>Ride</dt><dd>' + esc(bike) + '</dd>' +
-          '<dt>Pickup</dt><dd>' + esc(prettyDate(f.date.value)) + '</dd>' +
-          '<dt>Duration</dt><dd>' + days + (days === 1 ? ' day' : ' days') + '</dd>' +
-          '<dt>Name</dt><dd>' + esc(f.name.value.trim()) + '</dd>' +
-          '<dt>Phone</dt><dd>' + esc(f.phone.value.trim()) + '</dd>' +
-          (note ? '<dt>Note</dt><dd>' + esc(note) + '</dd>' : '') +
+          '<dt>Vehicle</dt><dd>' + esc(bike) + ' (Qty: ' + currentQty + ')</dd>' +
+          '<dt>Pickup</dt><dd>' + esc(prettyDate(sDate)) + ' at ' + esc(sTime) + '</dd>' +
+          '<dt>Return</dt><dd>' + esc(prettyDate(eDate)) + ' at ' + esc(eTime) + '</dd>' +
+          '<dt>Name</dt><dd>' + esc(name) + '</dd>' +
+          '<dt>Phone</dt><dd>' + esc(phone) + '</dd>' +
+          (email ? '<dt>Email</dt><dd>' + esc(email) + '</dd>' : '') +
+          '<dt>KYC</dt><dd>' + (idAttached || dlAttached ? 'Files attached online' : 'Will present photo ID at shop') + '</dd>' +
           '</dl>';
       }
 
-      var tn = 'Advance for ' + bike + ' from ' + prettyDate(f.date.value);
+      var tn = 'Advance for ' + bike + ' (' + currentQty + ') from ' + prettyDate(sDate);
       if (upiLink && UPI_ID) {
         upiLink.href = 'upi://pay?pa=' + encodeURIComponent(UPI_ID) +
                        '&pn=' + encodeURIComponent(PAYEE) +
@@ -654,14 +754,18 @@
       }
 
       var msg =
-        'Hello Vijay Arya Bike Rentals, I would like to book a ride.\n\n' +
-        'Ride: ' + bike + '\n' +
-        'Pickup: ' + prettyDate(f.date.value) + '\n' +
-        'Duration: ' + days + (days === 1 ? ' day' : ' days') + '\n' +
-        'Name: ' + f.name.value.trim() + '\n' +
-        'Phone: ' + f.phone.value.trim() + '\n' +
-        (note ? 'Note: ' + note + '\n' : '') +
-        '\nI am paying the Rs.' + ADVANCE + ' advance.';
+        'Hello Vijay Arya Bike Rentals, I would like to reserve a ride.\n\n' +
+        '📌 *RENTAL DETAILS*\n' +
+        '• Vehicle: ' + bike + ' (Qty: ' + currentQty + ')\n' +
+        '• Pickup: ' + prettyDate(sDate) + ' at ' + sTime + '\n' +
+        '• Return: ' + prettyDate(eDate) + ' at ' + eTime + '\n\n' +
+        '👤 *CUSTOMER DETAILS*\n' +
+        '• Name: ' + name + '\n' +
+        '• WhatsApp: ' + phone + '\n' +
+        (email ? '• Email: ' + email + '\n' : '') +
+        (idAttached || dlAttached ? '• KYC ID Documents: Attached\n' : '• KYC ID Documents: Presenting original ID at shop\n') +
+        '\n💳 *PAYMENT*\n' +
+        '• Advance Paid: ₹' + ADVANCE + ' (UPI)';
 
       if (whatsLink) whatsLink.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
     }
@@ -672,7 +776,6 @@
       });
     }
 
-    // Every .js-book control opens the modal; cards pass their bike through
     document.addEventListener('click', function (e) {
       var trigger = e.target.closest ? e.target.closest('.js-book') : null;
       if (!trigger) return;
