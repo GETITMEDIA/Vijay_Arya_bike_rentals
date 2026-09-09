@@ -41,7 +41,7 @@
   "email": "vijayaryabikerentals@gmail.com",
   "telephone": ["+919600334488", "+917200011799"],
   "hasMap": "https://maps.app.goo.gl/qNWcjq3TyVif53Ld9",
-  "priceRange": "INR 500 - INR 1100",
+  "priceRange": "INR 500 Advance",
   "currenciesAccepted": "INR",
   "address": {
     "@type": "PostalAddress",
@@ -53,11 +53,10 @@
   },
   "areaServed": { "@type": "City", "name": "Puducherry" },
   "makesOffer": [
-    { "@type": "Offer", "name": "Vespa S (Premium) daily rental", "priceCurrency": "INR", "price": "1100" },
-    { "@type": "Offer", "name": "Vespa (New) daily rental", "priceCurrency": "INR", "price": "900" },
-    { "@type": "Offer", "name": "Vespa daily rental", "priceCurrency": "INR", "price": "700" },
-    { "@type": "Offer", "name": "125cc scooter (Access / Jupiter class) daily rental", "priceCurrency": "INR", "price": "600" },
-    { "@type": "Offer", "name": "Standard scooter (Activa / Dio / Fascino class) daily rental", "priceCurrency": "INR", "price": "500" }
+    { "@type": "Offer", "name": "Vespa S (Premium) rental advance", "priceCurrency": "INR", "price": "500" },
+    { "@type": "Offer", "name": "Vespa rental advance", "priceCurrency": "INR", "price": "500" },
+    { "@type": "Offer", "name": "125cc scooter rental advance", "priceCurrency": "INR", "price": "500" },
+    { "@type": "Offer", "name": "Standard scooter rental advance", "priceCurrency": "INR", "price": "500" }
   ]
 }
 </script>
@@ -86,7 +85,7 @@
       </ul>
     </nav>
 
-    <a class="btn btn-red btn-sm header-cta" href="tel:+919600334488">Call 9600 33 44 88</a>
+    <button class="btn btn-red btn-sm header-cta js-book" type="button">Book Now</button>
 
     <button class="hamburger" id="menuToggle" aria-expanded="false" aria-controls="mobileNav">
       <span class="hamburger-box" aria-hidden="true"><span class="hamburger-bar"></span></span>
@@ -109,7 +108,8 @@
     <li><a href="#contact" class="nav-link-m">Contact</a></li>
   </ul>
   <div class="nav-mobile-foot">
-    <a class="btn btn-red btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
+    <button class="btn btn-red btn-block js-book" type="button">Book Now</button>
+    <a class="btn btn-ghost btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
     <a class="btn btn-ghost btn-block" href="https://maps.app.goo.gl/qNWcjq3TyVif53Ld9" target="_blank" rel="noopener">Get Directions</a>
   </div>
 </nav>
@@ -124,8 +124,8 @@
       <h1 id="heroTitle">Explore Pondicherry.<br><em>Your Ride. Your Freedom.</em></h1>
       <p class="lede">Trusted two-wheeler rentals in Pondicherry since 1973.</p>
       <div class="hero-actions">
-        <a class="btn btn-red" href="#contact">Rent a Bike</a>
-        <a class="btn btn-outline" href="#gallery">Explore Our Fleet</a>
+        <button class="btn btn-red js-book" type="button">Rent a Bike</button>
+        <a class="btn btn-outline" href="#fleet">Explore Our Fleet</a>
       </div>
 
       <ul class="credibility">
@@ -173,7 +173,7 @@
       <li class="track-step">
         <span class="dot dot-red" aria-hidden="true"></span>
         <span class="year">Today</span>
-        <span class="note">A maintained fleet of Vespas and scooters, and <span data-years-phrase>more than fifty years</span> of local know-how.</span>
+        <span class="note">A maintained fleet of Vespas and scooters. <span data-years-phrase>More than fifty years</span> of local know-how.</span>
       </li>
     </ol>
   </div>
@@ -244,114 +244,215 @@
   <div class="wrap">
     <div class="section-head section-head-split">
       <div>
-        <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Rates</p>
+        <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Rental Fleet</p>
         <h2 id="fleetTitle">Choose Your Ride</h2>
       </div>
-      <p class="section-sub">Indicative daily rental rates across the categories we keep. Tell us your dates and we will suggest what suits you.</p>
+      <p class="section-sub">Explore our full rental fleet. Whichever vehicle you choose, the advance booking amount is &#8377;500 only!</p>
     </div>
 
+    <!--
+      FLEET = exact images from /assets/rentel-bikes/
+      Advance booking is fixed at RS. 500 for all vehicles.
+    -->
     <div class="fleet-grid">
 
-      <article class="ride-card reveal">
+      <article class="ride-card reveal" data-bike="Vespa" data-rate="500">
         <div class="ride-media">
-          <!-- Real photo: premium red Vespa S from the fleet -->
-          <img src="assets/bikes/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry_JPG.jpg"
-               alt="A premium red Vespa S from the Vijay Arya rental fleet"
-               width="399" height="380" loading="lazy" decoding="async">
+          <img src="assets/rentel-bikes/Vespa.jpg" alt="Vespa scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
         </div>
         <div class="ride-body">
-          <p class="ride-cat">Premium scooter</p>
-          <h3 class="ride-name">Vespa S</h3>
-          <p class="ride-price">Daily rental from <strong>&#8377;1,100</strong></p>
-          <a class="btn btn-outline btn-sm" href="#contact">Enquire Now</a>
-        </div>
-      </article>
-
-      <article class="ride-card reveal">
-        <div class="ride-media">
-          <!-- Real photo: newer Vespa in the French Quarter -->
-          <img src="assets/gallery/dc8146_c4fec969eeb24390bfb52591eb054b6a~mv2.jpeg"
-               alt="A newer yellow Vespa from the rental fleet parked on a Pondicherry street"
-               width="303" height="373" loading="lazy" decoding="async">
-        </div>
-        <div class="ride-body">
-          <p class="ride-cat">Newer model</p>
-          <h3 class="ride-name">Vespa (New)</h3>
-          <p class="ride-price">Daily rental from <strong>&#8377;900</strong></p>
-          <a class="btn btn-outline btn-sm" href="#contact">Enquire Now</a>
-        </div>
-      </article>
-
-      <article class="ride-card reveal">
-        <div class="ride-media">
-          <!-- Real photo: Vespas lined up in the garage -->
-          <img src="assets/gallery/dc8146_c073a6a5b0544bad8e61cc91b1bc4c3c~mv2.jpg"
-               alt="Vespa scooters in red, white and yellow lined up inside the rental garage"
-               width="303" height="382" loading="lazy" decoding="async">
-        </div>
-        <div class="ride-body">
-          <p class="ride-cat">Classic scooter</p>
+          <p class="ride-cat">Premium Scooter</p>
           <h3 class="ride-name">Vespa</h3>
-          <p class="ride-price">Daily rental from <strong>&#8377;700</strong></p>
-          <a class="btn btn-outline btn-sm" href="#contact">Enquire Now</a>
+          <p class="ride-models">Classic, New and S variants</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Vespa">Book Now</button>
         </div>
       </article>
 
-      <article class="ride-card reveal">
+      <article class="ride-card reveal" data-bike="Honda Activa" data-rate="500">
         <div class="ride-media">
-          <!-- Real photo: automatic scooters in the fleet -->
-          <img src="assets/gallery/dc8146_3c261620a33d4f178ff5e999f4ccf393~mv2.jpg"
-               alt="Automatic scooters including a Honda Activa parked inside the Vijay Arya garage"
-               width="302" height="403" loading="lazy" decoding="async">
+          <img src="assets/rentel-bikes/honda-activa-.png" alt="Honda Activa scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
         </div>
         <div class="ride-body">
-          <p class="ride-cat">Automatic scooter</p>
-          <h3 class="ride-name">Honda Activa &middot; TVS Jupiter &middot; Suzuki Access</h3>
-          <p class="ride-price">Daily rental from <strong>&#8377;600</strong></p>
-          <a class="btn btn-outline btn-sm" href="#contact">Enquire Now</a>
+          <p class="ride-cat">Automatic Scooter</p>
+          <h3 class="ride-name">Honda Activa</h3>
+          <p class="ride-models">Smooth, comfortable city ride</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Honda Activa">Book Now</button>
         </div>
       </article>
 
-      <article class="ride-card reveal">
+      <article class="ride-card reveal" data-bike="Honda Activa (Matte Grey)" data-rate="500">
         <div class="ride-media">
-          <!-- Real photo: the wider scooter fleet -->
-          <img src="assets/gallery/dc8146_d641afa76a474c6fbe4cc7959da185aa~mv2.jpg"
-               alt="The wider Vijay Arya scooter fleet lined up and ready for rental"
-               width="302" height="227" loading="lazy" decoding="async">
+          <img src="assets/rentel-bikes/NewMATTE_AXIS_GREY_METALLIC.png" alt="Honda Activa Matte Grey available for rent" width="140" height="140" loading="lazy" decoding="async">
         </div>
         <div class="ride-body">
-          <p class="ride-cat">Everyday scooter</p>
-          <h3 class="ride-name">Activa i &middot; Dio &middot; Pleasure &middot; Maestro &middot; Duet &middot; Ray &middot; Fascino &middot; Jupiter</h3>
-          <p class="ride-price">Daily rental from <strong>&#8377;500</strong></p>
-          <a class="btn btn-outline btn-sm" href="#contact">Enquire Now</a>
+          <p class="ride-cat">Automatic Scooter</p>
+          <h3 class="ride-name">Activa Matte Grey</h3>
+          <p class="ride-models">Stylish Axis Grey metallic finish</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Honda Activa (Matte Grey)">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Honda Activa (Imperial Red)" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Imperial_Red_Metallic_dev_three.png" alt="Honda Imperial Red available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Automatic Scooter</p>
+          <h3 class="ride-name">Activa Imperial Red</h3>
+          <p class="ride-models">Vibrant metallic red edition</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Honda Activa (Imperial Red)">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="TVS Jupiter" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/TVS%20Jupitor.png" alt="TVS Jupiter scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Automatic Scooter</p>
+          <h3 class="ride-name">TVS Jupiter</h3>
+          <p class="ride-models">Comfortable everyday ride</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="TVS Jupiter">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Suzuki Access 125" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Suzuki%20Access.jpg" alt="Suzuki Access scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">125cc Scooter</p>
+          <h3 class="ride-name">Suzuki Access 125</h3>
+          <p class="ride-models">Steady on longer town runs</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Suzuki Access 125">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Honda Dio" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/dio.png" alt="Honda Dio scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Everyday Scooter</p>
+          <h3 class="ride-name">Honda Dio</h3>
+          <p class="ride-models">Light and easy to handle</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Honda Dio">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Yamaha Fascino" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Yamaha%20Fascino.jpg" alt="Yamaha Fascino scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Everyday Scooter</p>
+          <h3 class="ride-name">Yamaha Fascino</h3>
+          <p class="ride-models">Retro styling, light body</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Yamaha Fascino">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Yamaha Ray" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Yamaha%20Ray.jpeg" alt="Yamaha Ray scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Everyday Scooter</p>
+          <h3 class="ride-name">Yamaha Ray</h3>
+          <p class="ride-models">Nimble through narrow lanes</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Yamaha Ray">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Honda Cliq" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Honda%20Clic.webp" alt="Honda Cliq scooter available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Everyday Scooter</p>
+          <h3 class="ride-name">Honda Cliq</h3>
+          <p class="ride-models">Simple, sturdy runabout</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Honda Cliq">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Honda Navi" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Honda%20Navi.jpg" alt="Honda Navi available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Mini Bike</p>
+          <h3 class="ride-name">Honda Navi</h3>
+          <p class="ride-models">Scooter ease, bike stance</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Honda Navi">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Hero Splendor" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Hero%20Splendor.png" alt="Hero Splendor motorcycle available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Motorcycle</p>
+          <h3 class="ride-name">Hero Splendor</h3>
+          <p class="ride-models">Geared, easy on fuel</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Hero Splendor">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Yamaha FZ" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/Yamaha%20FZ.jpeg" alt="Yamaha FZ motorcycle available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Motorcycle</p>
+          <h3 class="ride-name">Yamaha FZ</h3>
+          <p class="ride-models">For riders who prefer gears</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Yamaha FZ">Book Now</button>
+        </div>
+      </article>
+
+      <article class="ride-card reveal" data-bike="Royal Enfield GT 650" data-rate="500">
+        <div class="ride-media">
+          <img src="assets/rentel-bikes/P3F_GTred_003.png" alt="Royal Enfield GT 650 available for rent" width="140" height="140" loading="lazy" decoding="async">
+        </div>
+        <div class="ride-body">
+          <p class="ride-cat">Cruiser / Cafe Racer</p>
+          <h3 class="ride-name">Royal Enfield GT 650</h3>
+          <p class="ride-models">Twin cylinder cafe racer edition</p>
+          <div class="ride-price-badge">Advance: <strong>&#8377;500</strong></div>
+          <button class="btn btn-red btn-sm js-book" type="button" data-bike="Royal Enfield GT 650">Book Now</button>
         </div>
       </article>
 
       <aside class="ride-note reveal">
-        <h3>Good to know</h3>
-        <p>Rates may vary based on vehicle availability and rental duration.</p>
-        <p>We rent by the day, by the week and for longer periods. The total rental amount is payable in advance, and there is no security deposit.</p>
-        <a class="link-red" href="#contact">Check availability &rarr;</a>
+        <h3>Booking &amp; Terms</h3>
+        <ul class="rate-tiers">
+          <li><span>Advance Amount</span><strong>&#8377;500 Only</strong></li>
+          <li><span>Applicable for</span><span>All Bikes &amp; Scooters</span></li>
+          <li><span>Security Deposit</span><span>&#8377;0 (No deposit)</span></li>
+          <li><span>ID Requirement</span><span>Original Photo ID</span></li>
+          <li><span>Helmets</span><span>Free of cost</span></li>
+        </ul>
+        <p>Booking takes a <strong>&#8377;500 advance</strong>, which is adjusted against your total rental when you collect your ride.</p>
+        <button class="btn btn-white btn-sm js-book" type="button">Book Now</button>
       </aside>
     </div>
 
-    <div class="models">
-      <h3 class="models-title">Models you will find in our fleet</h3>
-      <ul class="models-strip">
-        <li><img src="assets/rentel-bikes/Vespa.jpg" alt="Vespa scooter" width="96" height="96" loading="lazy"><span>Vespa</span></li>
-        <li><img src="assets/rentel-bikes/HONDA%20ACTIVA.png" alt="Honda Activa scooter" width="96" height="96" loading="lazy"><span>Honda Activa</span></li>
-        <li><img src="assets/rentel-bikes/Honda_dio.png" alt="Honda Dio scooter" width="96" height="96" loading="lazy"><span>Honda Dio</span></li>
-        <li><img src="assets/rentel-bikes/TVS%20Jupiter.png" alt="TVS Jupiter scooter" width="96" height="96" loading="lazy"><span>TVS Jupiter</span></li>
-        <li><img src="assets/rentel-bikes/Suzuki%20Access.jpg" alt="Suzuki Access scooter" width="96" height="96" loading="lazy"><span>Suzuki Access</span></li>
-        <li><img src="assets/rentel-bikes/Yamaha%20Fascino.jpg" alt="Yamaha Fascino scooter" width="96" height="96" loading="lazy"><span>Yamaha Fascino</span></li>
-        <li><img src="assets/rentel-bikes/Yamaha%20Ray.jpeg" alt="Yamaha Ray scooter" width="96" height="96" loading="lazy"><span>Yamaha Ray</span></li>
-        <li><img src="assets/rentel-bikes/Honda%20Clic.webp" alt="Honda Cliq scooter" width="96" height="96" loading="lazy"><span>Honda Cliq</span></li>
-        <li><img src="assets/rentel-bikes/Honda%20Navi.jpg" alt="Honda Navi" width="96" height="96" loading="lazy"><span>Honda Navi</span></li>
-        <li><img src="assets/rentel-bikes/Hero%20Splendor.png" alt="Hero Splendor motorcycle" width="96" height="96" loading="lazy"><span>Hero Splendor</span></li>
-        <li><img src="assets/rentel-bikes/Yamaha%20FZ.jpeg" alt="Yamaha FZ motorcycle" width="96" height="96" loading="lazy"><span>Yamaha FZ</span></li>
-      </ul>
-      <p class="models-note">Availability changes day to day. Call us and we will tell you exactly what is on the floor.</p>
-    </div>
+    <p class="models-note">Availability changes day to day. We confirm your vehicle on a quick call before you arrive.</p>
   </div>
 </section>
 
@@ -633,7 +734,7 @@
       </div>
       <div class="acc-item">
         <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>What does it cost?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
-        <div class="acc-panel"><div class="acc-inner"><p>Daily rentals start from &#8377;500 for everyday scooters and go up to &#8377;1,100 for a premium Vespa S. Rates may vary based on vehicle availability and rental duration &mdash; see <a class="link-red" href="#fleet">Choose Your Ride</a> for the full list.</p></div></div>
+        <div class="acc-panel"><div class="acc-inner"><p>Whichever bike or scooter you choose, the advance booking amount is &#8377;500 only. No security deposit required! The advance is adjusted against your balance when you collect the vehicle.</p></div></div>
       </div>
     </div>
   </div>
@@ -677,7 +778,8 @@
         </dl>
 
         <div class="contact-actions">
-          <a class="btn btn-red" href="tel:+919600334488">Call Now</a>
+          <button class="btn btn-red js-book" type="button">Book Now</button>
+          <a class="btn btn-outline" href="tel:+919600334488">Call Now</a>
           <a class="btn btn-outline" href="mailto:vijayaryabikerentals@gmail.com">Email Us</a>
           <a class="btn btn-outline" href="https://maps.app.goo.gl/qNWcjq3TyVif53Ld9" target="_blank" rel="noopener">Open in Google Maps</a>
         </div>
@@ -704,7 +806,8 @@
       <p>Pick your ride and start exploring the city at your own pace.</p>
     </div>
     <div class="cta-actions">
-      <a class="btn btn-white" href="tel:+919600334488">Call Now</a>
+      <button class="btn btn-white js-book" type="button">Book Now</button>
+      <a class="btn btn-ghost-light" href="tel:+919600334488">Call Now</a>
       <a class="btn btn-ghost-light" href="https://maps.app.goo.gl/qNWcjq3TyVif53Ld9" target="_blank" rel="noopener">Get Directions</a>
     </div>
   </div>
@@ -748,6 +851,123 @@
     <p class="footer-copy">&copy; <span id="year">2026</span> Vijay Arya Bike Rentals</p>
   </div>
 </footer>
+
+<!-- ============================ BOOKING MODAL ============================
+     Static site: this collects the booking, takes the Rs.500 advance through
+     the shop's own UPI/Google Pay QR (assets/logo/), then hands the details
+     to the shop over WhatsApp or a call. No payment gateway, no server.
+-->
+<div class="booking" id="booking" role="dialog" aria-modal="true" aria-labelledby="bookTitle" hidden>
+  <div class="booking-backdrop" data-book-close></div>
+
+  <div class="booking-panel" role="document">
+    <button class="booking-close" id="bookClose" type="button" aria-label="Close booking">&times;</button>
+
+    <header class="booking-head">
+      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Book a ride</p>
+      <h2 id="bookTitle">Reserve your two-wheeler</h2>
+      <ol class="booking-steps" aria-label="Booking steps">
+        <li class="is-current" data-step-dot="1"><span>1</span>Your booking</li>
+        <li data-step-dot="2"><span>2</span>&#8377;500 advance</li>
+      </ol>
+    </header>
+
+    <!-- STEP 1 -->
+    <form class="booking-step is-active" id="bookStep1" novalidate>
+      <div class="field">
+        <label for="bkBike">Which ride?</label>
+        <select id="bkBike" name="bike" required>
+          <option value="Vespa">Vespa — Advance &#8377;500</option>
+          <option value="Honda Activa">Honda Activa — Advance &#8377;500</option>
+          <option value="Honda Activa (Matte Grey)">Honda Activa (Matte Grey) — Advance &#8377;500</option>
+          <option value="Honda Activa (Imperial Red)">Honda Activa (Imperial Red) — Advance &#8377;500</option>
+          <option value="TVS Jupiter">TVS Jupiter — Advance &#8377;500</option>
+          <option value="Suzuki Access 125">Suzuki Access 125 — Advance &#8377;500</option>
+          <option value="Honda Dio">Honda Dio — Advance &#8377;500</option>
+          <option value="Yamaha Fascino">Yamaha Fascino — Advance &#8377;500</option>
+          <option value="Yamaha Ray">Yamaha Ray — Advance &#8377;500</option>
+          <option value="Honda Cliq">Honda Cliq — Advance &#8377;500</option>
+          <option value="Honda Navi">Honda Navi — Advance &#8377;500</option>
+          <option value="Hero Splendor">Hero Splendor — Advance &#8377;500</option>
+          <option value="Yamaha FZ">Yamaha FZ — Advance &#8377;500</option>
+          <option value="Royal Enfield GT 650">Royal Enfield GT 650 — Advance &#8377;500</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="bkDate">Pickup date</label>
+          <input type="date" id="bkDate" name="date" required>
+        </div>
+        <div class="field">
+          <label for="bkDays">How many days?</label>
+          <input type="number" id="bkDays" name="days" min="1" max="60" value="1" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="bkName">Your name</label>
+          <input type="text" id="bkName" name="name" autocomplete="name" placeholder="Full name" required>
+        </div>
+        <div class="field">
+          <label for="bkPhone">Phone number</label>
+          <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bkNote">Anything we should know? <span class="opt">Optional</span></label>
+        <input type="text" id="bkNote" name="note" placeholder="Hotel name, pickup time, helmet sizes…">
+      </div>
+
+      <p class="field-error" id="bkError" role="alert" hidden></p>
+
+      <div class="booking-actions">
+        <button class="btn btn-red btn-block" type="submit">Continue to advance &rarr;</button>
+      </div>
+      <p class="booking-fineprint">Carry an original photo ID (Aadhaar, Voter Card, Driving Licence, or Passport for foreign visitors). No security deposit.</p>
+    </form>
+
+    <!-- STEP 2 -->
+    <div class="booking-step" id="bookStep2">
+      <div class="booking-summary" id="bkSummary"></div>
+
+      <div class="pay-grid">
+        <figure class="pay-qr">
+          <img src="assets/logo/WhatsApp%20Image%202026-09-09%20at%202.18.27%20PM.jpeg"
+               alt="Google Pay QR code for Vijay Arya Bike Rentals, UPI ID 7200011799@okbizaxis"
+               width="848" height="1205" loading="lazy" decoding="async">
+        </figure>
+
+        <div class="pay-copy">
+          <p class="pay-amount"><span>Advance to pay</span><strong>&#8377;500</strong></p>
+          <p class="pay-note">Adjusted against your total rental. The balance is payable at the shop when you collect the vehicle.</p>
+
+          <a class="btn btn-red btn-block" id="bkUpi" href="#">Pay &#8377;500 via UPI app</a>
+          <p class="pay-hint">On a phone this opens GPay, PhonePe, Paytm or any UPI app. On a computer, scan the code instead.</p>
+
+          <div class="pay-upi">
+            <span class="pay-upi-label">UPI ID</span>
+            <code id="bkUpiId">7200011799@okbizaxis</code>
+            <button class="pay-copy-btn" id="bkCopy" type="button">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pay-send">
+        <h3>Then send us your booking</h3>
+        <p>We confirm the vehicle and the final rate on a quick call. Availability changes day to day, so this reserves your ride rather than issuing an instant confirmation.</p>
+        <div class="booking-actions">
+          <a class="btn btn-red" id="bkWhats" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
+          <a class="btn btn-outline" href="tel:+919600334488">Call 9600 33 44 88</a>
+        </div>
+      </div>
+
+      <button class="booking-back" id="bkBack" type="button">&larr; Back to details</button>
+    </div>
+  </div>
+</div>
 
 <!-- ============================ LIGHTBOX ============================ -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gallery image viewer" hidden>

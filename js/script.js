@@ -1,7 +1,8 @@
 /* ==========================================================================
    Vijay Arya Bike Rentals — vanilla JS
-   Sticky header state · mobile nav · scroll spy · gallery lightbox
-   · testimonial scroller · FAQ accordion · reveal on scroll · dynamic years
+   Sticky header · mobile nav · scroll spy · gallery lightbox · testimonial
+   scroller · FAQ accordion · reveal on scroll · dynamic years · scroll
+   progress · year count-up · booking modal with Rs.500 UPI advance
    No dependencies. Every block guards against missing markup.
    ========================================================================== */
 (function () {
@@ -433,4 +434,297 @@
     });
   })();
 
+
+  /* ------------------------------------------------------------------
+     11. Scroll progress hairline
+     ------------------------------------------------------------------ */
+  (function progress() {
+    var bar = document.createElement('div');
+    bar.className = 'scroll-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? window.scrollY / max : 0;
+      bar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, pct)) + ')';
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  })();
+
+  /* ------------------------------------------------------------------
+     12. Stagger siblings that reveal together
+     ------------------------------------------------------------------ */
+  (function stagger() {
+    var groups = {};
+    $$('.reveal').forEach(function (el) {
+      var p = el.parentNode;
+      if (!p) return;
+      var key = groups[p.dataset.revealGroup] ? p.dataset.revealGroup : null;
+      if (!key) {
+        key = 'g' + Object.keys(groups).length;
+        p.dataset.revealGroup = key;
+        groups[key] = [];
+      }
+      groups[key].push(el);
+    });
+    Object.keys(groups).forEach(function (k) {
+      groups[k].forEach(function (el, i) {
+        if (groups[k].length > 1) el.style.setProperty('--d', Math.min(i * 70, 420) + 'ms');
+      });
+    });
+  })();
+
+  /* ------------------------------------------------------------------
+     13. Count up the heritage year, once, when it scrolls into view
+     ------------------------------------------------------------------ */
+  (function countYear() {
+    var el = $('.num-red');
+    if (!el || reduceMotion || !('IntersectionObserver' in window)) return;
+
+    var target = parseInt(el.textContent, 10);
+    if (!target) return;
+    var from = target - 40;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        var start = null, dur = 900;
+        function frame(t) {
+          if (start === null) start = t;
+          var p = Math.min(1, (t - start) / dur);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(from + (target - from) * eased);
+          if (p < 1) window.requestAnimationFrame(frame);
+          else el.textContent = target;
+        }
+        window.requestAnimationFrame(frame);
+      });
+    }, { threshold: 0.5 });
+    io.observe(el);
+  })();
+
+  /* ------------------------------------------------------------------
+     14. Booking modal — details, Rs.500 advance, hand-off to the shop
+
+     This is a static site: there is no server and no payment gateway.
+     The advance is taken through the shop's own UPI ID / Google Pay QR,
+     and the booking details go to the shop over WhatsApp or a call.
+     ------------------------------------------------------------------ */
+  (function booking() {
+    var modal   = document.getElementById('booking');
+    if (!modal) return;
+
+    var panel   = $('.booking-panel', modal);
+    var step1   = document.getElementById('bookStep1');
+    var step2   = document.getElementById('bookStep2');
+    var dots    = $$('[data-step-dot]', modal);
+    var closeBt = document.getElementById('bookClose');
+    var backBt  = document.getElementById('bkBack');
+    var errBox  = document.getElementById('bkError');
+    var summary = document.getElementById('bkSummary');
+    var upiLink = document.getElementById('bkUpi');
+    var whatsLink = document.getElementById('bkWhats');
+    var copyBt  = document.getElementById('bkCopy');
+    var upiIdEl = document.getElementById('bkUpiId');
+
+    var f = {
+      bike:  document.getElementById('bkBike'),
+      date:  document.getElementById('bkDate'),
+      days:  document.getElementById('bkDays'),
+      name:  document.getElementById('bkName'),
+      phone: document.getElementById('bkPhone'),
+      note:  document.getElementById('bkNote')
+    };
+
+    var ADVANCE   = 500;
+    var UPI_ID    = upiIdEl ? upiIdEl.textContent.trim() : '';
+    var PAYEE     = 'Vijay Arya Bike Rentals';
+    var WHATSAPP  = '917200011799';
+    var lastFocus = null;
+
+    // Pickup date cannot be in the past
+    if (f.date) {
+      var today = new Date();
+      var iso = today.getFullYear() + '-' +
+                String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                String(today.getDate()).padStart(2, '0');
+      f.date.min = iso;
+      if (!f.date.value) f.date.value = iso;
+    }
+
+    function focusables() {
+      return $$('a[href], button:not([disabled]), input, select, textarea', modal)
+        .filter(function (el) { return el.offsetParent !== null; });
+    }
+
+    function open(bike) {
+      lastFocus = document.activeElement;
+      if (bike && f.bike) {
+        // match the card's bike to an option, falling back to the first match
+        var opts = $$('option', f.bike);
+        for (var i = 0; i < opts.length; i++) {
+          if (opts[i].value === bike || opts[i].value.indexOf(bike) === 0) {
+            f.bike.value = opts[i].value; break;
+          }
+        }
+      }
+      showStep(1);
+      modal.hidden = false;
+      window.requestAnimationFrame(function () { modal.classList.add('is-open'); });
+      document.body.classList.add('bk-open');
+      window.setTimeout(function () { if (f.bike) f.bike.focus(); }, 60);
+    }
+
+    function close() {
+      modal.classList.remove('is-open');
+      document.body.classList.remove('bk-open');
+      var done = function () { modal.hidden = true; };
+      if (reduceMotion) done(); else window.setTimeout(done, 300);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    function showStep(n) {
+      step1.classList.toggle('is-active', n === 1);
+      step2.classList.toggle('is-active', n === 2);
+      dots.forEach(function (d) {
+        var i = Number(d.dataset.stepDot);
+        d.classList.toggle('is-current', i === n);
+        d.classList.toggle('is-done', i < n);
+      });
+      if (panel) panel.scrollTop = 0;
+    }
+
+    function fail(msg, field) {
+      if (errBox) { errBox.textContent = msg; errBox.hidden = false; }
+      $$('.has-error', modal).forEach(function (el) { el.classList.remove('has-error'); });
+      if (field) { field.classList.add('has-error'); field.focus(); }
+      return false;
+    }
+
+    function validate() {
+      if (errBox) errBox.hidden = true;
+      $$('.has-error', modal).forEach(function (el) { el.classList.remove('has-error'); });
+
+      if (!f.name.value.trim())  return fail('Please tell us your name.', f.name);
+      var phone = f.phone.value.replace(/\D/g, '');
+      if (phone.length < 10)     return fail('Please enter a valid phone number, at least 10 digits.', f.phone);
+      if (!f.date.value)         return fail('Please choose a pickup date.', f.date);
+      var days = parseInt(f.days.value, 10);
+      if (!days || days < 1)     return fail('Rentals start from one day.', f.days);
+      return true;
+    }
+
+    function prettyDate(v) {
+      var d = new Date(v + 'T00:00:00');
+      if (isNaN(d)) return v;
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function buildStep2() {
+      var days = parseInt(f.days.value, 10) || 1;
+      var bike = f.bike.value;
+      var note = f.note.value.trim();
+
+      if (summary) {
+        summary.innerHTML =
+          '<dl>' +
+          '<dt>Ride</dt><dd>' + esc(bike) + '</dd>' +
+          '<dt>Pickup</dt><dd>' + esc(prettyDate(f.date.value)) + '</dd>' +
+          '<dt>Duration</dt><dd>' + days + (days === 1 ? ' day' : ' days') + '</dd>' +
+          '<dt>Name</dt><dd>' + esc(f.name.value.trim()) + '</dd>' +
+          '<dt>Phone</dt><dd>' + esc(f.phone.value.trim()) + '</dd>' +
+          (note ? '<dt>Note</dt><dd>' + esc(note) + '</dd>' : '') +
+          '</dl>';
+      }
+
+      var tn = 'Advance for ' + bike + ' from ' + prettyDate(f.date.value);
+      if (upiLink && UPI_ID) {
+        upiLink.href = 'upi://pay?pa=' + encodeURIComponent(UPI_ID) +
+                       '&pn=' + encodeURIComponent(PAYEE) +
+                       '&am=' + ADVANCE + '&cu=INR' +
+                       '&tn=' + encodeURIComponent(tn);
+      }
+
+      var msg =
+        'Hello Vijay Arya Bike Rentals, I would like to book a ride.\n\n' +
+        'Ride: ' + bike + '\n' +
+        'Pickup: ' + prettyDate(f.date.value) + '\n' +
+        'Duration: ' + days + (days === 1 ? ' day' : ' days') + '\n' +
+        'Name: ' + f.name.value.trim() + '\n' +
+        'Phone: ' + f.phone.value.trim() + '\n' +
+        (note ? 'Note: ' + note + '\n' : '') +
+        '\nI am paying the Rs.' + ADVANCE + ' advance.';
+
+      if (whatsLink) whatsLink.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    // Every .js-book control opens the modal; cards pass their bike through
+    document.addEventListener('click', function (e) {
+      var trigger = e.target.closest ? e.target.closest('.js-book') : null;
+      if (!trigger) return;
+      e.preventDefault();
+      open(trigger.dataset.bike || '');
+    });
+
+    step1.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!validate()) return;
+      buildStep2();
+      showStep(2);
+    });
+
+    if (backBt) backBt.addEventListener('click', function () { showStep(1); });
+    if (closeBt) closeBt.addEventListener('click', close);
+    $$('[data-book-close]', modal).forEach(function (el) {
+      el.addEventListener('click', close);
+    });
+
+    if (copyBt && upiIdEl) {
+      copyBt.addEventListener('click', function () {
+        var text = upiIdEl.textContent.trim();
+        var done = function () {
+          copyBt.textContent = 'Copied';
+          copyBt.classList.add('is-done');
+          window.setTimeout(function () {
+            copyBt.textContent = 'Copy';
+            copyBt.classList.remove('is-done');
+          }, 1800);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, done);
+        } else {
+          var t = document.createElement('textarea');
+          t.value = text; document.body.appendChild(t); t.select();
+          try { document.execCommand('copy'); } catch (err) {}
+          document.body.removeChild(t);
+          done();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (modal.hidden) return;
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key !== 'Tab') return;
+      var fs = focusables();
+      if (!fs.length) return;
+      var first = fs[0], last = fs[fs.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  })();
 })();
