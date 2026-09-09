@@ -78,10 +78,10 @@
 
     <nav class="nav-desktop" aria-label="Primary">
       <ul>
-        <li><a href="#top" class="nav-link is-active">Home</a></li>
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#gallery" class="nav-link">Gallery</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="index.html" class="nav-link is-active">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
       </ul>
     </nav>
 
@@ -102,10 +102,10 @@
     <button class="nav-close" id="menuClose" type="button" aria-label="Close menu">&times;</button>
   </div>
   <ul>
-    <li><a href="#top" class="nav-link-m">Home</a></li>
-    <li><a href="#about" class="nav-link-m">About</a></li>
-    <li><a href="#gallery" class="nav-link-m">Gallery</a></li>
-    <li><a href="#contact" class="nav-link-m">Contact</a></li>
+    <li><a href="index.html" class="nav-link-m is-active">Home</a></li>
+    <li><a href="about.html" class="nav-link-m">About</a></li>
+    <li><a href="gallery.html" class="nav-link-m">Gallery</a></li>
+    <li><a href="contact.html" class="nav-link-m">Contact</a></li>
   </ul>
   <div class="nav-mobile-foot">
     <button class="btn btn-red btn-block js-book" type="button">Book Now</button>
@@ -122,7 +122,7 @@
     <div class="hero-copy">
       <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Est. 1973 &middot; Pondicherry</p>
       <h1 id="heroTitle">Explore Pondicherry.<br><em>Your Ride. Your Freedom.</em></h1>
-      <p class="lede">Trusted two-wheeler rentals in Pondicherry since 1973.</p>
+      <p class="lede">Trusted two-wheeler rentals in Pondicherry since 1973. Explore the French Quarter and seaside promenades at your pace.</p>
       <div class="hero-actions">
         <button class="btn btn-red js-book" type="button">Rent a Bike</button>
         <a class="btn btn-outline" href="#fleet">Explore Our Fleet</a>
@@ -136,16 +136,37 @@
     </div>
 
     <div class="hero-media">
-      <!-- Real photo: Vespas from the Vijay Arya rental fleet -->
       <figure class="hero-figure">
-        <img src="assets/bikes/2022-06-11.jpg"
-             alt="Four Vespa scooters from the Vijay Arya rental fleet parked in a row under trees in Pondicherry"
+        <img src="assets/bikes/hero-pondicherry.png"
+             alt="A stylish red Vespa scooter being ridden along a sunlit coastal avenue in French Quarter Pondicherry"
              width="675" height="518" fetchpriority="high" decoding="async">
       </figure>
       <p class="hero-badge">
         <span class="hero-badge-txt">Renting in Pondicherry since</span>
         <span class="hero-badge-num">1973</span>
       </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ STATS COUNTER ============================ -->
+<section class="stats-section" aria-label="Key highlights and statistics">
+  <div class="wrap stats-grid">
+    <div class="stat-card reveal">
+      <span class="stat-num" data-count="53" data-suffix="+">53+</span>
+      <span class="stat-label">Years of Trust</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-num" data-count="14" data-suffix="+">14+</span>
+      <span class="stat-label">Fleet Models</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-num" data-count="50000" data-suffix="+">50,000+</span>
+      <span class="stat-label">Happy Riders</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-num" data-count="500" data-suffix=" ₹">₹500</span>
+      <span class="stat-label">Advance Booking</span>
     </div>
   </div>
 </section>
@@ -184,7 +205,7 @@
   <div class="wrap about-grid">
     <figure class="about-media reveal">
       <!-- Real photo: the shopfront on Thennanjalai Road -->
-      <img src="assets/gallery/dc8146_7255694a22134c54a7bf74b0b92663b4~mv2.jpg"
+      <img src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry.JPG"
            alt="The Vijay Arya Bike Rentals shopfront and signboard on Thennanjalai Road, Puducherry"
            width="303" height="405" loading="lazy" decoding="async">
       <figcaption class="media-tag">Thennanjalai Road, Puducherry</figcaption>
@@ -216,8 +237,8 @@
     <div class="exp-grid">
       <figure class="exp-figure reveal">
         <!-- Real photo: rental Vespa outside a heritage house in the French Quarter -->
-        <img src="assets/gallery/dc8146_c4fec969eeb24390bfb52591eb054b6a~mv2.jpeg"
-             alt="A yellow Vespa parked outside a pink heritage house in Pondicherry's French Quarter"
+        <img src="assets/gallery/2022-06-11.jpg"
+             alt="Vespas from the Vijay Arya rental fleet parked outdoors in Pondicherry"
              width="303" height="373" loading="lazy" decoding="async">
       </figure>
 
@@ -231,8 +252,8 @@
 
       <figure class="exp-figure exp-figure-2 reveal">
         <!-- Real photo: rental Vespa on the Pondicherry seafront -->
-        <img src="assets/gallery/dc8146_413338fba5d943d799d4e68c45b5e77e~mv2.jpeg"
-             alt="A pink Vespa parked beside palm trees on the Pondicherry seafront promenade"
+        <img src="assets/gallery/2023-01-31.jpg"
+             alt="Riders enjoying a scooter trip along Pondicherry road"
              width="302" height="317" loading="lazy" decoding="async">
       </figure>
     </div>
@@ -456,47 +477,26 @@
   </div>
 </section>
 
-<!-- ============================ GALLERY ============================ -->
+<!-- ============================ GALLERY PREVIEW ============================ -->
 <section class="section section-tint gallery" id="gallery" aria-labelledby="galTitle">
   <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Gallery</p>
-      <h2 id="galTitle">Two Wheels. One Beautiful City.</h2>
-      <p class="section-sub">Photographs from our shop and from riders out across Pondicherry.</p>
-    </div>
-
-    <div class="gal-featured reveal">
-      <button class="gal-item gal-item-lg" type="button" data-gal="0">
-        <img src="assets/gallery/dc8146_c4fec969eeb24390bfb52591eb054b6a~mv2.jpeg"
-             alt="A yellow Vespa parked outside a pink heritage house in Pondicherry's French Quarter"
-             width="303" height="373" loading="lazy" decoding="async">
-        <span class="gal-zoom" aria-hidden="true">View</span>
-      </button>
-      <div class="gal-featured-copy">
-        <h3>The French Quarter, at scooter pace</h3>
-        <p>Pastel walls, quiet lanes, and the seafront a few minutes away. A two-wheeler is still the easiest way to see Pondicherry properly &mdash; park almost anywhere, stop whenever something catches your eye.</p>
-        <a class="link-red" href="#contact">Plan your ride &rarr;</a>
+    <div class="section-head section-head-split">
+      <div>
+        <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Gallery Preview</p>
+        <h2 id="galTitle">Two Wheels. One Beautiful City.</h2>
       </div>
+      <p class="section-sub">A quick look at our rental bikes and riders in Pondicherry. <a class="link-red" href="gallery.html">View all 80+ photos in Gallery &rarr;</a></p>
     </div>
 
-    <div class="gal-masonry" id="galMasonry">
-      <button class="gal-item" type="button" data-gal="1"><img src="assets/gallery/dc8146_413338fba5d943d799d4e68c45b5e77e~mv2.jpeg" alt="A pink Vespa parked beside palm trees on the Pondicherry seafront promenade" width="302" height="317" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="2"><img src="assets/gallery/dc8146_34f50e2932ce48eea70c07a87cecd5d5~mv2.jpg" alt="A rider pausing on a red Vespa on a quiet blue-walled street in the French Quarter" width="303" height="405" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="3"><img src="assets/gallery/dc8146_8ce1c7f2a6394e1da20a03e1ac17fb1d~mv2.jpg" alt="A row of red, yellow and pink Vespas ready for rental" width="302" height="170" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="4"><img src="assets/gallery/dc8146_2976571c90724a71a040c5fd84227464~mv2.jpg" alt="Two riders on a red Vespa outside the Vijay Arya Bike Rentals shop" width="302" height="427" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="5"><img src="assets/gallery/dc8146_6a66c8aff0f945d6a97939eaa81f3094~mv2.jpeg" alt="A customer riding a white Vespa on a residential Pondicherry street" width="302" height="275" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="6"><img src="assets/gallery/dc8146_92d14a0cb44f441286034c871e0f1095~mv2.jpg" alt="Scooters and Vespas lined up inside the rental garage" width="302" height="403" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="7"><img src="assets/gallery/dc8146_3b31884ab0d74f2d8e0d67d4478125b4~mv2.jpg" alt="Riding through a tree-lined Pondicherry street, seen from behind the handlebars" width="303" height="402" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="8"><img src="assets/gallery/dc8146_202b155f98d04b4e9127cb6e23398e89~mv2.jpg" alt="A red Vespa with a rear carrier parked on a Pondicherry street" width="287" height="510" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="9"><img src="assets/gallery/dc8146_48d735b2d15f45a3887a40b8c3b1033d~mv2.jpg" alt="A group of travellers with helmets before setting off from the shop" width="303" height="241" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="10"><img src="assets/gallery/dc8146_7255694a22134c54a7bf74b0b92663b4~mv2.jpg" alt="The Vijay Arya Bike Rentals shopfront on Thennanjalai Road" width="303" height="405" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="11"><img src="assets/gallery/dc8146_ab03f72fc3ab464897d0dc72f0e91d7a~mv2.jpg" alt="Two riders on a yellow Vespa outside the shop in the evening" width="302" height="446" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="12"><img src="assets/gallery/dc8146_e999303231cf4d46bf9f315acf2141f4~mv2.jpg" alt="The Vijay Arya Bike Rentals signboard lit up at dusk" width="303" height="405" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="13"><img src="assets/gallery/dc8146_9b839206a11848fc8d76d3d0888a81a9~mv2.jpg" alt="Vespas parked along the garage wall" width="302" height="403" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="14"><img src="assets/gallery/dc8146_d641afa76a474c6fbe4cc7959da185aa~mv2.jpg" alt="The rental fleet lined up and ready" width="302" height="227" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="15"><img src="assets/gallery/dc8146_bfea108207c14096a537ce705f101d4e~mv2.jpg" alt="A group of travellers on the steps outside the shop" width="302" height="456" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="16"><img src="assets/gallery/dc8146_397eb0fd0f804a1cbf7263fb627963e8~mv2.jpg" alt="Riders setting out on Honda Navi bikes in the evening" width="302" height="403" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-      <button class="gal-item" type="button" data-gal="17"><img src="assets/bikes/2021-12-21.jpg" alt="Scooters and Vespas parked inside the Vijay Arya garage" width="428" height="612" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
+    <div class="gal-masonry" id="galMasonry" style="columns: 4; gap: 16px;">
+      <button class="gal-item" type="button" data-gal="0"><img src="assets/gallery/2022-06-11.jpg" alt="Vespas from Vijay Arya rental fleet parked outdoors" width="302" height="220" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
+      <button class="gal-item" type="button" data-gal="1"><img src="assets/gallery/2023-01-31.jpg" alt="Riders enjoying a ride in Pondicherry" width="302" height="220" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
+      <button class="gal-item" type="button" data-gal="2"><img src="assets/gallery/2024-01-01.jpg" alt="Happy customers with rental scooter" width="302" height="220" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
+      <button class="gal-item" type="button" data-gal="3"><img src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry.JPG" alt="Vijay Arya Bike Rental shopfront in Pondicherry" width="302" height="220" loading="lazy" decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
+    </div>
+
+    <div style="text-align: center; margin-top: 36px;">
+      <a class="btn btn-red" href="gallery.html">Explore Full 80+ Photo Gallery &rarr;</a>
     </div>
   </div>
 </section>
@@ -827,10 +827,10 @@
     <nav class="footer-links" aria-label="Footer">
       <h3>Quick links</h3>
       <ul>
-        <li><a href="#top">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
 
