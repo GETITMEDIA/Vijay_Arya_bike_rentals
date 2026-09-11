@@ -310,6 +310,9 @@
     var next = document.getElementById('testNext');
     if (!track) return;
 
+    var autoPlayTimer = null;
+    var isHovered = false;
+
     function stepSize() {
       var card = track.querySelector('.test-card');
       if (!card) return track.clientWidth;
@@ -318,29 +321,59 @@
     }
 
     function go(dir) {
-      track.scrollBy({ left: dir * stepSize(), behavior: reduceMotion ? 'auto' : 'smooth' });
+      var max = track.scrollWidth - track.clientWidth - 2;
+      if (dir === 1 && track.scrollLeft >= max - 8) {
+        track.scrollTo({ left: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      } else if (dir === -1 && track.scrollLeft <= 8) {
+        track.scrollTo({ left: max, behavior: reduceMotion ? 'auto' : 'smooth' });
+      } else {
+        track.scrollBy({ left: dir * stepSize(), behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
     }
 
-    if (prev) prev.addEventListener('click', function () { go(-1); });
-    if (next) next.addEventListener('click', function () { go(1); });
+    if (prev) prev.addEventListener('click', function () { go(-1); resetAutoPlay(); });
+    if (next) next.addEventListener('click', function () { go(1); resetAutoPlay(); });
 
     function syncButtons() {
       var max = track.scrollWidth - track.clientWidth - 2;
-      if (prev) prev.disabled = track.scrollLeft <= 2;
-      if (next) next.disabled = track.scrollLeft >= max;
-      [prev, next].forEach(function (b) {
-        if (b) b.style.opacity = b.disabled ? '.4' : '';
-      });
+      if (prev) prev.disabled = false;
+      if (next) next.disabled = false;
     }
 
     track.addEventListener('scroll', syncButtons, { passive: true });
     window.addEventListener('resize', syncButtons, { passive: true });
     syncButtons();
 
+    // Auto-play continuous animation loop
+    function startAutoPlay() {
+      if (reduceMotion || autoPlayTimer) return;
+      autoPlayTimer = setInterval(function() {
+        if (!isHovered) {
+          go(1);
+        }
+      }, 3500);
+    }
+
+    function stopAutoPlay() {
+      if (autoPlayTimer) {
+        clearInterval(autoPlayTimer);
+        autoPlayTimer = null;
+      }
+    }
+
+    function resetAutoPlay() {
+      stopAutoPlay();
+      startAutoPlay();
+    }
+
+    track.addEventListener('mouseenter', function() { isHovered = true; });
+    track.addEventListener('mouseleave', function() { isHovered = false; });
+    startAutoPlay();
+
     // Arrow keys when the scroller has focus
     track.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); resetAutoPlay(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); resetAutoPlay(); }
     });
   })();
 

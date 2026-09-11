@@ -26,7 +26,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=2.0">
+  <link rel="stylesheet" href="css/style.css?v=2.1">
   <script>document.documentElement.className += " js";</script>
 </head>
 
@@ -87,26 +87,45 @@
   <main id="main" tabindex="-1">
 
     <!-- ============================ PAGE HERO ============================ -->
-    <section class="page-hero" aria-labelledby="contactHeroTitle">
-      <div class="wrap page-hero-grid">
-        <div class="page-hero-copy">
-          <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Get in touch</p>
-          <h1 id="contactHeroTitle">Contact <em>Vijay Arya</em> Bike Rentals</h1>
-          <p class="lede">Call us with your travel dates, reserve online with &#8377;500 advance, or drop by our shop
-            near the Passport Office.</p>
-          <div class="hero-actions">
+    <section class="phero" aria-labelledby="contactHeroTitle">
+      <div class="phero-bg" aria-hidden="true">
+        <img src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry%202.JPG"
+          alt="" width="1600" height="900" fetchpriority="high" decoding="async">
+      </div>
+
+      <div class="wrap">
+        <div class="phero-inner">
+          <nav class="phero-crumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a><i aria-hidden="true">&rsaquo;</i><span aria-current="page">Contact</span>
+          </nav>
+
+          <p class="phero-eyebrow">Get in touch</p>
+
+          <h1 id="contactHeroTitle">Talk to Us Before<br><em>You Turn the Key</em></h1>
+
+          <p class="phero-lede">Call with your travel dates, reserve online with a &#8377;500 advance, or simply walk
+            into the shop near the Passport Office. Someone is always at the counter.</p>
+
+          <div class="phero-actions">
             <button class="btn btn-red js-book" type="button">Book Your Bike</button>
-            <a class="btn btn-outline" href="tel:+919600334488">Call 9600 33 44 88</a>
+            <a class="btn btn-light" href="tel:+919600334488">Call 9600 33 44 88</a>
           </div>
         </div>
 
-        <div class="page-hero-media">
-          <figure class="hero-figure">
-            <img src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry.JPG"
-              alt="The Vijay Arya Bike Rentals shopfront on Thennanjalai Road" width="600" height="400"
-              fetchpriority="high" decoding="async">
-          </figure>
-        </div>
+        <dl class="phero-meta">
+          <div>
+            <dt>Call or WhatsApp</dt>
+            <dd><a href="tel:+919600334488">9600 33 44 88</a><small>Walk-ins always welcome</small></dd>
+          </div>
+          <div>
+            <dt>Shop address</dt>
+            <dd>Thennanjalai Road<small>Puducherry 605001, near the Passport Office</small></dd>
+          </div>
+          <div>
+            <dt>Open</dt>
+            <dd>All week<small>Early morning to late evening</small></dd>
+          </div>
+        </dl>
       </div>
     </section>
 

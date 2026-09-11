@@ -26,7 +26,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=2.0">
+  <link rel="stylesheet" href="css/style.css?v=2.1">
   <script>document.documentElement.className += " js";</script>
 </head>
 
@@ -87,30 +87,50 @@
   <main id="main" tabindex="-1">
 
     <!-- ============================ PAGE HERO ============================ -->
-    <section class="page-hero" aria-labelledby="galHeroTitle">
-      <div class="wrap page-hero-grid">
-        <div class="page-hero-copy">
-          <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Photo Gallery</p>
-          <h1 id="galHeroTitle">Explore <em>Our Fleet &amp; Rider</em> Gallery</h1>
-          <p class="lede">Discover 80+ real photos from our rental shop on Thennanjalai Road, customer rides, Vespas,
-            and travels across Pondicherry.</p>
-          <div class="hero-actions">
+    <section class="phero" aria-labelledby="galHeroTitle">
+      <div class="phero-bg" aria-hidden="true">
+        <img src="assets/gallery/2022-06-11.jpg" alt="" width="1600" height="900"
+          fetchpriority="high" decoding="async">
+      </div>
+
+      <div class="wrap">
+        <div class="phero-inner">
+          <nav class="phero-crumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a><i aria-hidden="true">&rsaquo;</i><span aria-current="page">Gallery</span>
+          </nav>
+
+          <p class="phero-eyebrow">Photo Gallery</p>
+
+          <h1 id="galHeroTitle">Our Fleet, Our Riders,<br><em>Our Pondicherry</em></h1>
+
+          <p class="phero-lede">80+ unfiltered photographs from the shop on Thennanjalai Road &mdash; the Vespas, the
+            handovers, and the coastal roads our customers came back raving about.</p>
+
+          <div class="phero-actions">
             <button class="btn btn-red js-book" type="button">Book a Bike (&#8377;500 Advance)</button>
+            <a class="btn btn-light" href="#gallery">Browse the Photos</a>
           </div>
         </div>
 
-        <div class="page-hero-media">
-          <figure class="hero-figure">
-            <img src="assets/gallery/2022-06-11.jpg"
-              alt="Vijay Arya Bike Rentals fleet Vespas parked outdoors in Pondicherry" width="600" height="400"
-              fetchpriority="high" decoding="async">
-          </figure>
-        </div>
+        <dl class="phero-meta">
+          <div>
+            <dt>Photographs</dt>
+            <dd>80+<small>Real bikes, real customer moments</small></dd>
+          </div>
+          <div>
+            <dt>Fleet on offer</dt>
+            <dd>Scooters &amp; bikes<small>Vespa, Activa, Jupiter and more</small></dd>
+          </div>
+          <div>
+            <dt>Shot in</dt>
+            <dd>Puducherry<small>Shopfront, seafront &amp; the back lanes</small></dd>
+          </div>
+        </dl>
       </div>
     </section>
 
     <!-- ============================ FULL DYNAMIC GALLERY ============================ -->
-    <section class="section gallery" aria-labelledby="galleryTitle">
+    <section class="section gallery" id="gallery" aria-labelledby="galleryTitle">
       <div class="wrap">
         <div class="section-head">
           <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>80+ Photo Collection</p>
