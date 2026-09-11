@@ -86,46 +86,38 @@
 
   <main id="main" tabindex="-1">
 
-    <!-- ============================ PAGE HERO ============================ -->
-    <section class="phero" aria-labelledby="contactHeroTitle">
-      <div class="phero-bg" aria-hidden="true">
-        <img src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry%202.JPG"
-          alt="" width="1600" height="900" fetchpriority="high" decoding="async">
-      </div>
+    <!-- ============================ CONTACT PAGE BANNER (FULL WIDTH) ============================ -->
+    <section class="about-banner" aria-labelledby="contactHeroTitle">
+      <div class="about-banner-wrapper">
+        
+        <!-- Left Content Column -->
+        <div class="about-banner-left">
 
-      <div class="wrap">
-        <div class="phero-inner">
-          <nav class="phero-crumb" aria-label="Breadcrumb">
-            <a href="index.html">Home</a><i aria-hidden="true">&rsaquo;</i><span aria-current="page">Contact</span>
-          </nav>
+          <div class="about-eyebrow">
+            <span class="eyebrow-dash"></span>
+            <span>GET IN TOUCH &middot; PONDICHERRY</span>
+          </div>
 
-          <p class="phero-eyebrow">Get in touch</p>
+          <h1 id="contactHeroTitle" class="about-banner-title">
+            Talk to Us<br>
+            <span class="title-accent">Before You Turn</span><br>
+            The Key
+          </h1>
 
-          <h1 id="contactHeroTitle">Talk to Us Before<br><em>You Turn the Key</em></h1>
+          <p class="about-banner-desc">
+            Call with your travel dates, reserve online with a &#8377;500 advance, or walk into the shop near the Passport Office.
+          </p>
+        </div>
 
-          <p class="phero-lede">Call with your travel dates, reserve online with a &#8377;500 advance, or simply walk
-            into the shop near the Passport Office. Someone is always at the counter.</p>
 
-          <div class="phero-actions">
-            <button class="btn btn-red js-book" type="button">Book Your Bike</button>
-            <a class="btn btn-light" href="tel:+919600334488">Call 9600 33 44 88</a>
+
+        <!-- Right Image Column (Edge to Edge) -->
+        <div class="about-banner-right">
+          <div class="about-banner-mask">
+            <img src="assets/images/contact_banner_key.png" alt="Key handover at Vijay Arya Bike Rentals desk" class="about-banner-img" fetchpriority="high" decoding="async">
           </div>
         </div>
 
-        <dl class="phero-meta">
-          <div>
-            <dt>Call or WhatsApp</dt>
-            <dd><a href="tel:+919600334488">9600 33 44 88</a><small>Walk-ins always welcome</small></dd>
-          </div>
-          <div>
-            <dt>Shop address</dt>
-            <dd>Thennanjalai Road<small>Puducherry 605001, near the Passport Office</small></dd>
-          </div>
-          <div>
-            <dt>Open</dt>
-            <dd>All week<small>Early morning to late evening</small></dd>
-          </div>
-        </dl>
       </div>
     </section>
 
@@ -394,8 +386,6 @@
         <select id="bkBike" name="bike" hidden>
           <option value="Vespa">Vespa</option>
           <option value="Honda Activa">Honda Activa</option>
-          <option value="Honda Activa (Matte Grey)">Honda Activa (Matte Grey)</option>
-          <option value="Honda Activa (Imperial Red)">Honda Activa (Imperial Red)</option>
           <option value="TVS Jupiter">TVS Jupiter</option>
           <option value="Suzuki Access 125">Suzuki Access 125</option>
           <option value="Honda Dio">Honda Dio</option>
@@ -549,6 +539,16 @@
       </div>
     </div>
   </div>
+
+  <!-- Floating WhatsApp Action Button -->
+  <a href="https://wa.me/919600334488?text=Hi%20Vijay%20Arya%20Bike%20Rentals,%20I%20want%20to%20rent%20a%20bike"
+    target="_blank" rel="noopener" class="floating-whatsapp-btn"
+    aria-label="Chat on WhatsApp with Vijay Arya Bike Rentals">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.438 5.174L2 22l4.982-1.309A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" fill="#FFFFFF"/>
+      <path d="M16.643 14.072c-.255-.128-1.508-.744-1.742-.829-.234-.085-.404-.128-.574.128-.17.255-.659.829-.808.999-.149.17-.298.191-.553.064-.255-.128-1.077-.397-2.052-1.267-.759-.677-1.272-1.513-1.421-1.768-.149-.255-.016-.393.111-.52.115-.115.255-.298.383-.447.128-.149.17-.255.255-.425.085-.17.043-.319-.021-.447-.064-.128-.574-1.382-.787-1.893-.207-.497-.419-.429-.574-.437l-.49-.009c-.17 0-.447.064-.68.319-.234.255-.893.872-.893 2.127 0 1.255.914 2.467 1.042 2.637.128.17 1.8 2.748 4.36 3.855.609.263 1.085.42 1.456.538.611.194 1.167.167 1.606.102.49-.073 1.508-.617 1.721-1.212.213-.595.213-1.106.149-1.212-.064-.106-.234-.17-.489-.298z" fill="#25D366"/>
+    </svg>
+  </a>
 
   <script src="js/script.js" defer></script>
 </body>

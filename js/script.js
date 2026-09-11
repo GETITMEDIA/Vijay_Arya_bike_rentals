@@ -209,25 +209,27 @@
     var btnClose = document.getElementById('lbClose');
     var btnPrev = document.getElementById('lbPrev');
     var btnNext = document.getElementById('lbNext');
-    var triggers = $$('.gal-item');
 
-    if (!box || !img || !triggers.length) return;
+    if (!box || !img) return;
 
-    // Build the slide list from the DOM so markup stays the single source of truth
-    var slides = triggers
-      .slice()
-      .sort(function (a, b) {
-        return Number(a.dataset.gal || 0) - Number(b.dataset.gal || 0);
-      })
-      .map(function (btn) {
-        var i = btn.querySelector('img');
-        return { src: i ? i.getAttribute('src') : '', alt: i ? i.getAttribute('alt') : '' };
-      });
-
+    var slides = [];
     var index = 0;
     var lastFocus = null;
 
+    function buildSlides() {
+      var triggers = $$('.gal-item');
+      slides = triggers.map(function (btn) {
+        var i = btn.querySelector('img');
+        return {
+          src: i ? i.getAttribute('src') : '',
+          alt: i ? (i.getAttribute('alt') || i.getAttribute('title') || '') : '',
+          element: btn
+        };
+      }).filter(function(s) { return s.src !== ''; });
+    }
+
     function render() {
+      if (!slides.length) return;
       var s = slides[index];
       if (!s) return;
       img.setAttribute('src', s.src);
@@ -236,8 +238,9 @@
       if (count) count.textContent = (index + 1) + ' / ' + slides.length;
     }
 
-    function open(i) {
-      index = i;
+    function openSlide(targetIdx) {
+      if (targetIdx < 0 || targetIdx >= slides.length) return;
+      index = targetIdx;
       lastFocus = document.activeElement;
       render();
       box.hidden = false;
@@ -255,14 +258,35 @@
     }
 
     function step(dir) {
+      if (!slides.length) return;
       index = (index + dir + slides.length) % slides.length;
       render();
     }
 
-    triggers.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        open(Number(btn.dataset.gal || 0));
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.gal-item');
+      if (!btn) return;
+
+      e.preventDefault();
+      buildSlides();
+
+      // Find the clicked button's exact index in slides!
+      var foundIdx = slides.findIndex(function(s) {
+        return s.element === btn;
       });
+
+      // Fallback: match by img src if element reference differs
+      if (foundIdx === -1) {
+        var clickedImg = btn.querySelector('img');
+        var clickedSrc = clickedImg ? clickedImg.getAttribute('src') : '';
+        if (clickedSrc) {
+          foundIdx = slides.findIndex(function(s) { return s.src === clickedSrc; });
+        }
+      }
+
+      if (foundIdx !== -1) {
+        openSlide(foundIdx);
+      }
     });
 
     if (btnClose) btnClose.addEventListener('click', close);
@@ -270,7 +294,7 @@
     if (btnNext) btnNext.addEventListener('click', function () { step(1); });
 
     box.addEventListener('click', function (e) {
-      if (e.target === box || e.target === $('.lb-figure', box)) close();
+      if (e.target === box || (e.target && e.target.classList && e.target.classList.contains('lb-figure'))) close();
     });
 
     document.addEventListener('keydown', function (e) {
@@ -599,8 +623,6 @@
     var BIKE_DESCRIPTIONS = {
       'Vespa': 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.',
       'Honda Activa': 'India\'s most trusted automatic scooter for smooth city rides.',
-      'Honda Activa (Matte Grey)': 'Premium matte grey finish Activa with telescopic suspension.',
-      'Honda Activa (Imperial Red)': 'Vibrant red Activa edition for stylish Pondicherry exploration.',
       'TVS Jupiter': 'High mileage, comfortable seating scooter perfect for long daily rides.',
       'Suzuki Access 125': 'Powerful 125cc scooter with excellent pickup and spacious footboard.',
       'Honda Dio': 'Sporty design and agile handling for easy navigating through narrow streets.',
