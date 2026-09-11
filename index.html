@@ -600,28 +600,87 @@
             <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Gallery Preview</p>
             <h2 id="galTitle">Two Wheels. One Beautiful City.</h2>
           </div>
-          <p class="section-sub">A quick look at our rental bikes and riders in Pondicherry. <a class="link-red"
-              href="gallery.html">View all 80+ photos in Gallery &rarr;</a></p>
+          <p class="section-sub">A quick look at our rental bikes and riders in Pondicherry.</p>
         </div>
 
-        <div class="gal-masonry" id="galMasonry" style="columns: 4; gap: 16px;">
-          <button class="gal-item" type="button" data-gal="0"><img src="assets/gallery/2022-06-11.jpg"
-              alt="Vespas from Vijay Arya rental fleet parked outdoors" width="302" height="220" loading="lazy"
-              decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
-          <button class="gal-item" type="button" data-gal="1"><img src="assets/gallery/2023-01-31.jpg"
-              alt="Riders enjoying a ride in Pondicherry" width="302" height="220" loading="lazy" decoding="async"><span
-              class="gal-zoom" aria-hidden="true">View</span></button>
-          <button class="gal-item" type="button" data-gal="2"><img src="assets/gallery/2024-01-01.jpg"
-              alt="Happy customers with rental scooter" width="302" height="220" loading="lazy" decoding="async"><span
-              class="gal-zoom" aria-hidden="true">View</span></button>
-          <button class="gal-item" type="button" data-gal="3"><img
-              src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry.JPG"
-              alt="Vijay Arya Bike Rental shopfront in Pondicherry" width="302" height="220" loading="lazy"
-              decoding="async"><span class="gal-zoom" aria-hidden="true">View</span></button>
+        <!-- 3D Infinite Spiral Gallery Component (React Bits Adaptation) -->
+        <div class="infinite-spiral-wrapper">
+          <div class="infinite-spiral" id="infiniteSpiral">
+            <div class="infinite-spiral__stage" id="spiralStage" role="list" aria-label="Infinite spiral gallery">
+              
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="0" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2022-06-11.jpg" alt="Vespas under trees in Pondicherry" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="1" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2021-12-21.jpg" alt="Scooters inside Vijay Arya garage" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="2" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2024-01-01.jpg" alt="Happy riders receiving rental bike" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="3" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/Vijay%20Arya%20Bike%20Rental%20in%20Pondicherry.JPG" alt="Pondicherry shopfront" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="4" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2023-01-31.jpg" alt="Riders exploring Pondicherry streets" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="5" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2023-09-18.jpg" alt="Red Vespa scooter parked" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="6" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2023-11-24.jpg" alt="Travellers starting ride" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="7" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2024-03-09.jpg" alt="Scooter ride in Pondicherry" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="8" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2018-01-30.jpg" alt="Happy rental customers" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="9" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2018-07-24.jpg" alt="Pondicherry coastal avenue" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="10" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2018-09-08.jpg" alt="Yamaha Fascino scooter rental" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="11" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2018-09-23.jpg" alt="Group of friends renting bikes" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="12" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2018-10-02.jpg" alt="French Quarter streets" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="13" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2018-11-06.jpg" alt="Honda Activa scooter" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="14" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/20190823_102403.jpg" alt="Travelers with rental bike" loading="eager">
+              </button>
+
+              <button class="infinite-spiral__item gal-item" type="button" data-gal="15" role="listitem">
+                <img class="infinite-spiral__image" src="assets/gallery/2021-12-23.jpg" alt="Yellow Vespa ready for ride" loading="eager">
+              </button>
+
+            </div>
+          </div>
         </div>
+
+
+
 
         <div style="text-align: center; margin-top: 36px;">
-          <a class="btn btn-red" href="gallery.html">Explore Full 80+ Photo Gallery &rarr;</a>
+          <a class="btn btn-red" href="gallery.html">View Gallery &rarr;</a>
         </div>
       </div>
     </section>
@@ -928,7 +987,7 @@
               <label for="bkPhone">WhatsApp Number</label>
               <div class="input-prefix-group">
                 <span class="prefix-text">+91</span>
-                <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Enter mobile number" required>
+                <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" placeholder="10-digit mobile number" required>
               </div>
             </div>
             <div class="field">

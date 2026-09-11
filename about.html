@@ -546,7 +546,7 @@
               <label for="bkPhone">WhatsApp Number</label>
               <div class="input-prefix-group">
                 <span class="prefix-text">+91</span>
-                <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Enter mobile number" required>
+                <input type="tel" id="bkPhone" name="phone" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" placeholder="10-digit mobile number" required>
               </div>
             </div>
             <div class="field">

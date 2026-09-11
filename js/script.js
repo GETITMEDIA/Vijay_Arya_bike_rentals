@@ -8,6 +8,8 @@
 (function () {
   'use strict';
 
+  document.documentElement.classList.add('js');
+
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $  = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -705,7 +707,7 @@
       if (f.name && !f.name.value.trim()) return fail('Please enter your full name.', f.name);
       if (f.phone) {
         var phone = f.phone.value.replace(/\D/g, '');
-        if (phone.length < 10) return fail('Please enter a valid 10-digit WhatsApp phone number.', f.phone);
+        if (phone.length !== 10) return fail('Please enter a valid 10-digit WhatsApp phone number.', f.phone);
       }
       if (f.startDate && !f.startDate.value) return fail('Please choose a start date.', f.startDate);
       if (f.endDate && !f.endDate.value) return fail('Please choose an end date.', f.endDate);
@@ -939,4 +941,159 @@
       images[current].classList.add('active');
     }, 4000);
   })();
+
+  /* ------------------------------------------------------------------
+     19. 3D Infinite Spiral Gallery Component (React Bits Adaptation)
+     ------------------------------------------------------------------ */
+  (function initInfiniteSpiral() {
+    var root = document.getElementById('infiniteSpiral');
+    var stage = document.getElementById('spiralStage');
+    if (!root || !stage) return;
+
+    var cards = Array.prototype.slice.call(stage.querySelectorAll('.infinite-spiral__item'));
+    if (!cards.length) return;
+
+    var speed = 0.55;
+    var direction = 'up';
+    var radius = 205;
+    var cardWidth = 235;
+    var cardHeight = 160;
+    var verticalSpacing = 64;
+    var perspective = 1050;
+    var cardsPerTurn = 7;
+    var rotation = 0;
+    var cardTilt = 0;
+    var centerScale = 1.26;
+    var edgeFade = 0.3;
+    var edgeBlur = 0; // Set to 0 for 100% sharp photo clarity!
+    var pauseOnHover = true;
+
+    var progress = 0;
+    var targetProgress = 0;
+    var autoSpeed = 0;
+    var hovered = false;
+    var visible = true;
+    var dragging = false;
+    var dragMoved = false;
+    var lastPointerY = 0;
+    var lastTs = performance.now();
+    var frameId = null;
+
+    function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
+    function modulo(val, div) { return ((val % div) + div) % div; }
+    function smoothstep(min, max, val) {
+      var x = clamp((val - min) / (max - min || 1), 0, 1);
+      return x * x * (3 - 2 * x);
+    }
+
+    var bounds = root.getBoundingClientRect();
+    window.addEventListener('resize', function() {
+      bounds = root.getBoundingClientRect();
+    });
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        if (entries[0]) visible = entries[0].isIntersecting;
+      }, { threshold: 0.02 });
+      io.observe(root);
+    }
+
+    var lastScrollY = window.scrollY;
+    window.addEventListener('scroll', function() {
+      var nextScrollY = window.scrollY;
+      var scrollDelta = nextScrollY - lastScrollY;
+      lastScrollY = nextScrollY;
+      if (!visible || scrollDelta === 0) return;
+      targetProgress += clamp(scrollDelta / Math.max(verticalSpacing * 2, 1), -1.5, 1.5);
+    }, { passive: true });
+
+    function render(time) {
+      var delta = Math.min((time - lastTs) / 1000, 0.05);
+      lastTs = time;
+
+      var motionPaused = dragging || (pauseOnHover && hovered);
+      var dirMult = direction === 'down' ? -1 : 1;
+      var desiredAutoSpeed = visible && !motionPaused ? speed * dirMult : 0;
+      var speedBlend = 1 - Math.exp(-delta * 7);
+      autoSpeed += (desiredAutoSpeed - autoSpeed) * speedBlend;
+      targetProgress += autoSpeed * delta;
+
+      var followBlend = 1 - Math.exp(-delta * (dragging ? 22 : 11));
+      progress += (targetProgress - progress) * followBlend;
+
+      var count = cards.length;
+      var half = count / 2;
+      var width = Math.max(bounds.width || root.clientWidth, 1);
+      var height = Math.max(bounds.height || root.clientHeight, 1);
+      var fit = Math.min(1.0, width / (cardWidth * 2.5), height / (cardHeight * 2.2));
+      var responsiveRadius = Math.min(radius, Math.max(80, width * 0.37)) * fit;
+      var fadeStart = clamp(1 - edgeFade, 0, 0.98);
+      var turnSize = Math.max(cardsPerTurn, 1);
+
+      cards.forEach(function(card, index) {
+        var offset = index - progress;
+        offset = modulo(offset + half, count) - half;
+
+        var edge = Math.min(Math.abs(offset) / Math.max(half, 1), 1);
+        var opacity = 1 - smoothstep(fadeStart, 1, edge);
+        var focus = 1 - Math.min(Math.abs(offset) / Math.max(turnSize * 0.65, 1), 1);
+        var scale = (1 + (centerScale - 1) * focus) * fit;
+        var angle = offset * (360 / turnSize) + rotation;
+        var angleRad = (angle * Math.PI) / 180;
+        var x = Math.sin(angleRad) * responsiveRadius;
+        var z = Math.cos(angleRad) * responsiveRadius;
+        var depthScale = clamp(perspective / Math.max(perspective - z, 1), 0.85, 1.35);
+        var visualScale = scale * depthScale;
+        var depth = (z / Math.max(responsiveRadius, 1) + 1) / 2;
+
+        card.style.transform = 'translate(-50%, -50%) translate3d(' + x.toFixed(2) + 'px, ' + (offset * verticalSpacing * fit).toFixed(2) + 'px, 0) scale(' + visualScale.toFixed(3) + ')';
+        card.style.opacity = '1';
+        card.style.filter = 'none';
+        card.style.zIndex = String(Math.round(depth * 100000) + index);
+        card.style.pointerEvents = 'auto';
+
+      });
+
+      frameId = requestAnimationFrame(render);
+    }
+
+    // Hover ONLY pauses when directly over an image card!
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() { hovered = true; });
+      card.addEventListener('mouseleave', function() { hovered = false; });
+    });
+
+    root.addEventListener('mouseleave', function() {
+      hovered = false;
+      dragging = false;
+    });
+
+    root.addEventListener('pointerdown', function(e) {
+      if (e.button !== 0) return;
+      dragging = true;
+      dragMoved = false;
+      lastPointerY = e.clientY;
+      targetProgress = progress;
+    });
+
+    root.addEventListener('pointermove', function(e) {
+      if (!dragging) return;
+      var pointerDelta = e.clientY - lastPointerY;
+      lastPointerY = e.clientY;
+      if (Math.abs(pointerDelta) > 0.5) dragMoved = true;
+      targetProgress -= pointerDelta / Math.max(verticalSpacing, 1);
+    });
+
+    root.addEventListener('pointerup', function() { dragging = false; });
+    root.addEventListener('pointercancel', function() { dragging = false; });
+
+    frameId = requestAnimationFrame(render);
+  })();
+
+
+
+
+
+
+
 
