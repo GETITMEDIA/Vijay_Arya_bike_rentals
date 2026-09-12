@@ -294,62 +294,124 @@
       </div>
     </section>
 
-    <!-- ============================ HERITAGE TIMELINE ============================ -->
-    <section class="heritage" aria-labelledby="heritageTimelineTitle">
-      <div class="wrap heritage-grid">
-        <div class="heritage-lead">
-          <div class="heritage-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>ESTABLISHED 1973</span>
-          </div>
-          <h2 id="heritageTimelineTitle">Milestones of <span class="num-red">Our Journey</span></h2>
-          <p class="heritage-line">Five decades of continuous care, genuine hospitality, and trusted rides for thousands of coastal explorers.</p>
-          
-          <div class="heritage-highlights">
-            <span class="heritage-highlight-chip">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-              50,000+ Happy Riders
-            </span>
-            <span class="heritage-highlight-chip">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>
-              14+ Fleet Models
-            </span>
+    <!-- ============================ HERITAGE MILESTONE TIMELINE (REFERENCE MATCHED DESIGN) ============================ -->
+    <section class="heritage-timeline-section" id="milestones" aria-label="Our Heritage & Milestones Since 1973">
+      <div class="wrap heritage-timeline-container">
+        
+        <!-- Left Column: Pondicherry Heritage Image with Soft Fade -->
+        <div class="heritage-timeline-media">
+          <div class="heritage-image-wrapper">
+            <img src="assets/images/about_heritage_timeline.jpg" alt="Pondicherry French Colony Heritage Architecture with Bougainvillea and Sea View" class="heritage-fade-img" loading="lazy" decoding="async">
+            
+            <!-- Soft Gradient Fade Mask -->
+            <div class="heritage-fade-mask" aria-hidden="true"></div>
+            
+            <!-- Reference Cursive Badge -->
+            <div class="heritage-cursive-flair" aria-hidden="true">
+              <span class="cursive-text">Exploring<br>Pondicherry</span>
+              <span class="cursive-sub">Since 1973</span>
+              <svg class="cursive-swoosh" width="46" height="8" viewBox="0 0 60 10" fill="none">
+                <path d="M2 7 C 18 2, 42 2, 58 7" stroke="#EF3138" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
           </div>
         </div>
 
-        <div class="track">
-          <div class="track-step">
-            <div class="track-step-head">
-              <span class="track-year-badge">1973</span>
-              <h3 class="track-step-title">The Beginning</h3>
+        <!-- Right Column: Milestone Timeline Cards -->
+        <div class="heritage-timeline-content">
+          <div class="milestone-timeline-list">
+            
+            <!-- Milestone 1: 1973 -->
+            <div class="milestone-row">
+              <div class="milestone-axis">
+                <div class="milestone-icon-bubble" title="1973 - The Beginning">
+                  <!-- Storefront / Shop Icon -->
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF3138" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l1-5h16l1 5"></path>
+                    <path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"></path>
+                    <path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"></path>
+                    <path d="M9 21v-7a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v7"></path>
+                  </svg>
+                </div>
+                <div class="milestone-connector">
+                  <span class="milestone-dot"></span>
+                </div>
+              </div>
+              <div class="milestone-card">
+                <span class="milestone-year">1973</span>
+                <h3 class="milestone-title">The Beginning</h3>
+                <p class="milestone-desc">The shop doors open near Thennanjalai Road, catering to Pondicherry's early travelers and visitors with honest local service.</p>
+              </div>
             </div>
-            <p class="note">The shop doors open near Thennanjalai Road, catering to Pondicherry's early travelers and visitors with honest local service and reliable two-wheelers.</p>
-          </div>
 
-          <div class="track-step">
-            <div class="track-step-head">
-              <span class="track-year-badge">1990s</span>
-              <h3 class="track-step-title">Fleet Modernization</h3>
+            <!-- Milestone 2: 1990s -->
+            <div class="milestone-row">
+              <div class="milestone-axis">
+                <div class="milestone-icon-bubble" title="1990s - Fleet Modernization">
+                  <!-- Gear / Modernization Icon -->
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF3138" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                  </svg>
+                </div>
+                <div class="milestone-connector">
+                  <span class="milestone-dot"></span>
+                </div>
+              </div>
+              <div class="milestone-card">
+                <span class="milestone-year">1990s</span>
+                <h3 class="milestone-title">Fleet Modernization</h3>
+                <p class="milestone-desc">Pioneering modern automatic scooters, Italian-style Vespas, and touring motorbikes to cater to the growing tourism influx.</p>
+              </div>
             </div>
-            <p class="note">Pioneering modern automatic gearless scooters, Italian-style Vespas, and touring motorbikes to cater to the growing tourism influx along the coastal ECR.</p>
-          </div>
 
-          <div class="track-step">
-            <div class="track-step-head">
-              <span class="track-year-badge">2010s</span>
-              <h3 class="track-step-title">Trusted Nationwide</h3>
+            <!-- Milestone 3: 2010s -->
+            <div class="milestone-row">
+              <div class="milestone-axis">
+                <div class="milestone-icon-bubble" title="2010s - Trusted Nationwide">
+                  <!-- Community / Nationwide Icon -->
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF3138" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <div class="milestone-connector">
+                  <span class="milestone-dot"></span>
+                </div>
+              </div>
+              <div class="milestone-card">
+                <span class="milestone-year">2010s</span>
+                <h3 class="milestone-title">Trusted Nationwide</h3>
+                <p class="milestone-desc">Earning widespread recognition across India as Pondicherry's most recommended bike rental service on travel communities and review platforms.</p>
+              </div>
             </div>
-            <p class="note">Earning widespread recognition across India as Pondicherry’s most recommended, reliable bike rental service on travel communities and review platforms.</p>
-          </div>
 
-          <div class="track-step">
-            <div class="track-step-head">
-              <span class="track-year-badge is-gold">TODAY</span>
-              <h3 class="track-step-title">50+ Years of Excellence</h3>
+            <!-- Milestone 4: Today -->
+            <div class="milestone-row">
+              <div class="milestone-axis">
+                <div class="milestone-icon-bubble" title="Today - 50+ Years of Excellence">
+                  <!-- Trophy / Award Icon -->
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF3138" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path>
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="milestone-card">
+                <span class="milestone-year">Today</span>
+                <h3 class="milestone-title">50+ Years of Excellence</h3>
+                <p class="milestone-desc">Offering a perfectly maintained 14-model fleet, zero security deposit, instant WhatsApp booking, and flat &#8377;500 advance reservation policy.</p>
+              </div>
             </div>
-            <p class="note">Offering a perfectly maintained 14-model fleet, zero security deposit, instant WhatsApp booking, and flat &#8377;500 advance reservation policy.</p>
+
           </div>
         </div>
+
       </div>
     </section>
 
