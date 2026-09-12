@@ -837,7 +837,18 @@
       var trigger = e.target.closest ? e.target.closest('.js-book') : null;
       if (!trigger) return;
       e.preventDefault();
-      open(trigger.dataset.bike || '');
+      
+      var bike = trigger.dataset.bike;
+      if (!bike) {
+        var fleet = document.getElementById('fleet');
+        if (fleet) {
+          fleet.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.location.href = 'index.html#fleet';
+        }
+        return;
+      }
+      open(bike);
     });
 
     step1.addEventListener('submit', function (e) {
