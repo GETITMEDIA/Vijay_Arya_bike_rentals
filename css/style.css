@@ -885,6 +885,7 @@ body.nav-open { overflow: hidden; }
   }
   .hero-light-bg-img {
     width: 100%;
+    right: 0;
   }
   .hero-light-fade-overlay {
     background: linear-gradient(
@@ -4312,8 +4313,15 @@ html, body { overflow-x: hidden; }
     margin-bottom: 22px;
   }
   .hero-light-actions {
+    flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 28px;
+  }
+  .hero-light-actions .btn-light-red,
+  .hero-light-actions .btn-trial,
+  .hero-light-actions .btn-light-outline {
+    padding: 10px 22px;
+    font-size: 14px;
   }
   .hero-location-pill {
     font-size: 12px;
@@ -4329,17 +4337,7 @@ html, body { overflow-x: hidden; }
   }
 }
 
-@media (max-width: 480px) {
-  .hero-light-actions {
-    flex-direction: column;
-  }
-  .hero-light-actions .btn-light-red,
-  .hero-light-actions .btn-trial,
-  .hero-light-actions .btn-light-outline {
-    width: 100%;
-    justify-content: center;
-  }
-}
+
 
 /* ---------- 25e. Fleet Cards — Mobile Refinements ---------- */
 @media (max-width: 560px) {
@@ -4506,12 +4504,16 @@ html, body { overflow-x: hidden; }
 }
 
 @media (max-width: 560px) {
+  .booking {
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+  }
   .booking-panel {
     width: 100vw;
-    height: 90vh; /* Bottom sheet effect */
+    height: 90vh;
     height: 90dvh;
-    margin-top: 10vh;
-    margin-top: 10dvh;
+    margin-top: 0;
     border-radius: 24px 24px 0 0;
     padding: 24px 18px 32px;
     transform: translateY(100%);
