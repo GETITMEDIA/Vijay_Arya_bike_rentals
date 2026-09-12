@@ -26,7 +26,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=2.3">
+  <link rel="stylesheet" href="css/style.css?v=3.0">
   <script>document.documentElement.className += " js";</script>
 </head>
 
@@ -55,9 +55,8 @@
 
       <button class="btn btn-sm header-cta js-book" type="button">Book Now</button>
 
-      <button class="hamburger" id="menuToggle" aria-expanded="false" aria-controls="mobileNav">
+      <button class="hamburger" id="menuToggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Open navigation menu">
         <span class="hamburger-box" aria-hidden="true"><span class="hamburger-bar"></span></span>
-        <span class="hamburger-label">Menu</span>
       </button>
     </div>
   </header>
@@ -66,20 +65,61 @@
 
   <nav class="nav-mobile" id="mobileNav" aria-label="Mobile" hidden>
     <div class="nav-mobile-head">
-      <span class="eyebrow">Est. 1973 &middot; Pondicherry</span>
+      <div class="nav-drawer-brand">
+        <img src="assets/logo/logo.png" alt="Vijay Arya Bike Rentals logo" width="50" height="39" class="nav-drawer-logo">
+        <span class="nav-drawer-name">Vijay Arya Bike Rentals</span>
+      </div>
       <button class="nav-close" id="menuClose" type="button" aria-label="Close menu">&times;</button>
     </div>
-    <ul>
-      <li><a href="index.html" class="nav-link-m">Home</a></li>
-      <li><a href="about.html" class="nav-link-m is-active">About</a></li>
-      <li><a href="gallery.html" class="nav-link-m">Gallery</a></li>
-      <li><a href="contact.html" class="nav-link-m">Contact</a></li>
-    </ul>
+
+    <div class="nav-mobile-body">
+      <ul class="nav-mobile-list">
+        <li>
+          <a href="index.html" class="nav-link-m">
+            <span class="nav-link-m-txt">Home</span>
+            <span class="nav-link-m-arrow">&rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a href="about.html" class="nav-link-m is-active">
+            <span class="nav-link-m-txt">About Us</span>
+            <span class="nav-link-m-arrow">&rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a href="gallery.html" class="nav-link-m">
+            <span class="nav-link-m-txt">Photo Gallery</span>
+            <span class="nav-link-m-badge">80+</span>
+            <span class="nav-link-m-arrow">&rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a href="contact.html" class="nav-link-m">
+            <span class="nav-link-m-txt">Contact</span>
+            <span class="nav-link-m-arrow">&rarr;</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <div class="nav-mobile-foot">
-      <button class="btn btn-red btn-block js-book" type="button">Book Now</button>
-      <a class="btn btn-ghost btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
-      <a class="btn btn-ghost btn-block" href="https://maps.app.goo.gl/qNWcjq3TyVif53Ld9" target="_blank"
-        rel="noopener">Get Directions</a>
+      <button class="btn btn-red btn-block js-book" type="button">
+        <span>Book Your Ride</span>
+        <span class="btn-arrow">&rarr;</span>
+      </button>
+      <div class="nav-mobile-quick-actions">
+        <a class="btn btn-ghost nav-quick-btn" href="tel:+919600334488">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          <span>Call Now</span>
+        </a>
+        <a class="btn btn-ghost nav-quick-btn" href="https://maps.app.goo.gl/qNWcjq3TyVif53Ld9" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          <span>Directions</span>
+        </a>
+      </div>
+      <div class="nav-drawer-info-strip">
+        <span>&#128205; Thennanjalai Rd &middot; Open till 9 PM</span>
+      </div>
     </div>
   </nav>
 
@@ -120,74 +160,137 @@
       </div>
     </section>
 
-    <!-- ============================ OUR STORY & HERITAGE ============================ -->
-    <section class="section story-redesign" aria-labelledby="storyTitle">
-      <div class="story-bg-glow"></div>
-      <div class="wrap story-grid">
-        <!-- Left Content -->
-        <div class="story-content reveal">
-          <div class="story-badge">
-            <span class="story-badge-dot"></span>
-            <span>OUR HERITAGE</span>
-          </div>
-          <h2 id="storyTitle" class="story-title">Five Decades on the <span class="title-highlight">Same Streets</span></h2>
-          <p class="story-lead">Established in 1973 on Thennanjalai Road in Puducherry, Vijay Arya Bike Rental began with a simple mission: to give visitors affordable, flexible, and safe mobility to explore the town.</p>
-          <p class="story-body">Over the decades, as Pondicherry evolved into a beloved coastal destination, generations of travellers, university students, and families have started their journey from our counter. We remain a proud family business rooted in local hospitality and honest service.</p>
-
-          <!-- Modern Facts Cards Grid -->
-          <div class="story-stats-grid">
-            <div class="story-stat-card">
-              <div class="stat-card-header">
-                <span class="stat-icon-wrapper">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </span>
-                <strong class="stat-value">1973</strong>
-              </div>
-              <span class="stat-sub">50+ Years Legacy</span>
-            </div>
-            <div class="story-stat-card">
-              <div class="stat-card-header">
-                <span class="stat-icon-wrapper">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                </span>
-                <strong class="stat-value stat-value-sm">Puducherry</strong>
-              </div>
-              <span class="stat-sub">605001 &bull; Main Shop</span>
-            </div>
-            <div class="story-stat-card">
-              <div class="stat-card-header">
-                <span class="stat-icon-wrapper">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                </span>
-                <strong class="stat-value">&#8377;500 <span class="stat-unit">Only</span></strong>
-              </div>
-              <span class="stat-sub">Lowest Deposit</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Media Showcase -->
-        <div class="story-media-wrap reveal">
-          <div class="story-photo-frame">
-            <img src="assets/images/heritage_vespas_fleet.jpg" alt="Sleek rental Vespas parked in Pondicherry French Quarter" class="story-img" loading="lazy" decoding="async">
+    <!-- ============================ OUR STORY & HERITAGE (REFERENCE MATCHED DESIGN) ============================ -->
+    <section class="section about-heritage-ref-section" aria-labelledby="storyTitle">
+      <div class="wrap">
+        
+        <div class="heritage-master-card reveal">
+          
+          <!-- Left: Content Column -->
+          <div class="heritage-card-left">
             
-            <!-- Floating Badge Over Image -->
-            <div class="story-floating-badge">
-              <div class="floating-badge-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <!-- Eyebrow -->
+            <div class="ref-eyebrow">
+              <span class="ref-dash"></span>
+              <span class="ref-dot"></span>
+              <span class="ref-eyebrow-txt">OUR HERITAGE &middot; ESTD. 1973</span>
+            </div>
+
+            <!-- Headline -->
+            <h2 id="storyTitle" class="ref-main-title">
+              Five Decades on the<br>
+              <em class="ref-title-red-italic">Coastal Streets</em><br>
+              of Pondicherry
+            </h2>
+
+            <!-- Cursive Subtitle -->
+            <p class="ref-cursive-tagline">Same Roads. New Stories.</p>
+
+            <!-- Body Paragraph -->
+            <p class="ref-body-desc">
+              Started in 1973 with a passion for honest mobility, we&rsquo;ve helped three generations of travellers discover the true soul of Pondicherry. From classic rides to modern scooters, we&rsquo;re more than rentals &mdash; we&rsquo;re a part of your journey.
+            </p>
+
+            <!-- 4 Stat Badges Row -->
+            <div class="ref-stats-row">
+              <div class="ref-stat-pill">
+                <div class="ref-stat-ic-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+                <strong class="ref-stat-val">1973</strong>
+                <span class="ref-stat-lbl">50+ YEARS LEGACY</span>
               </div>
-              <div class="floating-badge-text">
-                <strong>50+ Years</strong>
-                <span>Trusted Service</span>
+
+              <div class="ref-stat-pill">
+                <div class="ref-stat-ic-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <strong class="ref-stat-val">50K+</strong>
+                <span class="ref-stat-lbl">HAPPY RIDERS</span>
+              </div>
+
+              <div class="ref-stat-pill">
+                <div class="ref-stat-ic-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                </div>
+                <strong class="ref-stat-val">&#8377;500</strong>
+                <span class="ref-stat-lbl">ZERO DEPOSIT</span>
+              </div>
+
+              <div class="ref-stat-pill">
+                <div class="ref-stat-ic-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <strong class="ref-stat-val ref-stat-val-sm">TOP LOCATION</strong>
+                <span class="ref-stat-lbl">EASY ACCESS</span>
+              </div>
+            </div>
+
+            <!-- Action Row -->
+            <div class="ref-actions-row">
+              <button class="ref-btn-primary js-book" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>
+                <span>Book Your Ride</span>
+                <span class="ref-btn-arrow">&rarr;</span>
+              </button>
+              <a class="ref-btn-secondary" href="tel:+919600334488">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span>+91 96003 34488</span>
+              </a>
+            </div>
+
+            <!-- Location Line -->
+            <div class="ref-location-line">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EF3138" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>Thennanjalai Road, Pondicherry 605001</span>
+            </div>
+
+          </div>
+
+          <!-- Center Overlay Polaroid Photo -->
+          <div class="heritage-polaroid-wrap">
+            <div class="heritage-polaroid-frame">
+              <div class="polaroid-img-box">
+                <img src="assets/images/about_lighthouse_polaroid.jpg" alt="Pondicherry Old Lighthouse on Promenade Beach" loading="lazy" decoding="async">
+              </div>
+              <div class="polaroid-caption-area">
+                <span class="polaroid-handwritten">Same Place<br>Since 1973</span>
+                <div class="polaroid-stamp">
+                  <svg width="34" height="34" viewBox="0 0 60 60" fill="none" stroke="#CBB686" stroke-width="1.2">
+                    <circle cx="30" cy="30" r="28" stroke-dasharray="3 2"/>
+                    <circle cx="30" cy="30" r="22"/>
+                    <path d="M22 36 L30 18 L38 36 Z" stroke-width="1.5"/>
+                    <path d="M18 38 Q 30 42 42 38"/>
+                    <text x="30" y="14" font-size="5" text-anchor="middle" fill="#CBB686" font-family="sans-serif" letter-spacing="1">PONDICHERRY</text>
+                    <text x="30" y="50" font-size="5" text-anchor="middle" fill="#CBB686" font-family="sans-serif" letter-spacing="1">ESTD-1973</text>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
 
-          <figcaption class="story-media-tag">
-            <span class="tag-line"></span>
-            OUR RENTAL FLEET AT THENNANJALAI ROAD
-          </figcaption>
+          <!-- Right: Curved Showcase Image Column -->
+          <div class="heritage-card-right">
+            
+            <div class="ref-right-img-container">
+              <img src="assets/images/about_heritage_showcase.jpg" alt="Classic Royal Enfield on Pondicherry French Colony beach street" class="ref-right-main-img" loading="lazy" decoding="async">
+              
+              <!-- Top Right Cursive Floating Quote -->
+              <div class="ref-right-cursive-badge">
+                <span>Pondicherry<br>Feels Better<br>on Two Wheels</span>
+              </div>
+
+              <!-- Bottom Right Explore Tag -->
+              <div class="ref-right-explore-tag">
+                <span>EXPLORE &middot; RIDE &middot; DISCOVER</span>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
+
       </div>
     </section>
 
@@ -195,251 +298,375 @@
     <section class="heritage" aria-labelledby="heritageTimelineTitle">
       <div class="wrap heritage-grid">
         <div class="heritage-lead">
-          <p class="eyebrow">Milestones</p>
-          <h2 id="heritageTimelineTitle" class="display-num">Our <span class="num-red">Journey</span></h2>
-          <p class="heritage-line">A timeline of service, trust, and continuous care for every rider.</p>
+          <div class="heritage-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>ESTABLISHED 1973</span>
+          </div>
+          <h2 id="heritageTimelineTitle">Milestones of <span class="num-red">Our Journey</span></h2>
+          <p class="heritage-line">Five decades of continuous care, genuine hospitality, and trusted rides for thousands of coastal explorers.</p>
+          
+          <div class="heritage-highlights">
+            <span class="heritage-highlight-chip">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              50,000+ Happy Riders
+            </span>
+            <span class="heritage-highlight-chip">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>
+              14+ Fleet Models
+            </span>
+          </div>
         </div>
 
-        <ol class="track">
-          <li class="track-step">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="year">1973 &mdash; The Beginning</span>
-            <span class="note">The shop doors open near Thennanjalai Road, catering to Pondicherry's early travelers and
-              visitors.</span>
-          </li>
-          <li class="track-step">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="year">1990s &mdash; Fleet Expansion</span>
-            <span class="note">Expanding the fleet to include modern automatic scooters, Vespas, and gear
-              motorcycles.</span>
-          </li>
-          <li class="track-step">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="year">2010s &mdash; Trusted Nationwide</span>
-            <span class="note">Becoming Pondicherry's most recommended bike rental shop on travel forums and
-              Tripadvisor.</span>
-          </li>
-          <li class="track-step">
-            <span class="dot dot-red" aria-hidden="true"></span>
-            <span class="year">Today &mdash; Over 50 Years</span>
-            <span class="note">Offering a maintained 14-model fleet, zero security deposit, and a flat &#8377;500
-              advance reservation policy.</span>
-          </li>
-        </ol>
+        <div class="track">
+          <div class="track-step">
+            <div class="track-step-head">
+              <span class="track-year-badge">1973</span>
+              <h3 class="track-step-title">The Beginning</h3>
+            </div>
+            <p class="note">The shop doors open near Thennanjalai Road, catering to Pondicherry's early travelers and visitors with honest local service and reliable two-wheelers.</p>
+          </div>
+
+          <div class="track-step">
+            <div class="track-step-head">
+              <span class="track-year-badge">1990s</span>
+              <h3 class="track-step-title">Fleet Modernization</h3>
+            </div>
+            <p class="note">Pioneering modern automatic gearless scooters, Italian-style Vespas, and touring motorbikes to cater to the growing tourism influx along the coastal ECR.</p>
+          </div>
+
+          <div class="track-step">
+            <div class="track-step-head">
+              <span class="track-year-badge">2010s</span>
+              <h3 class="track-step-title">Trusted Nationwide</h3>
+            </div>
+            <p class="note">Earning widespread recognition across India as Pondicherry’s most recommended, reliable bike rental service on travel communities and review platforms.</p>
+          </div>
+
+          <div class="track-step">
+            <div class="track-step-head">
+              <span class="track-year-badge is-gold">TODAY</span>
+              <h3 class="track-step-title">50+ Years of Excellence</h3>
+            </div>
+            <p class="note">Offering a perfectly maintained 14-model fleet, zero security deposit, instant WhatsApp booking, and flat &#8377;500 advance reservation policy.</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ============================ WHY CUSTOMERS TRUST US ============================ -->
-    <section class="section section-tint trust" aria-labelledby="trustTitle">
+    <section class="section trust" aria-labelledby="trustTitle">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head text-center">
           <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Why choose us</p>
           <h2 id="trustTitle">Why Riders Rely on Vijay Arya</h2>
-          <p class="section-sub">We focus on what matters most to travellers: clean vehicles, clear terms, safety gear,
-            and genuine local advice.</p>
+          <p class="section-sub">We focus on what matters most to travellers: clean vehicles, clear terms, safety gear, and genuine local advice.</p>
         </div>
 
-        <ul class="trust-grid">
-          <li class="reveal">
-            <span class="trust-i" aria-hidden="true">01</span>
+        <div class="trust-grid">
+          <div class="trust-card reveal">
+            <div class="trust-card-top">
+              <span class="trust-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </span>
+              <span class="trust-i">01</span>
+            </div>
             <h3>Rigorously Serviced Rides</h3>
-            <p>Every scooter and bike undergoes regular mechanical checkups, oil changes, and tire inspections before
-              rental.</p>
-          </li>
-          <li class="reveal">
-            <span class="trust-i" aria-hidden="true">02</span>
+            <p>Every scooter and motorcycle undergoes multi-point safety inspections, brake tuning, oil changes, and fresh tire checks before rental.</p>
+          </div>
+
+          <div class="trust-card reveal">
+            <div class="trust-card-top">
+              <span class="trust-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <span class="trust-i">02</span>
+            </div>
             <h3>Free Helmets Provided</h3>
-            <p>Helmets are provided free of cost for rider safety. Extra safety gear is available upon request.</p>
-          </li>
-          <li class="reveal">
-            <span class="trust-i" aria-hidden="true">03</span>
+            <p>Clean, sanitized ISI-certified helmets are provided free of cost for rider and pillion safety. Extra safety gear is available upon request.</p>
+          </div>
+
+          <div class="trust-card reveal">
+            <div class="trust-card-top">
+              <span class="trust-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+              </span>
+              <span class="trust-i">03</span>
+            </div>
             <h3>Zero Security Deposit</h3>
-            <p>We keep formalities simple: deposit an original valid photo ID with a flat &#8377;500 advance. No
-              security deposit needed.</p>
-          </li>
-          <li class="reveal">
-            <span class="trust-i" aria-hidden="true">04</span>
+            <p>We keep formalities simple: deposit an original valid photo ID with a flat &#8377;500 advance. No bulky security deposit held.</p>
+          </div>
+
+          <div class="trust-card reveal">
+            <div class="trust-card-top">
+              <span class="trust-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </span>
+              <span class="trust-i">04</span>
+            </div>
             <h3>Transparent Booking</h3>
-            <p>Advance booking is strictly &#8377;500 for all vehicles, adjusted directly against your final rental
-              bill.</p>
-          </li>
-          <li class="reveal">
-            <span class="trust-i" aria-hidden="true">05</span>
+            <p>Advance booking is strictly &#8377;500 for all vehicles, adjusted 100% directly against your final rental bill with zero hidden charges.</p>
+          </div>
+
+          <div class="trust-card reveal">
+            <div class="trust-card-top">
+              <span class="trust-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+              </span>
+              <span class="trust-i">05</span>
+            </div>
             <h3>Local Pondicherry Advice</h3>
-            <p>Ask us about secret beach routes, French Quarter cafes, Auroville timings, and local traffic rules.</p>
-          </li>
-          <li class="reveal">
-            <span class="trust-i" aria-hidden="true">06</span>
-            <h3>Hassle-Free Formalities</h3>
-            <p>Minimal paperwork at the counter so you spend less time in the shop and more time on the coastal roads.
-            </p>
-          </li>
-        </ul>
+            <p>Ask us about secret beach routes, French Quarter cafes, Auroville timings, sunrise points, and local traffic rules.</p>
+          </div>
+
+          <div class="trust-card reveal">
+            <div class="trust-card-top">
+              <span class="trust-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+              <span class="trust-i">06</span>
+            </div>
+            <h3>2-Minute Handover</h3>
+            <p>Rapid check-in and checkout at the shop counter so you spend less time on paperwork and more time exploring coastal roads.</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ============================ COMMITMENT TO SAFETY ============================ -->
     <section class="section safety" id="safety" aria-labelledby="safeTitle">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head text-center">
           <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Safety Standards</p>
           <h2 id="safeTitle">Our Commitment to Rider Safety</h2>
-          <p class="section-sub">Your safety is non-negotiable. Please read our key guidelines to ensure a smooth and
-            enjoyable trip.</p>
+          <p class="section-sub">Your safety is non-negotiable. Please review our essential guidelines for a secure, hassle-free ride.</p>
         </div>
 
         <div class="safety-cols">
-          <section class="safety-block safety-block-red">
-            <h3>Office &amp; Riding Hours</h3>
+          <div class="safety-block safety-block-red">
+            <div class="safety-head">
+              <span class="safety-icon-wrapper">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+              <h3>Office &amp; Riding Hours</h3>
+            </div>
             <ul class="tick-list">
               <li>Rental office closes at <strong>9:00 PM</strong> on all days.</li>
               <li>Riders are requested to return to their hotel by <strong>10:00 PM</strong>.</li>
               <li>Avoid riding late night on ECR towards Auroville after <strong>9:00 PM</strong>.</li>
             </ul>
-          </section>
+          </div>
 
-          <section class="safety-block">
-            <h3>Road Rules</h3>
+          <div class="safety-block">
+            <div class="safety-head">
+              <span class="safety-icon-wrapper">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <h3>Road Rules &amp; Law</h3>
+            </div>
             <ul class="tick-list">
-              <li>Always wear your helmet while riding.</li>
-              <li>Never drink and drive under any circumstances.</li>
+              <li>Always wear your helmet while riding (driver &amp; pillion).</li>
+              <li>Strict <strong>zero tolerance</strong> for drink &amp; drive.</li>
               <li>Carry your original driving licence at all times.</li>
-              <li>Observe one-way signs, no-parking zones, and speed limits.</li>
+              <li>Observe one-way signs, no-parking zones &amp; speed limits.</li>
             </ul>
-          </section>
+          </div>
 
-          <section class="safety-block">
-            <h3>Local Riding Range</h3>
+          <div class="safety-block">
+            <div class="safety-head">
+              <span class="safety-icon-wrapper">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <h3>Local Riding Range</h3>
+            </div>
             <ul class="tick-list">
               <li>Scooters are strictly for local sightseeing (max range: <strong>20 km</strong>).</li>
               <li>Riding to Pichavaram or Mahabalipuram is not permitted.</li>
-              <li>Keep your vehicle locked securely overnight.</li>
+              <li>Keep your vehicle locked securely overnight at hotel parking.</li>
             </ul>
-          </section>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ============================ REQUIREMENTS + KEY RULES ============================ -->
-    <section class="section section-tint rules" aria-labelledby="reqTitle">
+    <section class="section rules" aria-labelledby="reqTitle">
       <div class="wrap rules-grid">
-        <section class="req" aria-labelledby="reqTitle">
-          <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Before you ride</p>
-          <h2 id="reqTitle">You Will Have To</h2>
-          <ol class="req-list">
-            <li>
-              <h3>Deposit your original valid photo ID</h3>
-              <p>Accepted examples:</p>
-              <ul class="pill-list">
-                <li>Aadhaar Card</li>
-                <li>Voter Card</li>
-                <li>Driving Licence</li>
-                <li>Passport (foreign visitors)</li>
-              </ul>
-            </li>
-            <li>
-              <h3>No security deposit</h3>
-              <p>We do not collect a separate security deposit.</p>
-            </li>
-            <li>
-              <h3>Pay the rental in advance</h3>
-              <p>The total rental amount is payable in advance.</p>
-            </li>
-          </ol>
-        </section>
+        <!-- Left: What you need -->
+        <div class="req-section">
+          <div class="rules-head-area">
+            <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Before you ride</p>
+            <h2 id="reqTitle">What You Will Need</h2>
+          </div>
 
-        <section class="keyrules" aria-labelledby="keyRulesTitle">
-          <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Rental terms</p>
-          <h2 id="keyRulesTitle">Key Rental Rules</h2>
-          <ul class="rule-list">
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Obey all traffic rules.</strong> No Entry, One Way and No Parking rules must be followed.</p>
-            </li>
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Traffic violations</strong> are the renter&rsquo;s responsibility.</p>
-            </li>
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Park securely at night.</strong> Lock the vehicle and park it in a secure place.</p>
-            </li>
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Lost key or lock set: &#8377;900.</strong></p>
-            </li>
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Lost helmet: &#8377;500.</strong></p>
-            </li>
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Loss, damage or theft</strong> of the vehicle or its parts is the renter&rsquo;s
-                responsibility.</p>
-            </li>
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Do not drive triples.</strong></p>
-            </li>
-            <li><span class="rule-ic" aria-hidden="true"></span>
-              <p><strong>Punctures:</strong> get the puncture sealed. Please do not change the tube or tyre expecting
-                reimbursement.</p>
-            </li>
-          </ul>
-        </section>
+          <div class="req-list">
+            <div class="req-card">
+              <h3>Deposit Original Valid Photo ID</h3>
+              <p>Accepted government identification:</p>
+              <ul class="pill-list">
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="12" x="3" y="6" rx="2"/><circle cx="9" cy="12" r="2"/><path d="M15 10h2M15 14h2"/></svg>
+                  Aadhaar Card
+                </li>
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="12" x="3" y="6" rx="2"/><circle cx="9" cy="12" r="2"/></svg>
+                  Voter Card
+                </li>
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h2"/></svg>
+                  Driving Licence
+                </li>
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  Passport (Foreigners)
+                </li>
+              </ul>
+            </div>
+
+            <div class="req-card">
+              <h3>Valid Driving Licence</h3>
+              <p>Carry your original driving licence with you at all times while operating the two-wheeler.</p>
+            </div>
+
+            <div class="req-card">
+              <h3>Flat &#8377;500 Advance Rental</h3>
+              <p>No separate security deposit required. Total rental amount is payable in advance upon vehicle pickup.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Key rental rules -->
+        <div class="keyrules-section">
+          <div class="rules-head-area">
+            <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Rental terms</p>
+            <h2 id="keyRulesTitle">Key Rental Rules</h2>
+          </div>
+
+          <div class="rule-list-wrap">
+            <ul class="rule-list">
+              <li>
+                <span class="rule-ic-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </span>
+                <p><strong>Obey all traffic rules.</strong> Follow No Entry, One Way in White Town, and No Parking signs.</p>
+              </li>
+              <li>
+                <span class="rule-ic-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                </span>
+                <p><strong>Traffic violations &amp; fines</strong> are strictly the renter&rsquo;s responsibility.</p>
+              </li>
+              <li>
+                <span class="rule-ic-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </span>
+                <p><strong>Park securely at night.</strong> Always lock the vehicle and park inside hotel premises.</p>
+              </li>
+              <li>
+                <span class="rule-ic-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L10 13l-4 4-2-2 4-4 7.5-7.5z"/><circle cx="17.5" cy="6.5" r="2.5"/></svg>
+                </span>
+                <p><strong>Lost key or lock set replacement:</strong> Flat &#8377;900 fee.</p>
+              </li>
+              <li>
+                <span class="rule-ic-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </span>
+                <p><strong>Lost helmet fee:</strong> Flat &#8377;500 fee.</p>
+              </li>
+              <li>
+                <span class="rule-ic-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" x2="19.07" y1="4.93" y2="19.07"/></svg>
+                </span>
+                <p><strong>Do not ride triples.</strong> Strict compliance with passenger limits.</p>
+              </li>
+              <li>
+                <span class="rule-ic-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>
+                </span>
+                <p><strong>Punctures:</strong> Please get puncture sealed locally. Tube/tire replacements are not reimbursable.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ============================ FAQ ============================ -->
     <section class="section faq" id="faq" aria-labelledby="faqTitle">
       <div class="wrap wrap-narrow">
-        <div class="section-head">
+        <div class="section-head text-center">
           <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>FAQ</p>
           <h2 id="faqTitle">Frequently Asked Questions</h2>
+          <p class="section-sub">Quick answers to common questions about renting a bike or scooter in Pondicherry.</p>
         </div>
 
         <div class="acc" id="faqAcc">
           <div class="acc-item">
-            <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>What documents do I need
-                  to rent a scooter?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
+            <h3 class="acc-h">
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <span>What documents do I need to rent a scooter?</span>
+                <span class="acc-ic" aria-hidden="true"></span>
+              </button>
+            </h3>
             <div class="acc-panel">
               <div class="acc-inner">
-                <p>You deposit an original valid photo ID &mdash; an Aadhaar Card, Voter Card or Driving Licence, or a
-                  Passport for foreign visitors. Please also carry your driving licence with you at all times while
-                  riding.</p>
+                <p>You deposit an original valid photo ID &mdash; an Aadhaar Card, Voter Card or Driving Licence, or a Passport for foreign visitors. Please also carry your driving licence with you at all times while riding.</p>
               </div>
             </div>
           </div>
+
           <div class="acc-item">
-            <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>Is there a security
-                  deposit?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
+            <h3 class="acc-h">
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <span>Is there a separate security deposit?</span>
+                <span class="acc-ic" aria-hidden="true"></span>
+              </button>
+            </h3>
             <div class="acc-panel">
               <div class="acc-inner">
-                <p>No security deposit is collected. The total rental amount is payable in advance.</p>
+                <p>No security deposit is collected. The total rental amount is payable in advance along with your flat &#8377;500 booking confirmation.</p>
               </div>
             </div>
           </div>
+
           <div class="acc-item">
-            <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>How long can I rent
-                  for?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
+            <h3 class="acc-h">
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <span>How long can I rent a bike or scooter for?</span>
+                <span class="acc-ic" aria-hidden="true"></span>
+              </button>
+            </h3>
             <div class="acc-panel">
               <div class="acc-inner">
-                <p>We rent for a day, a week and for longer periods of time. Call us with your dates and we will tell
-                  you what is available.</p>
+                <p>We rent for a day, weekend, a week, or for extended monthly stays. Contact us with your planned dates and we will confirm fleet availability instantly.</p>
               </div>
             </div>
           </div>
+
           <div class="acc-item">
-            <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>Do you provide
-                  helmets?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
+            <h3 class="acc-h">
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <span>Do you provide helmets free of cost?</span>
+                <span class="acc-ic" aria-hidden="true"></span>
+              </button>
+            </h3>
             <div class="acc-panel">
               <div class="acc-inner">
-                <p>Yes &mdash; helmets are provided free of cost, along with other safety equipment. Always wear one. A
-                  lost helmet is charged at &#8377;500.</p>
+                <p>Yes &mdash; clean, sanitized ISI helmets are provided free of cost for rider and pillion safety. Always wear your helmet while riding.</p>
               </div>
             </div>
           </div>
+
           <div class="acc-item">
-            <h3 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false"><span>How far can I
-                  ride?</span><span class="acc-ic" aria-hidden="true"></span></button></h3>
+            <h3 class="acc-h">
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <span>How far can I ride around Pondicherry?</span>
+                <span class="acc-ic" aria-hidden="true"></span>
+              </button>
+            </h3>
             <div class="acc-panel">
               <div class="acc-inner">
-                <p>Scooters are for local sightseeing only, with a maximum range of 20 km. Driving to Pichavaram and
-                  Mahabalipuram is not allowed. On the ECR, please do not drive later than 9:00 pm on the road to
-                  Auroville.</p>
+                <p>Scooters are designed for local sightseeing in and around Pondicherry &amp; Auroville (maximum radius: 20 km). Long highway trips to Pichavaram or Mahabalipuram are not permitted.</p>
               </div>
             </div>
           </div>
@@ -799,7 +1026,7 @@
     </svg>
   </a>
 
-  <script src="js/script.js" defer></script>
+  <script src="js/script.js?v=2.4" defer></script>
 </body>
 
 </html>
