@@ -262,63 +262,7 @@
       </div>
     </section>
 
-    <!-- ============================ INQUIRY FORM ============================ -->
-    <section class="section section-tint" aria-labelledby="inquiryTitle">
-      <div class="wrap wrap-narrow">
-        <div class="contact-form-card reveal">
-          <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Send an Inquiry</p>
-          <h3 id="inquiryTitle">Have Questions Before Booking?</h3>
-          <p>Fill out the form below or talk directly to our shop staff for date availability, bike recommendations, or
-            group bookings.</p>
 
-          <form id="contactInquiryForm" novalidate>
-            <div class="field-row">
-              <div class="field">
-                <label for="inqName">Your Name</label>
-                <input type="text" id="inqName" name="name" placeholder="Full name" required>
-              </div>
-              <div class="field">
-                <label for="inqPhone">Mobile Number</label>
-                <input type="tel" id="inqPhone" name="phone" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" placeholder="10-digit mobile number" required>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="inqBike">Vehicle Interest</label>
-                <select id="inqBike" name="bike">
-                  <option value="Vespa">Vespa (Advance &#8377;500)</option>
-                  <option value="Honda Activa">Honda Activa (Advance &#8377;500)</option>
-                  <option value="TVS Jupiter">TVS Jupiter (Advance &#8377;500)</option>
-                  <option value="Suzuki Access 125">Suzuki Access 125 (Advance &#8377;500)</option>
-                  <option value="Honda Dio">Honda Dio (Advance &#8377;500)</option>
-                  <option value="Yamaha Fascino">Yamaha Fascino (Advance &#8377;500)</option>
-                  <option value="Hero Splendor">Hero Splendor (Advance &#8377;500)</option>
-                  <option value="Yamaha FZ">Yamaha FZ (Advance &#8377;500)</option>
-                  <option value="Royal Enfield GT 650">Royal Enfield GT 650 (Advance &#8377;500)</option>
-                  <option value="General Inquiry">General Inquiry</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="inqDate">Expected Pickup Date</label>
-                <input type="date" id="inqDate" name="date">
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="inqMessage">Your Message</label>
-              <input type="text" id="inqMessage" name="message"
-                placeholder="Hotel pickup, helmet sizes, duration questions...">
-            </div>
-
-            <div class="booking-actions" style="margin-top: 24px;">
-              <button class="btn btn-red btn-block js-book" type="button">Book Now with &#8377;500 Advance
-                &rarr;</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
 
     <!-- ============================ REFERENCE MATCHED CTA BANNER ============================ -->
     <section class="cta-ref-section" aria-labelledby="ctaRefTitleContact">
