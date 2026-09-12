@@ -4259,3 +4259,758 @@ body.bk-open { overflow: hidden; }
     display: none;
   }
 }
+
+/* ==========================================================================
+   25. RESPONSIVE ENHANCEMENT — Full Device Coverage
+   Fills gaps in existing breakpoints for a polished tablet + mobile experience.
+   ========================================================================== */
+
+/* ---------- 25a. General Safety Nets ---------- */
+html, body { overflow-x: hidden; }
+
+/* ---------- 25b. Hero Light Banner — Tablet (≤991px) ---------- */
+@media (max-width: 991px) {
+  .hero-light-banner {
+    min-height: 420px;
+    padding: 44px 0 52px;
+  }
+  .hero-light-container {
+    min-height: 380px;
+  }
+  .hero-light-content {
+    max-width: 100%;
+    text-align: left;
+  }
+  .hero-vespa-tagline-wrap {
+    display: none;
+  }
+  .hero-light-badge-wrap {
+    display: none;
+  }
+}
+
+/* ---------- 25c. Hero Light Banner — Mobile (≤640px) ---------- */
+@media (max-width: 640px) {
+  .hero-light-banner {
+    min-height: auto;
+    padding: 32px 0 40px;
+  }
+  .hero-light-container {
+    min-height: auto;
+  }
+  .hero-light-headline {
+    font-size: clamp(26px, 7.5vw, 34px);
+    line-height: 1.18;
+  }
+  .hero-light-sub {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+  .hero-light-actions {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .hero-light-actions .btn-light-red,
+  .hero-light-actions .btn-trial,
+  .hero-light-actions .btn-light-outline {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-location-pill {
+    font-size: 12px;
+    padding: 6px 14px 6px 10px;
+    margin-bottom: 16px;
+  }
+}
+
+/* ---------- 25d. Hero Stats Bar — Tablet & Mobile ---------- */
+@media (max-width: 768px) {
+  .hero-light-stats {
+    gap: 14px;
+  }
+  .light-stat-item {
+    flex: 1 1 calc(50% - 14px);
+    min-width: 140px;
+  }
+  .stat-ic-circle {
+    width: 38px;
+    height: 38px;
+  }
+  .light-stat-val {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-light-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .light-stat-item {
+    flex: 1 1 100%;
+  }
+}
+
+/* ---------- 25e. Fleet Cards — Mobile Refinements ---------- */
+@media (max-width: 560px) {
+  .ride-actions {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .ride-media {
+    height: 180px;
+    padding: 12px 8px;
+  }
+  .ride-media img {
+    height: 140px;
+  }
+  .ride-card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+  .ride-card-head {
+    margin-bottom: 8px;
+  }
+  .ride-meta {
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ride-card {
+    padding: 14px;
+    border-radius: 18px;
+  }
+  .ride-name {
+    font-size: 18px;
+  }
+  .price-val {
+    font-size: 18px;
+  }
+  .btn-card-outline,
+  .btn-card-dark {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}
+
+/* ---------- 25f. Contact Section — Mobile (≤640px) ---------- */
+@media (max-width: 640px) {
+  .contact-items-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .contact-item-full {
+    grid-column: span 1;
+  }
+  .contact-card {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+  .contact-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .contact-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .map-frame {
+    min-height: 280px;
+    border-radius: 18px;
+  }
+  .map-frame iframe {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+  .contact-label {
+    font-size: 10.5px;
+  }
+  .contact-value {
+    font-size: 14px;
+  }
+  .phone-link {
+    font-size: 14.5px;
+  }
+}
+
+/* ---------- 25g. CTA Ref Section — Mobile ---------- */
+@media (max-width: 560px) {
+  .cta-ref-features {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .cta-ref-feat:not(:last-child)::after {
+    display: none;
+  }
+  .cta-ref-content {
+    padding: 24px 20px;
+  }
+  .cta-ref-heading {
+    font-size: clamp(24px, 6.5vw, 32px);
+  }
+  .cta-ref-desc {
+    font-size: 14px;
+    margin-bottom: 22px;
+  }
+  .cta-ref-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-ref-primary,
+  .btn-ref-outline {
+    width: 100%;
+    justify-content: center;
+  }
+  .cta-ref-badge {
+    top: 16px;
+    left: 16px;
+    padding: 10px 16px 8px;
+  }
+  .cta-ref-badge-sub,
+  .cta-ref-badge-main {
+    font-size: 22px;
+  }
+  .cta-ref-badge-main {
+    font-size: 23px;
+  }
+  .cta-ref-media {
+    min-height: 220px;
+  }
+}
+
+/* ---------- 25h. CTA Panel — Mobile ---------- */
+@media (max-width: 560px) {
+  .cta-panel {
+    padding: clamp(52px, 8vw, 80px) 0;
+  }
+  .cta-copy h2 {
+    font-size: clamp(28px, 7vw, 38px);
+  }
+  .cta-copy p {
+    font-size: 15px;
+  }
+  .cta-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-cta-img {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---------- 25i. Booking Modal — Small Mobile ---------- */
+@media (max-width: 480px) {
+  .booking-panel {
+    width: 100vw;
+    padding: 24px 18px 32px;
+  }
+  .kyc-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .drawer-title {
+    font-size: clamp(22px, 5.5vw, 28px);
+  }
+  .qty-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    text-align: center;
+  }
+  .qty-counter {
+    justify-content: center;
+  }
+  .drawer-price-tag {
+    font-size: 14px;
+    padding: 5px 14px;
+  }
+  .drawer-price-tag strong {
+    font-size: 16px;
+  }
+  .section-num-title {
+    font-size: 10.5px;
+  }
+}
+
+@media (max-width: 400px) {
+  .booking-panel {
+    padding: 20px 14px 28px;
+  }
+  .pay-amount strong {
+    font-size: 28px;
+  }
+  .pay-upi {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .pay-copy-btn {
+    margin-left: 0;
+  }
+}
+
+/* ---------- 25j. Footer — Mobile Refinements ---------- */
+@media (max-width: 560px) {
+  .site-footer {
+    padding: 48px 0 22px;
+  }
+  .footer-grid {
+    gap: 28px;
+    padding-bottom: 36px;
+  }
+  .footer-brand-head {
+    justify-content: center;
+  }
+  .footer-desc {
+    text-align: center;
+    max-width: none;
+  }
+  .footer-socials {
+    justify-content: center;
+  }
+  .site-footer h3 {
+    display: block;
+    text-align: center;
+  }
+  .site-footer h3::after {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .footer-links ul {
+    text-align: center;
+  }
+  .footer-contact-list {
+    align-items: center;
+  }
+  .footer-contact-list li {
+    text-align: center;
+    justify-content: center;
+  }
+  .footer-base {
+    padding-top: 20px;
+    gap: 8px;
+  }
+  .footer-tag {
+    font-size: 14px;
+  }
+  .footer-copy {
+    font-size: 12px;
+  }
+  .footer-credit {
+    font-size: 12px;
+  }
+}
+
+/* ---------- 25k. Spiral Gallery — Small Screens ---------- */
+@media (max-width: 480px) {
+  .infinite-spiral-wrapper {
+    height: 400px;
+    border-radius: 18px;
+    margin: 20px 0;
+  }
+  .infinite-spiral__item {
+    width: 165px;
+    height: 115px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 375px) {
+  .infinite-spiral-wrapper {
+    height: 350px;
+  }
+  .infinite-spiral__item {
+    width: 145px;
+    height: 100px;
+    border-radius: 12px;
+  }
+}
+
+/* ---------- 25l. Story Redesign — Small Mobile ---------- */
+@media (max-width: 480px) {
+  .story-title {
+    font-size: clamp(28px, 7vw, 36px);
+  }
+  .story-lead {
+    font-size: 15px;
+  }
+  .story-body {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .story-badge {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+  .story-stat-card {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+  .stat-value {
+    font-size: 20px;
+  }
+  .story-floating-badge {
+    padding: 10px 14px;
+    gap: 10px;
+    bottom: 14px;
+    left: 14px;
+    border-radius: 12px;
+  }
+  .floating-badge-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+  .floating-badge-text strong {
+    font-size: 13px;
+  }
+  .floating-badge-text span {
+    font-size: 10px;
+  }
+}
+
+/* ---------- 25m. Page Hero (about/gallery/contact) — Mobile ---------- */
+@media (max-width: 480px) {
+  .phero h1 {
+    font-size: clamp(32px, 8.5vw, 44px);
+  }
+  .phero-lede {
+    font-size: 14.5px;
+    margin-bottom: 24px;
+  }
+  .phero-eyebrow {
+    font-size: 10px;
+    padding: 5px 12px 5px 10px;
+  }
+  .phero-meta dt {
+    font-size: 9.5px;
+  }
+  .phero-meta dd {
+    font-size: clamp(16px, 4.5vw, 22px);
+  }
+}
+
+/* ---------- 25n. About Banner — Mobile Refinements ---------- */
+@media (max-width: 560px) {
+  .about-banner-left {
+    padding: 24px 18px 18px;
+  }
+  .about-banner-title {
+    font-size: clamp(26px, 7vw, 34px);
+  }
+  .about-banner-desc {
+    font-size: 14px;
+  }
+  .about-eyebrow {
+    font-size: 10.5px;
+    margin-bottom: 10px;
+  }
+}
+
+/* ---------- 25o. Testimonials — Mobile ---------- */
+@media (max-width: 480px) {
+  .test-card {
+    flex-basis: 92%;
+    padding: 22px 18px 18px;
+    border-radius: 16px;
+  }
+  .test-body {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .test-name {
+    font-size: 14.5px;
+  }
+  .test-date {
+    font-size: 12px;
+  }
+  .stars {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .test-controls {
+    margin-top: 28px;
+    gap: 12px;
+  }
+  .test-nav {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+}
+
+/* ---------- 25p. Safety Section — Mobile ---------- */
+@media (max-width: 480px) {
+  .safety-block {
+    padding: 20px 18px;
+    border-radius: 12px;
+  }
+  .safety-block h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+  .tick-list li {
+    font-size: 14px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+  .tick-list li::before {
+    width: 6px;
+    height: 6px;
+    top: 8px;
+  }
+}
+
+/* ---------- 25q. Heritage Section — Mobile ---------- */
+@media (max-width: 560px) {
+  .heritage {
+    padding: clamp(48px, 7vw, 72px) 0;
+  }
+  .heritage-lead h2 {
+    font-size: clamp(28px, 7vw, 36px);
+  }
+  .heritage-line {
+    font-size: 15px;
+  }
+  .year {
+    font-size: 19px;
+  }
+  .note {
+    font-size: 14px;
+  }
+  .track-step {
+    padding: 18px 0 18px 28px;
+  }
+}
+
+/* ---------- 25r. Rules & Requirements — Mobile ---------- */
+@media (max-width: 480px) {
+  .rules h2 {
+    font-size: clamp(24px, 6.5vw, 32px);
+  }
+  .req-list h3 {
+    font-size: 17px;
+  }
+  .req-list p {
+    font-size: 14px;
+  }
+  .rule-list p {
+    font-size: 14px;
+  }
+  .acc-btn {
+    font-size: 15.5px;
+    padding: 18px 4px;
+  }
+  .acc-inner p {
+    font-size: 14.5px;
+  }
+}
+
+/* ---------- 25s. Trust Grid — Tablet & Mobile ---------- */
+@media (max-width: 768px) {
+  .trust-grid li {
+    padding: 26px 22px 24px;
+  }
+  .trust-grid h3 {
+    font-size: 18px;
+  }
+  .trust-grid p {
+    font-size: 14px;
+  }
+}
+
+/* ---------- 25t. Section Headings — Small Mobile ---------- */
+@media (max-width: 400px) {
+  .section-head h2 {
+    font-size: clamp(24px, 7vw, 30px);
+  }
+  .section-sub {
+    font-size: 14.5px;
+  }
+  .eyebrow {
+    font-size: 10.5px;
+  }
+}
+
+/* ---------- 25u. Bike Detail Page — Mobile ---------- */
+@media (max-width: 480px) {
+  .detail-media-card {
+    padding: 24px 16px 18px;
+    border-radius: 16px;
+  }
+  .detail-main-img-box {
+    height: 220px;
+  }
+  .detail-title {
+    font-size: clamp(26px, 6.5vw, 34px);
+  }
+  .detail-subtitle {
+    font-size: 14px;
+  }
+  .detail-description {
+    font-size: 14px;
+  }
+  .detail-sec-title {
+    font-size: 19px;
+  }
+  .detail-check-item {
+    font-size: 13px;
+  }
+  .detail-price-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+  .detail-curr-price {
+    font-size: 26px;
+  }
+  .detail-book-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  .detail-info-card-box {
+    padding: 18px;
+    border-radius: 14px;
+  }
+  .detail-thumb-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+  }
+  .detail-thumbs-bar {
+    gap: 10px;
+  }
+}
+
+/* ---------- 25v. Floating WhatsApp Button — Mobile ---------- */
+@media (max-width: 480px) {
+  .floating-whatsapp-btn {
+    width: 50px;
+    height: 50px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .floating-whatsapp-btn svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* ---------- 25w. Gallery Masonry — Small Mobile ---------- */
+@media (max-width: 480px) {
+  .gal-masonry {
+    columns: 1;
+    column-gap: 0;
+  }
+  .gal-masonry .gal-item {
+    margin-bottom: 14px;
+  }
+  .gal-featured-copy h3 {
+    font-size: clamp(22px, 6vw, 28px);
+  }
+  .gal-featured-copy p {
+    font-size: 14.5px;
+  }
+}
+
+/* ---------- 25x. Lightbox — Small Mobile ---------- */
+@media (max-width: 480px) {
+  .lightbox {
+    padding: 56px 12px 52px;
+  }
+  .lb-close {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+  .lb-prev, .lb-next {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+  .lb-figure img {
+    max-height: calc(100vh - 200px);
+  }
+}
+
+/* ---------- 25y. Experience Section — Tablet ---------- */
+@media (max-width: 768px) {
+  .exp-k {
+    font-size: 11px;
+  }
+  .exp-v {
+    font-size: 14px;
+  }
+  .exp-list li {
+    padding: 14px 0;
+  }
+}
+
+/* ---------- 25z. About Section — Mobile ---------- */
+@media (max-width: 560px) {
+  .about-copy h2 {
+    font-size: clamp(26px, 7vw, 34px);
+  }
+  .about-copy p {
+    font-size: 15px;
+  }
+  .about-facts dt {
+    font-size: 10.5px;
+  }
+  .about-facts dd {
+    font-size: 18px;
+  }
+  .about-media img {
+    max-width: 100%;
+  }
+}
+
+/* ---------- 25aa. Stats Counter Section — Mobile ---------- */
+@media (max-width: 480px) {
+  .stats-section {
+    padding: 36px 0;
+  }
+  .stat-num {
+    font-size: clamp(30px, 8vw, 42px);
+  }
+  .stat-label {
+    font-size: 11px;
+  }
+}
+
+/* ---------- 25ab. Filter Bar (Gallery) — Mobile ---------- */
+@media (max-width: 480px) {
+  .filter-bar {
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 12.5px;
+  }
+}
+
+/* ---------- 25ac. Contact Form Card — Mobile ---------- */
+@media (max-width: 560px) {
+  .contact-form-card {
+    padding: 28px 22px;
+    border-radius: 18px;
+  }
+  .contact-form-card h3 {
+    font-size: 22px;
+  }
+}
