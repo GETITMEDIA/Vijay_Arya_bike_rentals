@@ -57,7 +57,7 @@
   --shadow:    0 6px 24px rgba(17,17,17,.07);
   --shadow-lg: 0 18px 50px rgba(17,17,17,.14);
 
-  --header-h: 76px;
+  --header-h: 104px;
   --ease: cubic-bezier(.22,.61,.36,1);
 }
 
@@ -299,7 +299,7 @@ iframe { border: 0; display: block; }
 }
 
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
-.brand-mark { width: 90px; height: auto; flex: none; }
+.brand-mark { width: 115px; height: auto; flex: none; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-name {
   font-family: var(--serif); font-size: 19px; font-weight: 700;
@@ -357,30 +357,34 @@ iframe { border: 0; display: block; }
 
 .nav-mobile {
   position: fixed; top: 0; right: 0; z-index: 120;
-  width: min(340px, 88vw); height: 100dvh; height: 100vh;
-  background: #fff; border-left: 1px solid var(--border);
-  display: flex; flex-direction: column; padding: 20px 22px 28px;
-  transform: translateX(100%); transition: transform .28s var(--ease);
+  width: min(360px, 90vw); height: 100dvh; height: 100vh;
+  background: #FAF7F2; border-left: 1px solid #E4DFD5;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+  display: flex; flex-direction: column; padding: 28px 24px 36px;
+  transform: translateX(100%); transition: transform .36s cubic-bezier(.22, .61, .36, 1);
   overflow-y: auto;
 }
 .nav-mobile.is-open { transform: translateX(0); }
-.nav-mobile-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
-.nav-mobile-head .eyebrow { margin: 0; font-size: 11px; }
+.nav-mobile-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.nav-drawer-brand { display: flex; align-items: center; gap: 12px; }
+.nav-drawer-brand img { width: 48px; height: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06)); }
+.nav-drawer-brand span { font-family: var(--serif); font-size: 17.5px; font-weight: 700; color: var(--red-ink); line-height: 1.2; max-width: 160px; }
 .nav-close {
-  background: none; border: 0; font-size: 30px; line-height: 1;
-  width: 44px; height: 44px; cursor: pointer; color: var(--black);
+  background: #EFECE6; border: 1px solid #E2DDD5; border-radius: 50%;
+  font-size: 22px; line-height: 1; width: 40px; height: 40px; cursor: pointer; color: #44403C;
   display: flex; align-items: center; justify-content: center;
+  transition: background-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
 }
-.nav-mobile ul { flex: 1; }
+.nav-close:hover { background: var(--red-btn); color: #fff; transform: rotate(90deg); }
+.nav-mobile ul { flex: 1; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
 .nav-link-m {
-  display: block; padding: 16px 2px;
-  font-family: var(--serif); font-size: 26px; font-weight: 600;
-  text-decoration: none; color: var(--black);
-  border-bottom: 1px solid var(--border);
-  transition: color .18s var(--ease), padding-left .18s var(--ease);
+  display: block; padding: 14px 18px; border-radius: 12px;
+  font-family: var(--serif); font-size: 24px; font-weight: 600;
+  text-decoration: none; color: #44403C;
+  transition: all .25s ease;
 }
-.nav-link-m:hover, .nav-link-m.is-active { color: var(--red-ink); padding-left: 8px; }
-.nav-mobile-foot { display: grid; gap: 10px; margin-top: 26px; }
+.nav-link-m:hover, .nav-link-m.is-active { background: #EFECE6; color: var(--red-ink); padding-left: 22px; }
+.nav-mobile-foot { display: grid; gap: 14px; margin-top: auto; }
 
 body.nav-open { overflow: hidden; }
 
@@ -881,14 +885,14 @@ body.nav-open { overflow: hidden; }
   }
   .hero-light-bg-img {
     width: 100%;
-    opacity: 0.45;
   }
   .hero-light-fade-overlay {
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(255, 255, 255, 0.85) 60%,
-      rgba(255, 255, 255, 0.95) 100%
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.5) 40%,
+      rgba(255, 255, 255, 0.5) 70%,
+      rgba(255, 255, 255, 0.9) 100%
     );
   }
   .hero-light-badge-wrap {
@@ -949,7 +953,7 @@ body.nav-open { overflow: hidden; }
   position: fixed;
   right: 24px;
   bottom: 24px;
-  z-index: 9999;
+  z-index: 100;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -2233,7 +2237,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .footer-brand img { 
-  width: 54px; 
+  width: 90px; 
   height: auto; 
   flex-shrink: 0;
   margin-bottom: 0;
@@ -2935,12 +2939,12 @@ body.bk-open { overflow: hidden; }
 }
 
 @media (max-width: 768px) {
-  :root { --sec-y: 64px; --header-h: 68px; }
+  :root { --sec-y: 64px; --header-h: 84px; }
   .pay-grid { grid-template-columns: 1fr; gap: 20px; }
   .pay-qr { max-width: 260px; margin-inline: auto; }
   .booking-panel { padding: 28px 22px 26px; max-height: calc(100dvh - 28px); }
   .booking { padding: 14px; }
-  .brand-mark { width: 60px; }
+  .brand-mark { width: 85px; }
   .brand-name { font-size: 17px; }
   .brand-sub { font-size: 9.5px; }
   .hero { padding-top: 36px; }
@@ -4308,15 +4312,8 @@ html, body { overflow-x: hidden; }
     margin-bottom: 22px;
   }
   .hero-light-actions {
-    flex-direction: column;
     gap: 12px;
     margin-bottom: 28px;
-  }
-  .hero-light-actions .btn-light-red,
-  .hero-light-actions .btn-trial,
-  .hero-light-actions .btn-light-outline {
-    width: 100%;
-    justify-content: center;
   }
   .hero-location-pill {
     font-size: 12px;
@@ -4328,35 +4325,26 @@ html, body { overflow-x: hidden; }
 /* ---------- 25d. Hero Stats Bar — Tablet & Mobile ---------- */
 @media (max-width: 768px) {
   .hero-light-stats {
-    gap: 14px;
-  }
-  .light-stat-item {
-    flex: 1 1 calc(50% - 14px);
-    min-width: 140px;
-  }
-  .stat-ic-circle {
-    width: 38px;
-    height: 38px;
-  }
-  .light-stat-val {
-    font-size: 16px;
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-light-stats {
+  .hero-light-actions {
     flex-direction: column;
-    gap: 12px;
   }
-  .light-stat-item {
-    flex: 1 1 100%;
+  .hero-light-actions .btn-light-red,
+  .hero-light-actions .btn-trial,
+  .hero-light-actions .btn-light-outline {
+    width: 100%;
+    justify-content: center;
   }
 }
 
 /* ---------- 25e. Fleet Cards — Mobile Refinements ---------- */
 @media (max-width: 560px) {
   .ride-actions {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
   .ride-media {
@@ -4510,10 +4498,26 @@ html, body { overflow-x: hidden; }
 }
 
 /* ---------- 25i. Booking Modal — Small Mobile ---------- */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 560px) {
   .booking-panel {
     width: 100vw;
+    height: 90vh; /* Bottom sheet effect */
+    height: 90dvh;
+    margin-top: 10vh;
+    margin-top: 10dvh;
+    border-radius: 24px 24px 0 0;
     padding: 24px 18px 32px;
+    transform: translateY(100%);
+  }
+  .booking.is-open .booking-panel { 
+    transform: translateY(0); 
   }
   .kyc-grid {
     grid-template-columns: 1fr;
