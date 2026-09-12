@@ -37,9 +37,22 @@
     var el = document.getElementById('siteHeader');
     if (!el) return;
     var ticking = false;
+    var lastScrollY = window.scrollY;
 
     function update() {
-      el.classList.toggle('is-scrolled', window.scrollY > 12);
+      var currentScrollY = window.scrollY;
+      
+      // Toggle shadow/background on scroll
+      el.classList.toggle('is-scrolled', currentScrollY > 12);
+      
+      // Smart header: hide on scroll down, show on scroll up
+      if (currentScrollY > 150 && currentScrollY > lastScrollY) {
+        el.classList.add('is-hidden');
+      } else if (currentScrollY < lastScrollY) {
+        el.classList.remove('is-hidden');
+      }
+      
+      lastScrollY = currentScrollY;
       ticking = false;
     }
     window.addEventListener('scroll', function () {
