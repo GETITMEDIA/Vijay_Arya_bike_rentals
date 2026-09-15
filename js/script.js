@@ -1609,9 +1609,7 @@
             contact: '+91' + activeBookingData.customerPhone,
             email: activeBookingData.customerEmail || ''
           },
-          theme: {
-            color: '#EF3138'
-          },
+          // No theme override — Razorpay uses its own default blue checkout theme
           handler: function (response) {
             handlePaymentSuccess(response, activeBookingData);
           },

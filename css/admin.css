@@ -2650,7 +2650,7 @@ body {
   .admin-layout.is-collapsed .nav-item::after { display: none; }
 }
 
-@media (min-width: 901px) {
+@media (min-width: 1024px) {
   .sidebar-scrim { display: none !important; }
 }
 
@@ -3156,4 +3156,467 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 14px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   22. RESPONSIVE SYSTEM  (v17)
+   Desktop >=1024px · Tablet 768-1023px · Large phone 481-767px · Phone <=480px
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Safe areas for iOS home indicator / mobile browser chrome */
+:root { --safe-b: env(safe-area-inset-bottom, 0px); }
+
+.admin-layout { min-height: 100dvh; }
+
+/* Never let anything push the page sideways */
+html, body { max-width: 100%; overflow-x: hidden; }
+.admin-main, .admin-content-wrap { min-width: 0; }
+img, svg, video, canvas { max-width: 100%; }
+
+/* ─────────────────────────────────────────────
+   TABLET & BELOW (<1024px) — sidebar becomes a drawer
+   ───────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+    width: min(84vw, 300px);
+    box-shadow: none;
+  }
+
+  .admin-sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 0 0 48px rgba(0, 0, 0, .4);
+  }
+
+  .admin-main { margin-left: 0 !important; }
+
+  /* The icon rail is a desktop-only idea */
+  .admin-layout.is-collapsed .admin-sidebar { width: min(84vw, 300px); }
+  .admin-layout.is-collapsed .sidebar-brand,
+  .admin-layout.is-collapsed .nav-item span,
+  .admin-layout.is-collapsed .sidebar-action-btn span { display: block; }
+  .admin-layout.is-collapsed .sidebar-header { justify-content: flex-start; padding: 18px 16px; }
+  .admin-layout.is-collapsed .nav-item,
+  .admin-layout.is-collapsed .sidebar-action-btn {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 12px 14px;
+    gap: 12px;
+    justify-content: flex-start;
+    border-radius: var(--r);
+  }
+  .admin-layout.is-collapsed .nav-item::after,
+  .admin-layout.is-collapsed .sidebar-action-btn::after { display: none; }
+
+  /* Finger-sized nav rows */
+  .nav-item, .sidebar-action-btn { min-height: 48px; }
+
+  .sidebar-footer { padding-bottom: calc(14px + var(--safe-b)); }
+
+  /* Topbar */
+  .admin-topbar { padding: 0 16px; height: 60px; }
+  .topbar-title { font-size: 16px; }
+  .admin-content-wrap { padding: 20px 16px calc(28px + var(--safe-b)); }
+
+  /* Stat cards: 2 x 2 */
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Fleet: 2 per row */
+  .fleet-admin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ─────────────────────────────────────────────
+   LARGE PHONES & SMALL TABLETS (<768px)
+   ───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .admin-topbar { padding: 0 12px; height: 56px; gap: 8px; }
+  .topbar-title {
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .topbar-date { display: none; }
+  .topbar-user { padding: 5px 10px 5px 5px; }
+  .topbar-user-mail { max-width: 96px; font-size: 11.5px; }
+
+  .admin-content-wrap { padding: 16px 12px calc(28px + var(--safe-b)); }
+
+  /* Dashboard header + filter stack */
+  .dash-head { flex-direction: column; align-items: stretch; gap: 12px; }
+  .dash-head-text h3 { font-size: 19px; }
+  .dash-filter {
+    width: 100%;
+    height: 48px;
+    justify-content: space-between;
+    border-radius: var(--r);
+    padding: 0 10px 0 14px;
+  }
+  .dash-period-select { flex: 1; height: 44px; font-size: 15px; }
+
+  .dash-dates {
+    width: 100%;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: var(--r);
+  }
+  .dash-dates input[type="date"] {
+    flex: 1 1 130px;
+    width: auto;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  /* One-line filter bar wraps into stacked, full-width controls */
+  .filter-bar { gap: 8px; padding: 10px; }
+  .filter-bar .search-input-wrap { flex: 1 1 100%; }
+  .filter-bar .search-input-wrap input { height: 44px; font-size: 16px; }
+  .filter-bar .filter-select { flex: 1 1 calc(50% - 4px); height: 44px; font-size: 15px; }
+  .filter-count-badge { margin-left: 0; flex: 1 1 100%; text-align: center; }
+
+  /* Horizontally scrollable chip rows, no visible scrollbar */
+  .period-chips,
+  .date-chips-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .period-chips::-webkit-scrollbar,
+  .date-chips-row::-webkit-scrollbar { height: 0; }
+  .period-chip, .date-chip { flex: none; min-height: 44px; padding: 0 16px; font-size: 13px; }
+
+  /* Section headers */
+  .section-header-bar { flex-direction: column; align-items: stretch; }
+  .section-heading-group h3 { font-size: 18px; }
+  .action-bar-right { width: 100%; }
+  .action-bar-right .btn-primary-admin,
+  .action-bar-right .btn-secondary-admin { width: 100%; justify-content: center; min-height: 46px; }
+
+  /* Stat cards: single column */
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .stat-card { padding: 16px 18px; }
+  .stat-value { font-size: 26px; }
+
+  /* Fleet: one card per row */
+  .fleet-admin-grid { grid-template-columns: 1fr; }
+  .bike-card-actions { gap: 8px; }
+  .btn-card-action { min-height: 44px; }
+
+  /* Tables become cards */
+  .table-card { border: none; box-shadow: none; background: transparent; }
+  .table-responsive { overflow: visible; }
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
+  .admin-table thead { display: none; }
+
+  .admin-table tr {
+    background: var(--card-bg);
+    border: 1px solid var(--n-200);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-xs);
+    padding: 6px 14px;
+    margin-bottom: 12px;
+  }
+
+  .admin-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--n-100);
+    text-align: right;
+  }
+
+  .admin-table tr td:last-child { border-bottom: none; }
+
+  .admin-table td::before {
+    content: attr(data-label);
+    flex: none;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--n-400);
+    text-align: left;
+  }
+
+  .admin-table td > * { margin-left: auto; }
+  .admin-table td .stack-cell,
+  .admin-table td .customer-cell { align-items: flex-end; text-align: right; }
+
+  /* Empty state stays a normal block */
+  .admin-table td.table-empty-state {
+    display: block;
+    text-align: center;
+    padding: 36px 16px;
+  }
+  .admin-table td.table-empty-state::before { content: none; }
+
+  /* Touch-safe actions */
+  .col-actions { text-align: right; }
+  .table-actions { gap: 10px; justify-content: flex-end; }
+  .table-action-icon-btn { width: 42px; height: 42px; border-radius: 10px; }
+  .status-select { min-width: 160px; height: 42px; font-size: 13px; }
+
+  /* Modals: near full-width sheet */
+  .modal-dialog {
+    width: 95%;
+    max-width: 95%;
+    max-height: 90dvh;
+    margin: 0 auto;
+    border-radius: 18px;
+    overflow-y: auto;
+  }
+  .modal-head { padding: 16px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; }
+  .modal-body { padding: 16px; }
+  .modal-foot {
+    padding: 14px 16px calc(14px + var(--safe-b));
+    position: sticky;
+    bottom: 0;
+    background: var(--card-bg);
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+  .modal-foot > * { width: 100%; justify-content: center; min-height: 48px; }
+  .modal-close-btn { width: 42px; height: 42px; font-size: 24px; }
+
+  /* Forms: 16px inputs (no iOS auto-zoom), full width, roomy rows */
+  .form-row { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .form-group { width: 100%; }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .form-group textarea { min-height: 88px; }
+
+  /* Photo upload boxes stack */
+  .veh-photos-grid { grid-template-columns: 1fr; gap: 14px; }
+  .photo-preview-box { height: 170px; }
+  .btn-photo-pick, .btn-photo-reset { min-height: 46px; }
+
+  /* KYC document cards + lightbox */
+  .receipt-kyc-cards { grid-template-columns: 1fr; }
+  .kyc-doc-thumb-box { height: 180px; }
+  .kyc-doc-btn { min-height: 44px; }
+
+  .lightbox-img, #lightboxImg {
+    max-width: 100%;
+    max-height: 75dvh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    touch-action: pinch-zoom;
+  }
+
+  /* Login card */
+  .login-card { padding: 30px 20px 26px; border-radius: 18px; }
+  .login-field { font-size: 16px; height: 50px; }
+  .login-btn { min-height: 50px; }
+}
+
+/* ─────────────────────────────────────────────
+   PHONES (<=480px)
+   ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .admin-topbar { padding: 0 10px; }
+  .admin-content-wrap { padding: 14px 10px calc(24px + var(--safe-b)); }
+
+  .topbar-user-mail { display: none; }
+  .topbar-user { padding: 4px; border-radius: 50%; }
+  .hamburger-btn { width: 44px; height: 44px; }
+
+  .dash-head-text h3 { font-size: 18px; }
+  .stat-value { font-size: 24px; }
+
+  .filter-bar .filter-select { flex: 1 1 100%; }
+  .dash-dates input[type="date"] { flex: 1 1 100%; }
+
+  .admin-table tr { padding: 4px 12px; }
+  .admin-table td { padding: 9px 0; font-size: 12.5px; }
+  .payment-id-tag { max-width: 130px; }
+
+  .modal-dialog { width: 96%; max-width: 96%; border-radius: 16px; }
+  .confirm-dialog { padding: 24px 18px 20px; }
+  .confirm-actions { flex-direction: column-reverse; }
+  .confirm-actions > * { width: 100%; min-height: 48px; }
+
+  .sidebar-logo-chip { width: 44px; height: 44px; }
+  .sidebar-brand h1 { font-size: 15px; }
+}
+
+/* ─────────────────────────────────────────────
+   VERY SMALL PHONES (<=360px)
+   ───────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .topbar-title { font-size: 14px; }
+  .stat-value { font-size: 22px; }
+  .admin-content-wrap { padding-left: 8px; padding-right: 8px; }
+}
+
+/* Pointer-coarse devices: never shrink a tap target below 44px */
+@media (pointer: coarse) {
+  button, .btn-primary-admin, .btn-secondary-admin,
+  .table-action-icon-btn, .kyc-doc-btn, .icon-btn-ghost,
+  .period-chip, .date-chip, .nav-item, .sidebar-action-btn { min-height: 44px; }
+
+  .status-menu-item { min-height: 46px; }
+}
+
+/* Lightbox on touch devices (v17) */
+@media (max-width: 767px) {
+  .modal-dialog-lightbox { width: 96%; max-width: 96%; }
+  .lightbox-head { padding: 12px 14px; }
+  .lightbox-head h4 { font-size: 14px; }
+  .lightbox-body { padding: 10px; overflow: auto; -webkit-overflow-scrolling: touch; }
+  .lightbox-foot {
+    flex-direction: column-reverse;
+    gap: 10px;
+    padding: 12px 14px calc(12px + var(--safe-b));
+  }
+  .lightbox-foot > * { width: 100%; justify-content: center; min-height: 48px; }
+}
+
+/* Stat cards stay a 2 x 2 grid on phones (v18) */
+@media (max-width: 767px) {
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .stat-card { padding: 14px 14px 13px; }
+  .stat-label { font-size: 11.5px; line-height: 1.3; }
+  .stat-value { font-size: 22px; margin: 3px 0 2px; }
+  .stat-sub {
+    font-size: 10.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 360px) {
+  .stats-grid { gap: 8px; }
+  .stat-card { padding: 12px; }
+  .stat-value { font-size: 19px; }
+  .stat-label { font-size: 11px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   23. COMPACT MOBILE CONTROLS  (v19)
+   Nothing oversized on phones — consistent 40-44px controls everywhere
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Dashboard period pill */
+  .dash-filter {
+    height: 44px;
+    padding: 0 8px 0 12px;
+    gap: 6px;
+  }
+  .dash-period-select {
+    height: 40px;
+    font-size: 14px;
+    padding: 0 24px 0 4px;
+    background-position: right 2px center;
+  }
+  .dash-filter-ic { width: 14px; height: 14px; }
+
+  .dash-dates { padding: 6px 8px; gap: 6px; }
+  .dash-dates input[type="date"] { height: 38px; font-size: 16px; }
+
+  /* Section header: title left, action inline (not a full-width slab) */
+  .section-header-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .section-heading-group { flex: 1 1 100%; }
+  .section-heading-group h3 { font-size: 17px; }
+  .section-heading-group p { font-size: 12px; }
+
+  .action-bar-right { width: auto; }
+  .action-bar-right .btn-primary-admin,
+  .action-bar-right .btn-secondary-admin {
+    width: auto;
+    min-height: 40px;
+    height: 40px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  .btn-compact {
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 12px !important;
+    font-size: 12.5px !important;
+  }
+  .btn-compact .ic { width: 14px; height: 14px; }
+
+  /* Filter bar: slimmer rows */
+  .filter-bar { gap: 8px; padding: 9px; }
+  .filter-bar .search-input-wrap input { height: 42px; font-size: 16px; }
+  .filter-bar .filter-select { height: 42px; font-size: 14px; }
+  .filter-count-badge { font-size: 11.5px; padding: 6px 10px; }
+
+  /* Buttons inside modals / cards */
+  .modal-foot > * { min-height: 44px; font-size: 14px; }
+  .btn-card-action { min-height: 40px; font-size: 12px; }
+  .kyc-doc-btn { min-height: 40px; font-size: 12px; }
+  .btn-photo-pick, .btn-photo-reset { min-height: 42px; font-size: 13px; }
+  .confirm-actions > * { min-height: 44px; }
+
+  /* Table controls */
+  .table-action-icon-btn { width: 38px; height: 38px; }
+  .status-select { min-width: 148px; height: 38px; font-size: 12.5px; }
+
+  /* Chips */
+  .period-chip, .date-chip { min-height: 38px; height: 38px; padding: 0 14px; font-size: 12.5px; }
+}
+
+/* Touch targets: comfortable, not chunky */
+@media (pointer: coarse) {
+  button, .btn-primary-admin, .btn-secondary-admin,
+  .table-action-icon-btn, .kyc-doc-btn, .icon-btn-ghost,
+  .period-chip, .date-chip, .nav-item, .sidebar-action-btn { min-height: 38px; }
+
+  .status-menu-item { min-height: 42px; }
+}
+
+/* Vehicle card actions stay on one compact row on phones (v20) */
+@media (max-width: 767px) {
+  .bike-card-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+  .bike-card-actions .status-menu-wrap { flex: 1 1 auto; min-width: 0; }
+  .btn-card-action {
+    height: 36px;
+    min-height: 36px;
+    padding: 0 8px;
+    font-size: 11.5px;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .btn-card-action .ic { width: 14px; height: 14px; }
+  .btn-card-delete { flex: 0 0 38px; padding: 0; }
+  .status-menu { min-width: 176px; }
+}
+
+@media (max-width: 360px) {
+  .bike-card-actions { gap: 5px; padding: 9px 10px; }
+  .btn-card-action { font-size: 11px; padding: 0 6px; }
+  .btn-card-delete { flex: 0 0 34px; }
 }

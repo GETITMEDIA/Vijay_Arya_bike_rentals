@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Admin Dashboard | Vijay Arya Bike Rentals</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="assets/logo/logo.png" type="image/png">
@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=16.0">
+  <link rel="stylesheet" href="css/admin.css?v=20.0">
 </head>
 
 <body>
@@ -227,7 +227,7 @@
               <h3>Recent Bookings</h3>
               <p>Latest reservations received from your website</p>
             </div>
-            <button class="btn-secondary-admin" id="btnGoToTransactions">View All Transactions &rarr;</button>
+            <button class="btn-secondary-admin btn-compact" id="btnGoToTransactions"><span>View All</span><svg class="ic"><use href="#ic-arrow-right"></use></svg></button>
           </div>
 
           <div class="table-card">
@@ -780,7 +780,7 @@
     var sidebarScrim = document.getElementById('sidebarScrim');
 
     function isMobileLayout() {
-      return window.matchMedia('(max-width: 900px)').matches;
+      return window.matchMedia('(max-width: 1023px)').matches;
     }
 
     function setCollapsed(collapsed) {
@@ -989,13 +989,13 @@
       recent.forEach(function (b) {
         var statusBadge = getStatusBadge(b.status || 'CONFIRMED');
         html += '<tr>' +
-          '<td><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
-          '<td><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">' + (b.customerPhone || '') + '</span></div></td>' +
-          '<td><strong>' + (b.bikeName || 'Vehicle') + '</strong></td>' +
-          '<td><span class="cell-dates">' + (b.startDate || '—') + ' → ' + (b.endDate || '—') + '</span></td>' +
-          '<td><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong></td>' +
-          '<td>' + statusBadge + '</td>' +
-          '<td><button class="table-action-icon-btn" title="View receipt" onclick="viewReceipt(\'' + b.bookingId + '\')">' + icon('file') + '</button></td>' +
+          '<td data-label="Booking"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
+          '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">' + (b.customerPhone || '') + '</span></div></td>' +
+          '<td data-label="Vehicle"><strong>' + (b.bikeName || 'Vehicle') + '</strong></td>' +
+          '<td data-label="Rental dates"><span class="cell-dates">' + (b.startDate || '—') + ' → ' + (b.endDate || '—') + '</span></td>' +
+          '<td data-label="Advance"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong></td>' +
+          '<td data-label="Status">' + statusBadge + '</td>' +
+          '<td data-label="Receipt"><button class="table-action-icon-btn" title="View receipt" onclick="viewReceipt(\'' + b.bookingId + '\')">' + icon('file') + '</button></td>' +
         '</tr>';
       });
 
@@ -1440,18 +1440,18 @@
         }
 
         html += '<tr>' +
-          '<td><div class="stack-cell"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span>' +
+          '<td data-label="Booking"><div class="stack-cell"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span>' +
             '<span class="payment-id-tag" title="Razorpay payment ID">' + (b.paymentId || 'N/A') + '</span></div></td>' +
-          '<td><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">+91 ' + (b.customerPhone || '') + '</span></div></td>' +
-          '<td><div class="stack-cell"><strong>' + (b.bikeName || 'Vehicle') + '</strong>' +
+          '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">+91 ' + (b.customerPhone || '') + '</span></div></td>' +
+          '<td data-label="Vehicle"><div class="stack-cell"><strong>' + (b.bikeName || 'Vehicle') + '</strong>' +
             '<small class="cell-muted">Qty ' + (b.quantity || 1) + '</small></div></td>' +
-          '<td><div class="stack-cell"><strong>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</strong>' +
+          '<td data-label="Rental period"><div class="stack-cell"><strong>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</strong>' +
             '<small class="cell-muted">' + (b.startDate || '—') + ' → ' + (b.endDate || '—') + '</small></div></td>' +
-          '<td><div class="stack-cell"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong>' +
+          '<td data-label="Advance"><div class="stack-cell"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong>' +
             '<small class="cell-muted">Due ₹' + (b.balanceDue || 0) + '</small></div></td>' +
-          '<td>' + kycBadge + '</td>' +
-          '<td>' + statusSelect + '</td>' +
-          '<td class="col-actions"><div class="table-actions">' +
+          '<td data-label="KYC">' + kycBadge + '</td>' +
+          '<td data-label="Status">' + statusSelect + '</td>' +
+          '<td class="col-actions" data-label="Actions"><div class="table-actions">' +
             '<button class="table-action-icon-btn" onclick="viewReceipt(\'' + b.bookingId + '\')" title="View Receipt & Documents">' + icon('file') + '</button>' +
             whatsBtn +
             '<button class="table-action-icon-btn is-danger" onclick="deleteBooking(\'' + b.bookingId + '\')" title="Delete booking">' + icon('trash') + '</button>' +
