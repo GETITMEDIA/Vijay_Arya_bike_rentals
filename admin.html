@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=5.0">
+  <link rel="stylesheet" href="css/admin.css?v=16.0">
 </head>
 
 <body>
@@ -87,11 +87,14 @@
 
   <!-- ============================ 2. MAIN DASHBOARD LAYOUT ============================ -->
   <div class="admin-layout" id="adminApp">
+    <div class="sidebar-scrim" id="sidebarScrim" hidden></div>
     
     <!-- SIDEBAR -->
     <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-header">
-        <img src="assets/logo/logo.png" alt="Logo" class="sidebar-logo">
+        <span class="sidebar-logo-chip">
+          <img src="assets/logo/logo.png" alt="Vijay Arya Bike Rentals logo" class="sidebar-logo">
+        </span>
         <div class="sidebar-brand">
           <h1>Vijay Arya</h1>
           <span>ADMIN DASHBOARD</span>
@@ -99,35 +102,32 @@
       </div>
 
       <nav class="sidebar-nav">
-        <button class="nav-item is-active" data-tab="dashboard">
+        <button class="nav-item is-active" data-tab="dashboard" data-label="Dashboard">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           <span>Dashboard Overview</span>
         </button>
 
-        <button class="nav-item" data-tab="vehicles">
+        <button class="nav-item" data-tab="vehicles" data-label="Vehicles">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"></circle><circle cx="18.5" cy="17.5" r="3.5"></circle><path d="M15 6a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1l-2 7h10l-2-7z"></path></svg>
           <span>Vehicle Management</span>
         </button>
 
-        <button class="nav-item" data-tab="transactions">
+        <button class="nav-item" data-tab="transactions" data-label="Bookings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
           <span>Bookings &amp; Transactions</span>
         </button>
 
-        <button class="nav-item" data-tab="settings">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-          <span>Data &amp; Settings</span>
         </button>
       </nav>
 
       <div class="sidebar-footer">
-        <a href="index.html" class="sidebar-action-btn" target="_blank">
+        <a href="index.html" class="sidebar-action-btn" data-label="Open Website" target="_blank">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
           <span>Open Main Website</span>
         </a>
-        <button class="sidebar-action-btn logout-btn" id="logoutBtn" type="button">
+        <button class="sidebar-action-btn logout-btn" id="logoutBtn" data-label="Log Out" type="button">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-          <span>Lock / Log Out</span>
+          <span>Log Out</span>
         </button>
       </div>
     </aside>
@@ -138,14 +138,18 @@
       <!-- TOPBAR -->
       <header class="admin-topbar">
         <div class="topbar-left">
-          <button class="menu-toggle-btn" id="sidebarToggle" aria-label="Toggle Navigation">&equiv;</button>
+          <button class="hamburger-btn" id="sidebarToggle" type="button" aria-label="Toggle navigation menu"
+            aria-expanded="true">
+            <span class="hamburger-lines"><span></span><span></span><span></span></span>
+          </button>
           <h2 class="topbar-title" id="pageHeading">Dashboard Overview</h2>
         </div>
 
         <div class="topbar-right">
-          <div class="badge-live-pulse">
-            <span class="pulse-dot"></span>
-            <span>Razorpay Test Mode Active</span>
+          <span class="topbar-date" id="topbarDate"></span>
+          <div class="topbar-user">
+            <span class="topbar-avatar"><svg class="ic"><use href="#ic-user"></use></svg></span>
+            <span class="topbar-user-mail" id="topbarUser">admin</span>
           </div>
         </div>
       </header>
@@ -155,66 +159,73 @@
         <!-- ==================== TAB 1: DASHBOARD OVERVIEW ==================== -->
         <section class="admin-tab-content is-active" id="tabDashboard">
 
-          <!-- DATE PERIOD FILTER -->
-          <div class="period-bar">
-            <div class="period-bar-left">
-              <svg class="ic"><use href="#ic-clipboard"></use></svg>
-              <span>Showing data for</span>
+          <!-- DASHBOARD HEADER + COMPACT DATE FILTER -->
+          <div class="dash-head">
+            <div class="dash-head-text">
+              <h3>Business Overview</h3>
+              <p id="periodRangeLabel">All bookings</p>
             </div>
-            <div class="period-chips" id="periodChips">
-              <button type="button" class="period-chip" data-period="today">Today</button>
-              <button type="button" class="period-chip" data-period="7">Last 7 Days</button>
-              <button type="button" class="period-chip" data-period="30">Last 30 Days</button>
-              <button type="button" class="period-chip" data-period="month">This Month</button>
-              <button type="button" class="period-chip is-active" data-period="all">All Time</button>
+
+            <div class="dash-filter">
+              <svg class="ic dash-filter-ic"><use href="#ic-sheet"></use></svg>
+              <select class="dash-period-select" id="dashPeriodSelect" aria-label="Date period">
+                <option value="all" selected>All time</option>
+                <option value="today">Today</option>
+                <option value="7">Last 7 days</option>
+                <option value="30">Last 30 days</option>
+                <option value="month">This month</option>
+                <option value="lastmonth">Last month</option>
+                <option value="custom">Custom dates&hellip;</option>
+              </select>
+
+              <div class="dash-dates" id="dashCustomDates" hidden>
+                <input type="date" id="dashDateFrom" aria-label="From date">
+                <span class="dash-dates-sep">&ndash;</span>
+                <input type="date" id="dashDateTo" aria-label="To date">
+              </div>
             </div>
-            <span class="period-range-label" id="periodRangeLabel">All bookings</span>
           </div>
 
           <!-- STAT CARDS -->
           <div class="stats-grid">
             <div class="stat-card">
               <div>
-                <div class="stat-label">Total Advance Revenue</div>
+                <div class="stat-label">Advance Collected</div>
                 <div class="stat-value" id="statRevenue">&#8377;0</div>
-                <div class="stat-sub">Collected via Razorpay &amp; UPI</div>
+                <div class="stat-sub" id="statRevenueSub">All bookings</div>
               </div>
-              <div class="stat-icon-wrap stat-icon-green"><svg class="ic ic-lg"><use href="#ic-rupee"></use></svg></div>
             </div>
 
             <div class="stat-card">
               <div>
-                <div class="stat-label">Total Bookings</div>
+                <div class="stat-label">Bookings</div>
                 <div class="stat-value" id="statBookings">0</div>
-                <div class="stat-sub">Confirmed online reservations</div>
+                <div class="stat-sub" id="statBookingsSub">All bookings</div>
               </div>
-              <div class="stat-icon-wrap stat-icon-red"><svg class="ic ic-lg"><use href="#ic-clipboard"></use></svg></div>
             </div>
 
             <div class="stat-card">
               <div>
                 <div class="stat-label">Available Vehicles</div>
                 <div class="stat-value" id="statAvailableFleet">0</div>
-                <div class="stat-sub">Ready for immediate pickup</div>
+                <div class="stat-sub">Ready to rent right now</div>
               </div>
-              <div class="stat-icon-wrap stat-icon-blue"><svg class="ic ic-lg"><use href="#ic-scooter"></use></svg></div>
             </div>
 
             <div class="stat-card">
               <div>
-                <div class="stat-label">Fleet Size</div>
+                <div class="stat-label">Total Vehicles</div>
                 <div class="stat-value" id="statTotalFleet">0</div>
-                <div class="stat-sub">Total catalog inventory</div>
+                <div class="stat-sub">Vehicles in your catalogue</div>
               </div>
-              <div class="stat-icon-wrap stat-icon-yellow"><svg class="ic ic-lg"><use href="#ic-wrench"></use></svg></div>
             </div>
           </div>
 
           <!-- RECENT BOOKINGS TABLE -->
           <div class="section-header-bar">
             <div class="section-heading-group">
-              <h3>Recent Bookings &amp; Payments</h3>
-              <p>Real-time customer reservations from your website</p>
+              <h3>Recent Bookings</h3>
+              <p>Latest reservations received from your website</p>
             </div>
             <button class="btn-secondary-admin" id="btnGoToTransactions">View All Transactions &rarr;</button>
           </div>
@@ -225,13 +236,12 @@
                 <thead>
                   <tr>
                     <th>Booking ID</th>
-                    <th>Payment ID</th>
                     <th>Customer</th>
                     <th>Vehicle</th>
                     <th>Rental Dates</th>
                     <th>Advance Paid</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Receipt</th>
                   </tr>
                 </thead>
                 <tbody id="recentBookingsTbody">
@@ -247,7 +257,7 @@
           <div class="section-header-bar">
             <div class="section-heading-group">
               <h3>Fleet Inventory Management</h3>
-              <p>Manage rental rates, categories, and vehicle availability in real time</p>
+              <p>Add, edit and update the vehicles shown on your website</p>
             </div>
             <div class="action-bar-right">
               <button class="btn-primary-admin" id="btnAddVehicle">
@@ -258,7 +268,7 @@
           </div>
 
           <!-- Filter & Search -->
-          <div class="filter-search-box">
+          <div class="filter-bar">
             <div class="search-input-wrap">
               <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               <input type="text" id="vehicleSearchInput" placeholder="Search vehicle name or category...">
@@ -267,7 +277,6 @@
               <option value="ALL">All Categories</option>
               <option value="SCOOTER">Scooters</option>
               <option value="BIKE">Motorcycles</option>
-              <option value="PREMIUM">Premium / Sports</option>
             </select>
             <select class="filter-select" id="vehicleStatusFilter">
               <option value="ALL">All Status</option>
@@ -288,79 +297,50 @@
           <div class="section-header-bar">
             <div class="section-heading-group">
               <h3>All Transactions &amp; Bookings</h3>
-              <p>Complete history of online Razorpay advances and customer bookings</p>
+              <p>Every booking received from your website, with payment and KYC details</p>
             </div>
             <div class="action-bar-right">
               <button class="btn-secondary-admin" id="btnExportCSV">
                 <svg class="ic"><use href="#ic-sheet"></use></svg>
-                <span>Export to CSV (Excel)</span>
+                <span>Export CSV</span>
               </button>
             </div>
           </div>
 
-          <!-- Search & Filter -->
-          <div class="filter-search-box">
+          <!-- Compact one-line filter bar -->
+          <div class="filter-bar">
             <div class="search-input-wrap">
               <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              <input type="text" id="transSearchInput" placeholder="Search by Booking ID, Payment ID, Customer name or Phone...">
+              <input type="text" id="transSearchInput" placeholder="Search booking ID, customer or phone&hellip;">
             </div>
+
             <select class="filter-select" id="transStatusFilter">
-              <option value="ALL">All Statuses</option>
-              <option value="CONFIRMED">Confirmed</option>
-              <option value="ONGOING">Vehicle Collected</option>
-              <option value="COMPLETED">Completed</option>
+              <option value="ALL">All statuses</option>
+              <option value="CONFIRMED">Advance Paid</option>
+              <option value="ONGOING">Bike Collected</option>
+              <option value="COMPLETED">Returned &amp; Paid</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
-          </div>
 
-          <!-- Enhanced Interactive Date Filter Bar -->
-          <div class="date-filter-panel">
-            <div class="date-filter-header">
-              <div class="date-field-type-group">
-                <span class="filter-label-text"><svg class="ic" style="width:15px;height:15px;color:var(--admin-primary);"><use href="#ic-sheet"></use></svg> Filter By:</span>
-                <select class="filter-select date-type-select" id="transDateField" title="Which date to filter on">
-                  <option value="booked">Booking Date (Payment Time)</option>
-                  <option value="start">Rental Start / Pickup Date</option>
-                  <option value="end">Rental End / Return Date</option>
-                </select>
-              </div>
-              <div class="date-inputs-cluster">
-                <div class="date-input-field">
-                  <label for="transDateFrom">From Date</label>
-                  <input type="date" class="filter-date-input" id="transDateFrom">
-                </div>
-                <div class="date-input-field">
-                  <label for="transDateTo">To Date</label>
-                  <input type="date" class="filter-date-input" id="transDateTo">
-                </div>
-                <button type="button" class="btn-clear-date" id="btnClearDateFilter" title="Reset date filters">
-                  <svg class="ic"><use href="#ic-refresh"></use></svg>
-                  <span>Clear</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Quick Preset Chips -->
-            <div class="date-chips-row">
-              <span class="chips-label">Quick Select:</span>
-              <button type="button" class="date-chip is-active" data-range="all">All Dates</button>
-              <button type="button" class="date-chip" data-range="today">Today</button>
-              <button type="button" class="date-chip" data-range="tomorrow">Tomorrow</button>
-              <button type="button" class="date-chip" data-range="week">This Week</button>
-              <button type="button" class="date-chip" data-range="month">This Month</button>
-              <button type="button" class="date-chip" data-range="30">Last 30 Days</button>
-              <span class="filter-count-badge" id="transResultCount"></span>
-            </div>
-            <!-- Hidden quick range select for backward compatibility -->
-            <select id="transQuickRange" style="display:none;">
-              <option value="">All</option>
+            <select class="filter-select" id="transRangeSelect" title="Date range">
+              <option value="all" selected>All dates</option>
               <option value="today">Today</option>
-              <option value="tomorrow">Tomorrow</option>
-              <option value="week">This Week</option>
-              <option value="7">Last 7 Days</option>
-              <option value="30">Last 30 Days</option>
-              <option value="month">This Month</option>
+              <option value="7">Last 7 days</option>
+              <option value="30">Last 30 days</option>
+              <option value="month">This month</option>
+              <option value="lastmonth">Last month</option>
+              <option value="custom">Custom dates&hellip;</option>
             </select>
+
+            <div class="dash-dates" id="transCustomDates" hidden>
+              <input type="date" id="transDateFrom" aria-label="From date">
+              <span class="dash-dates-sep">&ndash;</span>
+              <input type="date" id="transDateTo" aria-label="To date">
+            </div>
+
+            <input type="hidden" id="transDateField" value="booked">
+
+            <span class="filter-count-badge" id="transResultCount"></span>
           </div>
 
           <!-- Full Table -->
@@ -369,15 +349,14 @@
               <table class="admin-table">
                 <thead>
                   <tr>
-                    <th>Booking ID</th>
-                    <th>Payment ID</th>
-                    <th>Customer Details</th>
-                    <th>Vehicle Reserved</th>
+                    <th>Booking</th>
+                    <th>Customer</th>
+                    <th>Vehicle</th>
                     <th>Rental Period</th>
-                    <th>Advance Paid</th>
-                    <th>KYC Verification</th>
+                    <th>Advance</th>
+                    <th>KYC</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="col-actions">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="allBookingsTbody">
@@ -388,72 +367,6 @@
           </div>
         </section>
 
-        <!-- ==================== TAB 4: DATA & SETTINGS ==================== -->
-        <section class="admin-tab-content" id="tabSettings">
-          <div class="section-heading-group" style="margin-bottom: 24px;">
-            <h3>Data Backup &amp; Admin Settings</h3>
-            <p>Export, backup, restore JSON data, or change your login credentials</p>
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
-            
-            <!-- Backup & Export -->
-            <div class="table-card" style="padding: 24px;">
-              <h4 class="card-head-icon"><svg class="ic ic-lg"><use href="#ic-archive"></use></svg><span>JSON Data Backup</span></h4>
-              <p style="font-size: 13px; color: var(--admin-text-muted); margin-bottom: 20px;">Download a complete JSON backup of all vehicles and transaction history or restore from an existing backup.</p>
-              
-              <div style="display: flex; flex-direction: column; gap: 12px;">
-                <button class="btn-primary-admin" id="btnExportJSON" style="justify-content: center;">
-                  <svg class="ic"><use href="#ic-download"></use></svg>
-                  <span>Download Complete JSON Backup</span>
-                </button>
-
-                <label class="btn-secondary-admin" style="justify-content: center; cursor: pointer; text-align: center;">
-                  <svg class="ic"><use href="#ic-upload"></use></svg>
-                  <span>Restore / Import JSON Backup</span>
-                  <input type="file" id="importJsonInput" accept=".json" style="display:none">
-                </label>
-
-                <button class="btn-secondary-admin" id="btnSeedDemoData" style="justify-content: center; color: var(--danger); border-color: #fecaca;">
-                  <svg class="ic"><use href="#ic-refresh"></use></svg>
-                  <span>Reset &amp; Load Default Demo Data</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Passcode Change -->
-            <div class="table-card" style="padding: 24px;">
-              <h4 class="card-head-icon"><svg class="ic ic-lg"><use href="#ic-lock"></use></svg><span>Login Credentials</span></h4>
-              <p style="font-size: 13px; color: var(--admin-text-muted); margin-bottom: 16px;">Change the email address and password used to sign in to this admin portal.</p>
-
-              <form id="changeCredsForm" autocomplete="off">
-                <div class="form-group">
-                  <label for="curPassword">Current Password</label>
-                  <input type="password" id="curPassword" placeholder="Enter current password" required>
-                </div>
-                <div class="form-group">
-                  <label for="newEmail">New Email Address</label>
-                  <input type="email" id="newEmail" placeholder="admin@vijayarya.com" required>
-                </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="newPassword">New Password (min 6 chars)</label>
-                    <input type="password" id="newPassword" minlength="6" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="confirmPassword">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" minlength="6" required>
-                  </div>
-                </div>
-                <button type="submit" class="btn-primary-admin" style="width: 100%; justify-content: center;">
-                  <svg class="ic"><use href="#ic-key"></use></svg>
-                  <span>Update Login Credentials</span>
-                </button>
-              </form>
-            </div>
-
-          </div>
-        </section>
 
       </div>
     </main>
@@ -486,28 +399,16 @@
               <select id="vehCategory" required>
                 <option value="SCOOTER">Scooter</option>
                 <option value="BIKE">Motorcycle</option>
-                <option value="PREMIUM">Premium / Cruiser</option>
               </select>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="vehDailyRate">Daily Rental Rate (&#8377; / day)</label>
-              <input type="number" id="vehDailyRate" min="100" step="50" value="500" required>
-            </div>
-            <div class="form-group">
               <label for="vehAdvance">Advance Booking Amount (&#8377;)</label>
               <input type="number" id="vehAdvance" min="0" step="50" value="500" required>
             </div>
-            <div class="form-group">
-              <label for="vehStatus">Availability Status <span class="req-star">*</span></label>
-              <select id="vehStatus" required>
-                <option value="AVAILABLE">Available</option>
-                <option value="ON_RENT">On Rent</option>
-                <option value="MAINTENANCE">In Maintenance</option>
-              </select>
-            </div>
+            <input type="hidden" id="vehStatus" value="AVAILABLE">
           </div>
 
           <!-- DUAL PHOTO UPLOAD SECTION: FRONT & BACK/SIDE VIEWS -->
@@ -536,22 +437,6 @@
                   <svg class="ic"><use href="#ic-trash"></use></svg>
                 </button>
               </div>
-              <div class="photo-preset-wrap">
-                <select class="photo-preset-select" id="vehFrontPreset">
-                  <option value="">Preset models&hellip;</option>
-                  <option value="assets/rentel-bikes/vespa_main_view.png">Vespa (Front)</option>
-                  <option value="assets/rentel-bikes/honda_activa_main_view.png">Honda Activa (Front)</option>
-                  <option value="assets/rentel-bikes/tvs_jupiter_main_view.png">TVS Jupiter (Front)</option>
-                  <option value="assets/rentel-bikes/suzuki_access_main_view.png">Suzuki Access (Front)</option>
-                  <option value="assets/rentel-bikes/dio_main_view.png">Honda Dio (Front)</option>
-                  <option value="assets/rentel-bikes/yamaha_fascino_main_view.png">Yamaha Fascino (Front)</option>
-                  <option value="assets/rentel-bikes/yamaha_ray_main_view.png">Yamaha Ray (Front)</option>
-                  <option value="assets/rentel-bikes/honda_clic_main_view.png">Honda Cliq (Front)</option>
-                  <option value="assets/rentel-bikes/Honda_navi_main_view.png">Honda Navi (Front)</option>
-                  <option value="assets/rentel-bikes/hero_splender_main_view.png">Hero Splendor (Front)</option>
-                  <option value="assets/rentel-bikes/yamaha_fz_main_view.png">Yamaha FZ (Front)</option>
-                </select>
-              </div>
               <input type="hidden" id="vehImage" value="">
             </div>
 
@@ -577,22 +462,6 @@
                 <button type="button" class="btn-photo-reset" id="btnClearBack" title="Clear photo">
                   <svg class="ic"><use href="#ic-trash"></use></svg>
                 </button>
-              </div>
-              <div class="photo-preset-wrap">
-                <select class="photo-preset-select" id="vehBackPreset">
-                  <option value="">Preset models&hellip;</option>
-                  <option value="assets/rentel-bikes/vespa_side_view.png">Vespa (Side/Back)</option>
-                  <option value="assets/rentel-bikes/honda_activa_side_view.png">Honda Activa (Side/Back)</option>
-                  <option value="assets/rentel-bikes/tvs_jupiter_side_view.png">TVS Jupiter (Side/Back)</option>
-                  <option value="assets/rentel-bikes/suzuki_access_side_view.png">Suzuki Access (Side/Back)</option>
-                  <option value="assets/rentel-bikes/dio_side_view.png">Honda Dio (Side/Back)</option>
-                  <option value="assets/rentel-bikes/yamaha_fascino_side_view.png">Yamaha Fascino (Side/Back)</option>
-                  <option value="assets/rentel-bikes/yamaha_ray_side_view.png">Yamaha Ray (Side/Back)</option>
-                  <option value="assets/rentel-bikes/honda_clic_side_view.png">Honda Cliq (Side/Back)</option>
-                  <option value="assets/rentel-bikes/honda_navi_side_view.png">Honda Navi (Side/Back)</option>
-                  <option value="assets/rentel-bikes/hero_spleander_side_view.png">Hero Splendor (Side/Back)</option>
-                  <option value="assets/rentel-bikes/yamaha_fz_side_view.png">Yamaha FZ (Side/Back)</option>
-                </select>
               </div>
               <input type="hidden" id="vehImageBack" value="">
             </div>
@@ -657,6 +526,20 @@
     </div>
   </div>
 
+  <!-- CONFIRM DIALOG -->
+  <div class="admin-modal confirm-modal" id="confirmModal">
+    <div class="modal-backdrop" data-confirm-cancel></div>
+    <div class="modal-dialog confirm-dialog">
+      <div class="confirm-icon"><svg class="ic"><use href="#ic-trash"></use></svg></div>
+      <h3 id="confirmTitle">Delete vehicle?</h3>
+      <p id="confirmText">This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button type="button" class="btn-secondary-admin" data-confirm-cancel>Cancel</button>
+        <button type="button" class="btn-danger-admin" id="confirmOkBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST CONTAINER -->
   <div class="toast-container" id="toastContainer"></div>
 
@@ -678,7 +561,7 @@
       { id: 'honda-navi', name: 'Honda Navi', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/Honda_navi_main_view.png', imageBack: 'assets/rentel-bikes/honda_navi_side_view.png', status: 'AVAILABLE', desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' },
       { id: 'hero-splendor', name: 'Hero Splendor', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/hero_splender_main_view.png', imageBack: 'assets/rentel-bikes/hero_spleander_side_view.png', status: 'AVAILABLE', desc: 'Legendary Indian commuter motorcycle offering unmatched fuel efficiency.' },
       { id: 'yamaha-fz', name: 'Yamaha FZ', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Muscular street bike with superior road grip for cruising ECR and Auroville.' },
-      { id: 're-gt650', name: 'Royal Enfield GT 650', category: 'PREMIUM', rate: 1200, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
+      { id: 're-gt650', name: 'Royal Enfield GT 650', category: 'BIKE', rate: 1200, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
     ];
 
     // LocalStorage Keys
@@ -705,6 +588,10 @@
     // Helper: Toast Message
     function showToast(msg) {
       var container = document.getElementById('toastContainer');
+
+      // One message at a time — a new toast replaces the previous one
+      container.innerHTML = '';
+
       var toast = document.createElement('div');
       toast.className = 'toast-msg';
       toast.innerHTML = icon('check') + '<span>' + msg + '</span>';
@@ -749,6 +636,7 @@
         document.getElementById('adminPassword').value = '';
         errorEl.style.display = 'none';
         showToast('Welcome back, Admin!');
+        renderTopbar();
         loadData();
       } else {
         errorEl.style.display = 'block';
@@ -795,10 +683,14 @@
               v.image = 'assets/rentel-bikes/honda_clic_main_view.png';
               healed = true;
             }
+            // Only Scooter and Motorcycle categories are used now
+            if (v.category !== 'SCOOTER' && v.category !== 'BIKE') {
+              v.category = 'BIKE';
+              healed = true;
+            }
             var def = DEFAULT_FLEET.find(function (d) { return d.id === v.id; });
             if (def) {
               if (!v.imageBack) { v.imageBack = def.imageBack; healed = true; }
-              if (!v.rate) { v.rate = def.rate; healed = true; }
             }
           });
           if (healed) {
@@ -844,8 +736,7 @@
     var tabTitles = {
       'dashboard': 'Dashboard Overview',
       'vehicles': 'Vehicle Fleet Management',
-      'transactions': 'All Bookings & Transactions',
-      'settings': 'Data Backup & Settings'
+      'transactions': 'All Bookings & Transactions'
     };
 
     function switchTab(tabId) {
@@ -862,7 +753,7 @@
 
       if (pageHeading) pageHeading.textContent = tabTitles[tabId] || 'Admin Dashboard';
 
-      // Close mobile sidebar if open
+      if (typeof setDrawerOpen === 'function') setDrawerOpen(false);
       document.getElementById('adminSidebar').classList.remove('is-open');
     }
 
@@ -877,9 +768,56 @@
       switchTab('transactions');
     });
 
-    document.getElementById('sidebarToggle').addEventListener('click', function () {
-      document.getElementById('adminSidebar').classList.toggle('is-open');
+    // ================================================================
+    // SIDEBAR: hamburger toggle
+    //  - wide screens: collapse the sidebar to an icon-only rail
+    //  - small screens: slide the sidebar in and out over the page
+    // ================================================================
+    var KEY_SIDEBAR = 'vijay_arya_sidebar_collapsed';
+    var sidebarEl = document.getElementById('adminSidebar');
+    var layoutEl = document.getElementById('adminApp');
+    var hamburgerEl = document.getElementById('sidebarToggle');
+    var sidebarScrim = document.getElementById('sidebarScrim');
+
+    function isMobileLayout() {
+      return window.matchMedia('(max-width: 900px)').matches;
+    }
+
+    function setCollapsed(collapsed) {
+      layoutEl.classList.toggle('is-collapsed', collapsed);
+      hamburgerEl.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      try { localStorage.setItem(KEY_SIDEBAR, collapsed ? '1' : '0'); } catch (e) { /* ignore */ }
+    }
+
+    function setDrawerOpen(open) {
+      sidebarEl.classList.toggle('is-open', open);
+      sidebarScrim.hidden = !open;
+      hamburgerEl.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    hamburgerEl.addEventListener('click', function () {
+      if (isMobileLayout()) {
+        setDrawerOpen(!sidebarEl.classList.contains('is-open'));
+      } else {
+        setCollapsed(!layoutEl.classList.contains('is-collapsed'));
+      }
     });
+
+    sidebarScrim.addEventListener('click', function () { setDrawerOpen(false); });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sidebarEl.classList.contains('is-open')) setDrawerOpen(false);
+    });
+
+    window.addEventListener('resize', function () {
+      if (!isMobileLayout() && sidebarEl.classList.contains('is-open')) setDrawerOpen(false);
+    });
+
+    // Restore the saved rail state on wide screens
+    try {
+      if (!isMobileLayout() && localStorage.getItem(KEY_SIDEBAR) === '1') setCollapsed(true);
+    } catch (e) { /* ignore */ }
 
     // ================================================================
     // DATE HELPERS & FILTERS
@@ -934,33 +872,87 @@
     }
 
     // ---- Dashboard period state ----
-    var dashPeriod = 'all';
+    var dashPeriod = 'all';               // quick period, or 'custom' when dates are picked
+    var dashFromEl = document.getElementById('dashDateFrom');
+    var dashToEl = document.getElementById('dashDateTo');
+    var dashSelect = document.getElementById('dashPeriodSelect');
+    var dashCustomBox = document.getElementById('dashCustomDates');
+    var dashLabel = document.getElementById('periodRangeLabel');
+
+    function toInputDate(d) {
+      var m = ('0' + (d.getMonth() + 1)).slice(-2);
+      var day = ('0' + d.getDate()).slice(-2);
+      return d.getFullYear() + '-' + m + '-' + day;
+    }
+
+    // The active dashboard range: custom pickers win over the quick chips
+    function dashRange() {
+      if (dashPeriod === 'custom') {
+        return {
+          from: dashFromEl.value ? startOfDay(new Date(dashFromEl.value)) : null,
+          to: dashToEl.value ? endOfDay(new Date(dashToEl.value)) : null
+        };
+      }
+      return rangeForPeriod(dashPeriod);
+    }
 
     function dashboardBookings() {
-      var r = rangeForPeriod(dashPeriod);
+      var r = dashRange();
       if (!r.from && !r.to) return bookings.slice();
       return bookings.filter(function (b) {
         return withinRange(bookingDate(b, 'booked'), r.from, r.to);
       });
     }
 
-    document.getElementById('periodChips').addEventListener('click', function (e) {
-      var chip = e.target.closest('.period-chip');
-      if (!chip) return;
+    function rangeText() {
+      var r = dashRange();
+      if (!r.from && !r.to) return 'All bookings';
+      if (r.from && r.to) {
+        return formatDay(r.from) === formatDay(r.to)
+          ? formatDay(r.from)
+          : formatDay(r.from) + '  →  ' + formatDay(r.to);
+      }
+      return r.from ? 'From ' + formatDay(r.from) : 'Up to ' + formatDay(r.to);
+    }
 
-      dashPeriod = chip.getAttribute('data-period');
-      this.querySelectorAll('.period-chip').forEach(function (c) {
-        c.classList.toggle('is-active', c === chip);
-      });
-
-      var r = rangeForPeriod(dashPeriod);
-      var label = document.getElementById('periodRangeLabel');
-      label.textContent = (!r.from && !r.to)
-        ? 'All bookings'
-        : formatDay(r.from) + '  →  ' + formatDay(r.to);
-
+    function refreshDashboard() {
+      var text = rangeText();
+      dashLabel.textContent = text;
+      document.getElementById('statRevenueSub').textContent = text;
+      document.getElementById('statBookingsSub').textContent = text;
       updateStats();
       renderRecentBookings();
+    }
+
+    dashSelect.addEventListener('change', function () {
+      dashPeriod = this.value;
+
+      if (dashPeriod === 'custom') {
+        dashCustomBox.hidden = false;
+        // Default the pickers to the current month so the range is never empty
+        if (!dashFromEl.value && !dashToEl.value) {
+          var r = rangeForPeriod('month');
+          dashFromEl.value = toInputDate(r.from);
+          dashToEl.value = toInputDate(r.to);
+        }
+      } else {
+        dashCustomBox.hidden = true;
+        dashFromEl.value = '';
+        dashToEl.value = '';
+      }
+
+      refreshDashboard();
+    });
+
+    [dashFromEl, dashToEl].forEach(function (el) {
+      el.addEventListener('change', function () {
+        if (dashFromEl.value && dashToEl.value && dashFromEl.value > dashToEl.value) {
+          alert('"From" date cannot be later than the "To" date.');
+          this.value = '';
+          return;
+        }
+        refreshDashboard();
+      });
     });
 
     // ================================================================
@@ -998,13 +990,12 @@
         var statusBadge = getStatusBadge(b.status || 'CONFIRMED');
         html += '<tr>' +
           '<td><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
-          '<td><span class="payment-id-tag">' + (b.paymentId || 'N/A') + '</span></td>' +
           '<td><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">' + (b.customerPhone || '') + '</span></div></td>' +
           '<td><strong>' + (b.bikeName || 'Vehicle') + '</strong></td>' +
-          '<td>' + (b.startDate || '') + ' to ' + (b.endDate || '') + '</td>' +
-          '<td><strong style="color:var(--success);">₹' + (b.advancePaid || 500) + '</strong></td>' +
+          '<td><span class="cell-dates">' + (b.startDate || '—') + ' → ' + (b.endDate || '—') + '</span></td>' +
+          '<td><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong></td>' +
           '<td>' + statusBadge + '</td>' +
-          '<td><button class="btn-secondary-admin" style="padding:4px 8px;font-size:12px;" onclick="viewReceipt(\'' + b.bookingId + '\')">Receipt</button></td>' +
+          '<td><button class="table-action-icon-btn" title="View receipt" onclick="viewReceipt(\'' + b.bookingId + '\')">' + icon('file') + '</button></td>' +
         '</tr>';
       });
 
@@ -1059,11 +1050,17 @@
             '<p style="font-size:12.5px;color:var(--admin-text-muted);margin:8px 0 12px;line-height:1.45;">' + (v.desc || '') + '</p>' +
             '<div class="bike-card-price-row">' +
               '<div><span style="font-size:11px;color:var(--admin-text-muted);display:block;">Advance Required</span><strong style="color:var(--admin-primary);font-size:15px;">&#8377;' + (v.advance || 500) + '</strong></div>' +
-              '<div style="text-align:right;"><span style="font-size:11px;color:var(--admin-text-muted);display:block;">Daily Rate</span><strong style="color:var(--admin-text-main);font-size:15px;">&#8377;' + (v.rate || 500) + ' / d</strong></div>' +
             '</div>' +
           '</div>' +
           '<div class="bike-card-actions">' +
-            '<button class="btn-card-action" onclick="toggleVehicleStatus(\'' + v.id + '\')" title="Toggle Availability">' + icon('refresh') + '<span>Status</span></button>' +
+            '<div class="status-menu-wrap">' +
+              '<button class="btn-card-action js-status-btn" data-id="' + v.id + '" type="button" title="Change availability">' +
+                icon('refresh') + '<span>Status</span>' +
+              '</button>' +
+              '<div class="status-menu" data-menu-for="' + v.id + '" hidden>' +
+                statusMenuItems(v) +
+              '</div>' +
+            '</div>' +
             '<button class="btn-card-action" onclick="openEditVehicleModal(\'' + v.id + '\')" title="Edit details and photos">' + icon('edit') + '<span>Edit</span></button>' +
             '<button class="btn-card-action btn-card-delete" onclick="deleteVehicle(\'' + v.id + '\')" title="Delete from fleet">' + icon('trash') + '</button>' +
           '</div>' +
@@ -1102,29 +1099,115 @@
     document.getElementById('vehicleCategoryFilter').addEventListener('change', renderFleetGrid);
     document.getElementById('vehicleStatusFilter').addEventListener('change', renderFleetGrid);
 
-    // Toggle Status
-    window.toggleVehicleStatus = function (id) {
-      var item = fleet.find(function (x) { return x.id === id; });
-      if (!item) return;
+    // ---------- Status dropdown on each vehicle card ----------
+    var STATUS_OPTIONS = [
+      { value: 'AVAILABLE', label: 'Available', dot: 'dot-green' },
+      { value: 'ON_RENT', label: 'On Rent', dot: 'dot-amber' },
+      { value: 'MAINTENANCE', label: 'In Maintenance', dot: 'dot-red' }
+    ];
 
-      if (item.status === 'AVAILABLE') item.status = 'ON_RENT';
-      else if (item.status === 'ON_RENT') item.status = 'MAINTENANCE';
-      else item.status = 'AVAILABLE';
+    function statusMenuItems(v) {
+      return STATUS_OPTIONS.map(function (opt) {
+        var current = (v.status || 'AVAILABLE') === opt.value;
+        return '<button type="button" class="status-menu-item js-status-set' + (current ? ' is-current' : '') + '" ' +
+          'data-id="' + v.id + '" data-status="' + opt.value + '">' +
+          '<span class="status-dot-mini ' + opt.dot + '"></span>' +
+          '<span>' + opt.label + '</span>' +
+          (current ? icon('check', 'status-tick') : '') +
+          '</button>';
+      }).join('');
+    }
 
-      saveFleet();
-      showToast(item.name + ' status updated to ' + item.status);
-    };
+    function closeStatusMenus() {
+      document.querySelectorAll('.status-menu').forEach(function (m) { m.hidden = true; });
+      document.querySelectorAll('.js-status-btn').forEach(function (b) { b.classList.remove('is-open'); });
+    }
+
+    // Open / close a card's menu, and apply the chosen status
+    document.addEventListener('click', function (e) {
+      var toggle = e.target.closest('.js-status-btn');
+      var choice = e.target.closest('.js-status-set');
+
+      if (toggle) {
+        var menu = toggle.parentNode.querySelector('.status-menu');
+        var wasOpen = !menu.hidden;
+        closeStatusMenus();
+        if (!wasOpen) {
+          menu.hidden = false;
+          toggle.classList.add('is-open');
+        }
+        return;
+      }
+
+      if (choice) {
+        var id = choice.getAttribute('data-id');
+        var next = choice.getAttribute('data-status');
+        var item = fleet.find(function (x) { return x.id === id; });
+        closeStatusMenus();
+
+        if (!item || item.status === next) return;
+
+        item.status = next;
+        saveFleet();
+
+        var label = STATUS_OPTIONS.filter(function (o) { return o.value === next; })[0].label;
+        showToast(item.name + ' is now ' + label);
+        return;
+      }
+
+      closeStatusMenus();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeStatusMenus();
+    });
+
+    // ---------- Confirm dialog (replaces window.confirm) ----------
+    var confirmModal = document.getElementById('confirmModal');
+    var confirmOkBtn = document.getElementById('confirmOkBtn');
+    var confirmAction = null;
+
+    function askConfirm(opts, onYes) {
+      document.getElementById('confirmTitle').textContent = opts.title || 'Are you sure?';
+      document.getElementById('confirmText').textContent = opts.text || '';
+      confirmOkBtn.textContent = opts.okText || 'Delete';
+      confirmAction = onYes;
+      confirmModal.classList.add('is-open');
+    }
+
+    function closeConfirm() {
+      confirmModal.classList.remove('is-open');
+      confirmAction = null;
+    }
+
+    confirmOkBtn.addEventListener('click', function () {
+      var run = confirmAction;
+      closeConfirm();
+      if (typeof run === 'function') run();
+    });
+
+    confirmModal.querySelectorAll('[data-confirm-cancel]').forEach(function (el) {
+      el.addEventListener('click', closeConfirm);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && confirmModal.classList.contains('is-open')) closeConfirm();
+    });
 
     // Delete Vehicle
     window.deleteVehicle = function (id) {
       var item = fleet.find(function (x) { return x.id === id; });
       if (!item) return;
 
-      if (confirm('Are you sure you want to delete "' + item.name + '" from the fleet?')) {
+      askConfirm({
+        title: 'Delete "' + item.name + '"?',
+        text: 'This vehicle will be removed from your fleet and from the website. This cannot be undone.',
+        okText: 'Delete vehicle'
+      }, function () {
         fleet = fleet.filter(function (x) { return x.id !== id; });
         saveFleet();
-        showToast('Vehicle deleted successfully.');
-      }
+        showToast(item.name + ' deleted from fleet.');
+      });
     };
 
     // Vehicle Modal Open/Edit
@@ -1136,13 +1219,11 @@
     var frontFile = document.getElementById('vehFrontFile');
     var frontPreview = document.getElementById('vehFrontPreview');
     var frontEmpty = document.getElementById('vehFrontEmpty');
-    var frontPreset = document.getElementById('vehFrontPreset');
 
     var backInput = document.getElementById('vehImageBack');
     var backFile = document.getElementById('vehBackFile');
     var backPreview = document.getElementById('vehBackPreview');
     var backEmpty = document.getElementById('vehBackEmpty');
-    var backPreset = document.getElementById('vehBackPreset');
 
     function setFrontPhoto(src) {
       frontInput.value = src || '';
@@ -1155,7 +1236,6 @@
         frontPreview.hidden = true;
         frontEmpty.hidden = false;
       }
-      if (frontPreset) frontPreset.value = (src && src.startsWith('assets/')) ? src : '';
     }
 
     function setBackPhoto(src) {
@@ -1169,7 +1249,6 @@
         backPreview.hidden = true;
         backEmpty.hidden = false;
       }
-      if (backPreset) backPreset.value = (src && src.startsWith('assets/')) ? src : '';
     }
 
     // Helper: read and compress image file for vehicle
@@ -1206,11 +1285,6 @@
       var file = e.target.files && e.target.files[0];
       processVehiclePhotoUpload(file, function (dataUrl) { setFrontPhoto(dataUrl); });
     });
-    if (frontPreset) {
-      frontPreset.addEventListener('change', function () {
-        if (this.value) setFrontPhoto(this.value);
-      });
-    }
 
     document.getElementById('btnPickBack').addEventListener('click', function () { backFile.click(); });
     document.getElementById('btnClearBack').addEventListener('click', function () {
@@ -1221,18 +1295,13 @@
       var file = e.target.files && e.target.files[0];
       processVehiclePhotoUpload(file, function (dataUrl) { setBackPhoto(dataUrl); });
     });
-    if (backPreset) {
-      backPreset.addEventListener('change', function () {
-        if (this.value) setBackPhoto(this.value);
-      });
-    }
 
     document.getElementById('btnAddVehicle').addEventListener('click', function () {
       document.getElementById('vehicleModalTitle').textContent = 'Add New Vehicle';
       vehForm.reset();
       document.getElementById('vehEditId').value = '';
+      document.getElementById('vehStatus').value = 'AVAILABLE';
       document.getElementById('vehAdvance').value = '500';
-      document.getElementById('vehDailyRate').value = '500';
       frontFile.value = '';
       backFile.value = '';
       setFrontPhoto('');
@@ -1249,7 +1318,6 @@
       document.getElementById('vehName').value = item.name;
       document.getElementById('vehCategory').value = item.category;
       document.getElementById('vehAdvance').value = item.advance || 500;
-      document.getElementById('vehDailyRate').value = item.rate || 500;
       document.getElementById('vehStatus').value = item.status;
       document.getElementById('vehDesc').value = item.desc || '';
       frontFile.value = '';
@@ -1266,7 +1334,6 @@
       var name = document.getElementById('vehName').value.trim();
       var cat = document.getElementById('vehCategory').value;
       var advance = Number(document.getElementById('vehAdvance').value) || 500;
-      var dailyRate = Number(document.getElementById('vehDailyRate').value) || 500;
       var status = document.getElementById('vehStatus').value;
       var frontImg = frontInput.value.trim() || PLACEHOLDER_IMG;
       var backImg = backInput.value.trim() || frontImg;
@@ -1278,7 +1345,6 @@
           existing.name = name;
           existing.category = cat;
           existing.advance = advance;
-          existing.rate = dailyRate;
           existing.status = status;
           existing.image = frontImg;
           existing.imageBack = backImg;
@@ -1292,7 +1358,6 @@
           name: name,
           category: cat,
           advance: advance,
-          rate: dailyRate,
           status: status,
           image: frontImg,
           imageBack: backImg,
@@ -1310,9 +1375,9 @@
     // ================================================================
     function getStatusBadge(status) {
       var s = (status || 'CONFIRMED').toUpperCase();
-      if (s === 'CONFIRMED') return '<span class="badge-status-pill badge-confirmed">Confirmed</span>';
-      if (s === 'ONGOING') return '<span class="badge-status-pill badge-ongoing">Collected</span>';
-      if (s === 'COMPLETED') return '<span class="badge-status-pill badge-completed">Completed</span>';
+      if (s === 'CONFIRMED') return '<span class="badge-status-pill badge-confirmed">Advance Paid</span>';
+      if (s === 'ONGOING') return '<span class="badge-status-pill badge-ongoing">Bike Collected</span>';
+      if (s === 'COMPLETED') return '<span class="badge-status-pill badge-completed">Returned &amp; Paid</span>';
       return '<span class="badge-status-pill badge-cancelled">Cancelled</span>';
     }
 
@@ -1344,17 +1409,20 @@
       countEl.textContent = filtered.length + ' of ' + bookings.length + ' bookings';
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="table-empty-state">' + icon('clipboard', 'ic-xl') + 'No bookings found for the selected search, status or date range.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="table-empty-state">' + icon('clipboard', 'ic-xl') + 'No bookings found for the selected search, status or date range.</td></tr>';
         return;
       }
 
       var html = '';
       filtered.forEach(function (b) {
-        var statusSelect = '<select class="filter-select" style="height:30px;padding:2px 6px;font-size:12px;" onchange="updateBookingStatus(\'' + b.bookingId + '\', this.value)">' +
-          '<option value="CONFIRMED"' + (b.status === 'CONFIRMED' ? ' selected' : '') + '>Confirmed</option>' +
-          '<option value="ONGOING"' + (b.status === 'ONGOING' ? ' selected' : '') + '>Collected</option>' +
-          '<option value="COMPLETED"' + (b.status === 'COMPLETED' ? ' selected' : '') + '>Completed</option>' +
-          '<option value="CANCELLED"' + (b.status === 'CANCELLED' ? ' selected' : '') + '>Cancelled</option>' +
+        // Booking lifecycle: advance paid → bike handed over → returned & balance paid
+        var cur = (b.status || 'CONFIRMED').toUpperCase();
+        var statusSelect = '<select class="status-select status-' + cur.toLowerCase() + '" ' +
+          'title="Booking stage" onchange="updateBookingStatus(\'' + b.bookingId + '\', this.value)">' +
+          '<option value="CONFIRMED"' + (cur === 'CONFIRMED' ? ' selected' : '') + '>Advance Paid</option>' +
+          '<option value="ONGOING"' + (cur === 'ONGOING' ? ' selected' : '') + '>Bike Collected</option>' +
+          '<option value="COMPLETED"' + (cur === 'COMPLETED' ? ' selected' : '') + '>Returned &amp; Paid</option>' +
+          '<option value="CANCELLED"' + (cur === 'CANCELLED' ? ' selected' : '') + '>Cancelled</option>' +
         '</select>';
 
         var whatsBtn = b.customerPhone ? '<a href="https://wa.me/91' + b.customerPhone + '?text=' + encodeURIComponent('Hi ' + b.customerName + ', regarding your Vijay Arya Bike booking (' + b.bookingId + ')...') + '" target="_blank" class="table-action-icon-btn" title="Chat on WhatsApp">' + icon('chat') + '</a>' : '';
@@ -1372,18 +1440,21 @@
         }
 
         html += '<tr>' +
-          '<td><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
-          '<td><span class="payment-id-tag">' + (b.paymentId || 'N/A') + '</span></td>' +
+          '<td><div class="stack-cell"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span>' +
+            '<span class="payment-id-tag" title="Razorpay payment ID">' + (b.paymentId || 'N/A') + '</span></div></td>' +
           '<td><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">+91 ' + (b.customerPhone || '') + '</span></div></td>' +
-          '<td><strong>' + (b.bikeName || 'Vehicle') + '</strong> <span style="font-size:11px;color:var(--admin-text-muted);">(&times;' + (b.quantity || 1) + ')</span></td>' +
-          '<td><div><strong>' + (b.days || 1) + ' Days</strong></div><small style="color:var(--admin-text-muted);">' + (b.startDate || '') + ' to ' + (b.endDate || '') + '</small></td>' +
-          '<td><strong style="color:var(--success);">₹' + (b.advancePaid || 500) + '</strong><br><small style="font-size:11px;color:var(--admin-text-muted);">Due: ₹' + (b.balanceDue || 0) + '</small></td>' +
+          '<td><div class="stack-cell"><strong>' + (b.bikeName || 'Vehicle') + '</strong>' +
+            '<small class="cell-muted">Qty ' + (b.quantity || 1) + '</small></div></td>' +
+          '<td><div class="stack-cell"><strong>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</strong>' +
+            '<small class="cell-muted">' + (b.startDate || '—') + ' → ' + (b.endDate || '—') + '</small></div></td>' +
+          '<td><div class="stack-cell"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong>' +
+            '<small class="cell-muted">Due ₹' + (b.balanceDue || 0) + '</small></div></td>' +
           '<td>' + kycBadge + '</td>' +
           '<td>' + statusSelect + '</td>' +
-          '<td><div class="table-actions">' +
+          '<td class="col-actions"><div class="table-actions">' +
             '<button class="table-action-icon-btn" onclick="viewReceipt(\'' + b.bookingId + '\')" title="View Receipt & Documents">' + icon('file') + '</button>' +
             whatsBtn +
-            '<button class="table-action-icon-btn" onclick="deleteBooking(\'' + b.bookingId + '\')" title="Delete" style="color:var(--danger);">' + icon('trash') + '</button>' +
+            '<button class="table-action-icon-btn is-danger" onclick="deleteBooking(\'' + b.bookingId + '\')" title="Delete booking">' + icon('trash') + '</button>' +
           '</div></td>' +
         '</tr>';
       });
@@ -1393,63 +1464,27 @@
 
     document.getElementById('transSearchInput').addEventListener('input', renderAllBookings);
     document.getElementById('transStatusFilter').addEventListener('change', renderAllBookings);
-    document.getElementById('transDateField').addEventListener('change', renderAllBookings);
-
-    // Date range inputs & interactive preset chips
+    // ---- Date range: one dropdown, with pickers only for a custom range ----
     var dateFromEl = document.getElementById('transDateFrom');
     var dateToEl = document.getElementById('transDateTo');
-    var quickRangeEl = document.getElementById('transQuickRange');
-    var dateChips = document.querySelectorAll('.date-chip[data-range]');
+    var transRangeEl = document.getElementById('transRangeSelect');
+    var transCustomBox = document.getElementById('transCustomDates');
 
-    function toInputDate(d) {
-      var m = ('0' + (d.getMonth() + 1)).slice(-2);
-      var day = ('0' + d.getDate()).slice(-2);
-      return d.getFullYear() + '-' + m + '-' + day;
-    }
-
-    function setActiveDateChip(range) {
-      dateChips.forEach(function (c) {
-        c.classList.toggle('is-active', c.getAttribute('data-range') === range);
-      });
-    }
-
-    dateChips.forEach(function (chip) {
-      chip.addEventListener('click', function () {
-        var range = this.getAttribute('data-range');
-        setActiveDateChip(range);
-
-        var now = new Date();
-        if (range === 'all') {
-          dateFromEl.value = '';
-          dateToEl.value = '';
-        } else if (range === 'today') {
-          dateFromEl.value = toInputDate(now);
-          dateToEl.value = toInputDate(now);
-        } else if (range === 'tomorrow') {
-          var tm = new Date(now);
-          tm.setDate(tm.getDate() + 1);
-          dateFromEl.value = toInputDate(tm);
-          dateToEl.value = toInputDate(tm);
-        } else if (range === 'week') {
-          var start = new Date(now);
-          start.setDate(now.getDate() - now.getDay());
-          var end = new Date(start);
-          end.setDate(start.getDate() + 6);
-          dateFromEl.value = toInputDate(start);
-          dateToEl.value = toInputDate(end);
-        } else if (range === 'month') {
-          var f = new Date(now.getFullYear(), now.getMonth(), 1);
-          var t = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-          dateFromEl.value = toInputDate(f);
-          dateToEl.value = toInputDate(t);
-        } else if (range === '30') {
-          var back30 = new Date(now);
-          back30.setDate(now.getDate() - 30);
-          dateFromEl.value = toInputDate(back30);
-          dateToEl.value = toInputDate(now);
+    transRangeEl.addEventListener('change', function () {
+      if (this.value === 'custom') {
+        transCustomBox.hidden = false;
+        if (!dateFromEl.value && !dateToEl.value) {
+          var r = rangeForPeriod('month');
+          dateFromEl.value = toInputDate(r.from);
+          dateToEl.value = toInputDate(r.to);
         }
-        renderAllBookings();
-      });
+      } else {
+        transCustomBox.hidden = true;
+        var range = rangeForPeriod(this.value);
+        dateFromEl.value = range.from ? toInputDate(range.from) : '';
+        dateToEl.value = range.to ? toInputDate(range.to) : '';
+      }
+      renderAllBookings();
     });
 
     [dateFromEl, dateToEl].forEach(function (el) {
@@ -1459,34 +1494,40 @@
           this.value = '';
           return;
         }
-        setActiveDateChip('');
         renderAllBookings();
       });
-    });
-
-    document.getElementById('btnClearDateFilter').addEventListener('click', function () {
-      dateFromEl.value = '';
-      dateToEl.value = '';
-      setActiveDateChip('all');
-      renderAllBookings();
-      showToast('Date filter cleared.');
     });
 
     window.updateBookingStatus = function (bookingId, newStatus) {
       var item = bookings.find(function (x) { return x.bookingId === bookingId; });
       if (!item) return;
 
+      var STAGE_TEXT = {
+        CONFIRMED: 'Advance paid',
+        ONGOING: 'Bike collected',
+        COMPLETED: 'Returned & fully paid',
+        CANCELLED: 'Cancelled'
+      };
+
       item.status = newStatus;
+
+      // Once the bike is returned the balance is settled at the shop
+      if (newStatus === 'COMPLETED') item.balanceDue = 0;
+
       saveBookings();
-      showToast('Booking ' + bookingId + ' status updated to ' + newStatus);
+      showToast(bookingId + ' — ' + (STAGE_TEXT[newStatus] || newStatus));
     };
 
     window.deleteBooking = function (bookingId) {
-      if (confirm('Are you sure you want to remove booking ' + bookingId + '?')) {
+      askConfirm({
+        title: 'Delete booking ' + bookingId + '?',
+        text: 'This booking record will be permanently removed from your admin panel.',
+        okText: 'Delete booking'
+      }, function () {
         bookings = bookings.filter(function (x) { return x.bookingId !== bookingId; });
         saveBookings();
-        showToast('Booking deleted.');
-      }
+        showToast('Booking ' + bookingId + ' deleted.');
+      });
     };
 
     // ================================================================
@@ -1500,6 +1541,41 @@
     var lightboxImg = document.getElementById('lightboxImg');
     var lightboxTitle = document.getElementById('lightboxDocTitle');
     var lightboxDownload = document.getElementById('lightboxDownloadBtn');
+
+    // A KYC document card: thumbnail + View and Download actions
+    function kycDocCard(b, which) {
+      var doc = which === 'aadhaar' ? b.kycAadhaar : b.kycDl;
+      var label = which === 'aadhaar' ? 'Aadhaar / Photo ID' : 'Driving Licence';
+      var isPdf = (doc.type === 'pdf') || (doc.dataUrl || '').indexOf('application/pdf') > -1;
+
+      var safeName = ((b.customerName || 'customer') + '_' + label)
+        .toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+      var fileName = safeName + (isPdf ? '.pdf' : '.jpg');
+      var title = label + ' — ' + (b.customerName || 'Customer');
+
+      var thumb = isPdf
+        ? '<div class="kyc-doc-pdf">' + icon('file', 'ic-xl') + '<span>PDF document</span></div>'
+        : '<img src="' + doc.dataUrl + '" alt="' + label + '" class="kyc-doc-thumb">' +
+          '<div class="kyc-zoom-overlay">' + icon('eye') + '<span>Enlarge</span></div>';
+
+      return '<div class="kyc-doc-card">' +
+        '<div class="kyc-doc-thumb-box"' +
+          (isPdf ? '' : ' onclick="openDocLightbox(\'' + doc.dataUrl + '\', \'' + title.replace(/'/g, '') + '\')"') + '>' +
+          thumb +
+        '</div>' +
+        '<div class="kyc-doc-info">' +
+          '<strong>' + label + '</strong>' +
+          '<span>' + (doc.name || fileName) + '</span>' +
+        '</div>' +
+        '<div class="kyc-doc-actions">' +
+          (isPdf
+            ? '<a class="kyc-doc-btn" href="' + doc.dataUrl + '" target="_blank" rel="noopener">' + icon('eye') + '<span>View</span></a>'
+            : '<button type="button" class="kyc-doc-btn" onclick="openDocLightbox(\'' + doc.dataUrl + '\', \'' + title.replace(/'/g, '') + '\')">' + icon('eye') + '<span>View</span></button>') +
+          '<a class="kyc-doc-btn kyc-doc-btn-primary" href="' + doc.dataUrl + '" download="' + fileName + '">' +
+            icon('download') + '<span>Download</span></a>' +
+        '</div>' +
+      '</div>';
+    }
 
     window.openDocLightbox = function (imgSrc, title) {
       if (!imgSrc) return;
@@ -1527,31 +1603,11 @@
           '<div class="receipt-kyc-cards">';
 
         if (hasAadhaar) {
-          kycDocsHtml += 
-            '<div class="kyc-doc-card" onclick="openDocLightbox(\'' + b.kycAadhaar.dataUrl + '\', \'Aadhaar / Photo ID - ' + (b.customerName || 'Customer') + '\')">' +
-              '<div class="kyc-doc-thumb-box">' +
-                '<img src="' + b.kycAadhaar.dataUrl + '" alt="Aadhaar Document" class="kyc-doc-thumb">' +
-                '<div class="kyc-zoom-overlay">' + icon('eye') + '<span>Enlarge</span></div>' +
-              '</div>' +
-              '<div class="kyc-doc-info">' +
-                '<strong>Aadhaar / Photo ID</strong>' +
-                '<span>' + (b.kycAadhaar.name || 'aadhaar_card.jpg') + '</span>' +
-              '</div>' +
-            '</div>';
+          kycDocsHtml += kycDocCard(b, 'aadhaar');
         }
 
         if (hasDl) {
-          kycDocsHtml += 
-            '<div class="kyc-doc-card" onclick="openDocLightbox(\'' + b.kycDl.dataUrl + '\', \'Driving Licence - ' + (b.customerName || 'Customer') + '\')">' +
-              '<div class="kyc-doc-thumb-box">' +
-                '<img src="' + b.kycDl.dataUrl + '" alt="Driving Licence Document" class="kyc-doc-thumb">' +
-                '<div class="kyc-zoom-overlay">' + icon('eye') + '<span>Enlarge</span></div>' +
-              '</div>' +
-              '<div class="kyc-doc-info">' +
-                '<strong>Driving Licence</strong>' +
-                '<span>' + (b.kycDl.name || 'driving_licence.jpg') + '</span>' +
-              '</div>' +
-            '</div>';
+          kycDocsHtml += kycDocCard(b, "dl");
         }
 
         kycDocsHtml += '</div></div>';
@@ -1647,96 +1703,6 @@
       showToast('CSV downloaded — ' + exportSet.length + ' booking(s).');
     });
 
-    // Export JSON Backup
-    document.getElementById('btnExportJSON').addEventListener('click', function () {
-      var backupData = {
-        version: '1.0',
-        exportDate: new Date().toISOString(),
-        fleet: fleet,
-        bookings: bookings
-      };
-
-      var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backupData, null, 2));
-      var downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute('href', dataStr);
-      downloadAnchor.setAttribute('download', 'Vijay_Arya_Backup_' + new Date().toISOString().slice(0, 10) + '.json');
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-      showToast('JSON backup file created!');
-    });
-
-    // Restore JSON Backup
-    document.getElementById('importJsonInput').addEventListener('change', function (e) {
-      var file = e.target.files[0];
-      if (!file) return;
-
-      var reader = new FileReader();
-      reader.onload = function (event) {
-        try {
-          var imported = JSON.parse(event.target.result);
-          if (imported.fleet && Array.isArray(imported.fleet)) {
-            fleet = imported.fleet;
-            localStorage.setItem(KEY_FLEET, JSON.stringify(fleet));
-          }
-          if (imported.bookings && Array.isArray(imported.bookings)) {
-            bookings = imported.bookings;
-            localStorage.setItem(KEY_BOOKINGS, JSON.stringify(bookings));
-          }
-          renderAll();
-          showToast('Data restored successfully!');
-        } catch (err) {
-          alert('Invalid JSON backup file format.');
-        }
-      };
-      reader.readAsText(file);
-    });
-
-    // Reset Demo Data
-    document.getElementById('btnSeedDemoData').addEventListener('click', function () {
-      if (confirm('This will reset fleet to default vehicles and keep previous bookings. Proceed?')) {
-        fleet = DEFAULT_FLEET.slice();
-        localStorage.setItem(KEY_FLEET, JSON.stringify(fleet));
-        renderAll();
-        showToast('Default fleet reloaded.');
-      }
-    });
-
-    // Change login credentials (email + password)
-    var credsForm = document.getElementById('changeCredsForm');
-    document.getElementById('newEmail').value = getAdminEmail();
-
-    credsForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var cur = document.getElementById('curPassword').value;
-      var email = document.getElementById('newEmail').value.trim().toLowerCase();
-      var pass = document.getElementById('newPassword').value;
-      var confirmPass = document.getElementById('confirmPassword').value;
-
-      if (cur !== getAdminPassword()) {
-        alert('Current password is incorrect.');
-        return;
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-        alert('Please enter a valid email address.');
-        return;
-      }
-      if (pass.length < 6) {
-        alert('New password must be at least 6 characters.');
-        return;
-      }
-      if (pass !== confirmPass) {
-        alert('New password and confirm password do not match.');
-        return;
-      }
-
-      localStorage.setItem(KEY_EMAIL, email);
-      localStorage.setItem(KEY_PASS, pass);
-      credsForm.reset();
-      document.getElementById('newEmail').value = email;
-      showToast('Login credentials updated successfully!');
-    });
-
     // Master Render
     function renderAll() {
       updateStats();
@@ -1745,7 +1711,15 @@
       renderAllBookings();
     }
 
+    // Topbar: today's date and the signed-in account
+    function renderTopbar() {
+      document.getElementById('topbarDate').textContent =
+        new Date().toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+      document.getElementById('topbarUser').textContent = getAdminEmail();
+    }
+
     // Initialize
+    renderTopbar();
     checkAuth();
     loadData();
 

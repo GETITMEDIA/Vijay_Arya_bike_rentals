@@ -691,28 +691,6 @@
       });
     }
 
-    // KYC Upload Handlers
-    function bindKyc(btn, camBtn, fileInput, camInput, statusEl) {
-      if (btn && fileInput) {
-        btn.addEventListener('click', function () { fileInput.click(); });
-      }
-      if (camBtn && camInput) {
-        camBtn.addEventListener('click', function () { camInput.click(); });
-      }
-      var handleChange = function (input, targetBtn) {
-        if (input.files && input.files[0]) {
-          var name = input.files[0].name;
-          if (statusEl) statusEl.textContent = '✓ Attached: ' + (name.length > 18 ? name.slice(0, 15) + '...' : name);
-          if (targetBtn) targetBtn.classList.add('is-uploaded');
-        }
-      };
-      if (fileInput) fileInput.addEventListener('change', function () { handleChange(fileInput, btn); });
-      if (camInput) camInput.addEventListener('change', function () { handleChange(camInput, camBtn); });
-    }
-
-    bindKyc(kycIdBtn, kycIdCamBtn, kycIdFile, kycIdCam, kycIdStatus);
-    bindKyc(kycDlBtn, kycDlCamBtn, kycDlFile, kycDlCam, kycDlStatus);
-
     function focusables() {
       return $$('a[href], button:not([disabled]), input, select, textarea', modal)
         .filter(function (el) { return el.offsetParent !== null; });
@@ -1681,6 +1659,7 @@
         customerName: bookingData.customerName,
         customerPhone: bookingData.customerPhone,
         customerEmail: bookingData.customerEmail,
+        // KYC documents the customer attached during booking ({dataUrl, name})
         kycAadhaar: bookingData.kycAadhaar || null,
         kycDl: bookingData.kycDl || null,
         paymentMethod: 'Razorpay Online (Verified)',
@@ -1693,7 +1672,16 @@
       try {
         var existing = JSON.parse(localStorage.getItem('vijay_arya_bookings') || '[]');
         existing.unshift(finalRecord);
-        localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+
+        try {
+          localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+        } catch (quotaErr) {
+          // Storage is full — keep the booking, drop the heavy document images
+          console.warn('Storage full, saving booking without KYC images:', quotaErr);
+          finalRecord.kycAadhaar = null;
+          finalRecord.kycDl = null;
+          localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+        }
         console.log('Booking saved successfully to LocalStorage:', finalRecord);
       } catch (e) {
         console.warn('LocalStorage error:', e);
