@@ -562,9 +562,37 @@
         </div>
       </form>
 
-      <!-- STEP 2 -->
+      <!-- STEP 2: PAYMENT & ADVANCE -->
       <div class="booking-step" id="bookStep2">
         <div class="booking-summary" id="bkSummary"></div>
+
+        <!-- RAZORPAY INSTANT PAYMENT -->
+        <div class="pay-rzp-card">
+          <div class="pay-rzp-header">
+            <div class="pay-rzp-title-wrap">
+              <span class="pay-badge-secure">🔒 SECURE 256-BIT ENCRYPTION</span>
+              <h4 class="pay-rzp-title">Pay Advance via Razorpay</h4>
+              <p class="pay-rzp-sub">Instant confirmation via UPI (GPay, PhonePe, Paytm), Cards &amp; NetBanking</p>
+            </div>
+            <div class="pay-rzp-badge-tag">
+              <span>Razorpay</span>
+            </div>
+          </div>
+
+          <div class="pay-rzp-amount-box">
+            <span class="pay-rzp-lbl">Advance Payable Now</span>
+            <strong class="pay-rzp-price" id="bkRzpAmount">&#8377;500</strong>
+          </div>
+
+          <button class="btn btn-red btn-block btn-lg pay-rzp-btn" type="button" id="bkRazorpayBtn">
+            <span>Pay &#8377;500 via Razorpay</span>
+            <span class="btn-arrow">&rarr;</span>
+          </button>
+        </div>
+
+        <div class="pay-divider">
+          <span>OR PAY VIA MANUAL UPI / QR</span>
+        </div>
 
         <div class="pay-grid">
           <figure class="pay-qr">
@@ -574,34 +602,58 @@
           </figure>
 
           <div class="pay-copy">
-            <p class="pay-amount"><span>Advance to pay</span><strong>&#8377;500</strong></p>
-            <p class="pay-note">Adjusted against total rental. Pay balance at shop when collecting vehicle.</p>
-
-            <a class="btn btn-red btn-block" id="bkUpi" href="#">Pay &#8377;500 via UPI App</a>
-            <p class="pay-hint">Opens GPay, PhonePe, Paytm or BHIM on mobile. On PC, scan QR code.</p>
+            <p class="pay-amount"><span>UPI Advance</span><strong>&#8377;500</strong></p>
+            <p class="pay-note">Scan QR code or use UPI ID below:</p>
 
             <div class="pay-upi">
               <span class="pay-upi-label">UPI ID</span>
               <code id="bkUpiId">7200011799@okbizaxis</code>
               <button class="pay-copy-btn" id="bkCopy" type="button">Copy</button>
             </div>
+
+            <a class="btn btn-outline btn-block" id="bkUpi" href="#">Open in UPI App</a>
           </div>
         </div>
 
         <div class="pay-send">
           <h4 style="margin: 0 0 8px; font-family: var(--serif); font-size: 18px;">Send booking on WhatsApp</h4>
-          <p style="font-size: 13.5px; color: #57534E; margin: 0 0 16px;">We confirm your booking instantly.
-            Availability changes daily.</p>
+          <p style="font-size: 13.5px; color: #57534E; margin: 0 0 16px;">We confirm your booking instantly. Availability changes daily.</p>
           <div class="booking-actions" style="display: grid; gap: 10px;">
-            <a class="btn btn-red btn-block" id="bkWhats" href="#" target="_blank" rel="noopener">Send Details on
-              WhatsApp</a>
+            <a class="btn btn-red btn-block" id="bkWhats" href="#" target="_blank" rel="noopener">Send Details on WhatsApp</a>
             <a class="btn btn-outline btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
           </div>
         </div>
 
         <button class="booking-back" id="bkBack" type="button"
-          style="margin-top: 20px; background: none; border: 0; color: #78716C; cursor: pointer; font-size: 13.5px;">&larr;
-          Back to details</button>
+          style="margin-top: 20px; background: none; border: 0; color: #78716C; cursor: pointer; font-size: 13.5px;">&larr; Back to details</button>
+      </div>
+
+      <!-- STEP 3: BOOKING CONFIRMATION & RECEIPT -->
+      <div class="booking-step" id="bookStep3">
+        <div class="receipt-card">
+          <div class="receipt-success-badge">
+            <div class="receipt-check-icon">&check;</div>
+            <h3 class="receipt-title">Booking Confirmed!</h3>
+            <p class="receipt-sub">Advance payment received. Your ride is reserved!</p>
+          </div>
+
+          <div class="receipt-details-box" id="bkReceiptDetails">
+            <!-- Populated by JavaScript -->
+          </div>
+
+          <div class="receipt-actions">
+            <a class="btn btn-whatsapp btn-block btn-lg" id="bkSuccessWhats" href="#" target="_blank" rel="noopener">
+              <span>Send Receipt on WhatsApp</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+            <button class="btn btn-outline btn-block" id="bkPrintReceipt" type="button">
+              <span>🖨️ Print / Download Receipt</span>
+            </button>
+            <button class="btn btn-ghost btn-block" id="bkNewBooking" type="button" style="margin-top: 6px;">
+              &larr; Book Another Ride
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -616,6 +668,8 @@
     </svg>
   </a>
 
+  <!-- Razorpay Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="js/script.js" defer></script>
 </body>
 
