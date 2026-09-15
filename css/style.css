@@ -605,13 +605,13 @@ body.nav-open { overflow: hidden; }
 /* ---------- 6. Hero Banner (Light Aesthetic Reference Match) ---------- */
 .hero-light-banner {
   position: relative;
-  min-height: 580px;
+  min-height: min(52vh, 460px);
   display: flex;
   align-items: center;
   overflow: hidden;
   background: #FFFFFF;
   color: #0F172A;
-  padding: 56px 0 64px;
+  padding: 32px 0 36px;
 }
 
 .hero-light-backdrop {
@@ -1103,12 +1103,17 @@ body.nav-open { overflow: hidden; }
   }
   .hero-light-fade-overlay {
     background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.8) 0%,
-      rgba(255, 255, 255, 0.5) 40%,
-      rgba(255, 255, 255, 0.5) 70%,
-      rgba(255, 255, 255, 0.9) 100%
+      90deg,
+      #FFFFFF 0%,
+      rgba(255, 255, 255, 0.97) 40%,
+      rgba(255, 255, 255, 0.82) 55%,
+      rgba(255, 255, 255, 0.4) 72%,
+      rgba(255, 255, 255, 0.06) 88%,
+      transparent 100%
     );
+  }
+  .hero-light-content {
+    max-width: 66%;
   }
   .hero-light-badge-wrap {
     justify-content: flex-start;
@@ -1958,7 +1963,7 @@ body.nav-open { overflow: hidden; }
 .exp-v { display: block; color: var(--muted); font-size: 15.5px; }
 
 /* ---------- 10. Fleet Cards (User Reference Matching) ---------- */
-.fleet { background: #FAF7F2; padding: clamp(60px, 8vw, 96px) 0; }
+.fleet { background: #FAF7F2; padding: clamp(28px, 4vw, 48px) 0 clamp(60px, 8vw, 96px); }
 .fleet-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5303,14 +5308,14 @@ html, body { overflow-x: hidden; }
 /* ---------- 25b. Hero Light Banner — Tablet (≤991px) ---------- */
 @media (max-width: 991px) {
   .hero-light-banner {
-    min-height: 420px;
-    padding: 44px 0 52px;
+    min-height: min(46vh, 380px);
+    padding: 28px 0 32px;
   }
   .hero-light-container {
-    min-height: 380px;
+    min-height: auto;
   }
   .hero-light-content {
-    max-width: 100%;
+    max-width: 68%;
     text-align: left;
   }
   .hero-vespa-tagline-wrap {
@@ -5325,24 +5330,41 @@ html, body { overflow-x: hidden; }
 @media (max-width: 640px) {
   .hero-light-banner {
     min-height: auto;
-    padding: 32px 0 40px;
+    padding: 18px 0 20px;
   }
   .hero-light-container {
     min-height: auto;
   }
+  .hero-light-content {
+    max-width: 100%;
+  }
+  .hero-light-fade-overlay {
+    background: linear-gradient(
+      90deg,
+      #FFFFFF 0%,
+      rgba(255, 255, 255, 0.96) 45%,
+      rgba(255, 255, 255, 0.78) 62%,
+      rgba(255, 255, 255, 0.35) 80%,
+      transparent 100%
+    );
+  }
   .hero-light-headline {
-    font-size: clamp(26px, 7.5vw, 34px);
-    line-height: 1.18;
+    font-size: clamp(24px, 6.8vw, 31px);
+    line-height: 1.16;
+    margin-bottom: 10px;
   }
   .hero-light-sub {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 22px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    color: #1F2937;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
   }
   .hero-light-actions {
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 28px;
+    gap: 10px;
+    margin-bottom: 0;
   }
   .hero-light-actions .btn-light-red,
   .hero-light-actions .btn-trial,
