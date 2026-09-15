@@ -316,8 +316,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Vespa</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -340,8 +340,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Honda Activa</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -364,8 +364,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">TVS Jupiter</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -388,8 +388,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Suzuki Access 125</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -412,8 +412,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Honda Dio</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -436,8 +436,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Yamaha Fascino</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -460,8 +460,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Yamaha Ray</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -484,8 +484,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Honda Cliq</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -508,8 +508,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Honda Navi</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -532,8 +532,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Hero Splendor</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -556,8 +556,8 @@
               <div class="ride-meta">
                 <h3 class="ride-name">Yamaha FZ</h3>
                 <div class="ride-price">
-                  <span class="price-label">FROM</span>
-                  <strong class="price-val">&#8377;500 <small>/day</small></strong>
+                  <span class="price-label">ADVANCE</span>
+                  <strong class="price-val">&#8377;500</strong>
                 </div>
               </div>
               <div class="ride-actions">
@@ -584,6 +584,74 @@
 
         <p class="models-note">Availability changes day to day. We confirm your vehicle on a quick call before you
           arrive.</p>
+
+        <!-- Sync fleet cards with vehicles managed in the Admin Panel (localStorage) -->
+        <script>
+          (function syncFleetFromAdmin() {
+            var stored;
+            try { stored = JSON.parse(localStorage.getItem('vijay_arya_fleet') || 'null'); } catch (e) { return; }
+            if (!stored || !Array.isArray(stored) || stored.length === 0) return;
+
+            var grid = document.querySelector('.fleet-grid');
+            if (!grid) return;
+
+            var note = grid.querySelector('.ride-note');
+            var catLabel = { SCOOTER: 'SCOOTER', BIKE: 'MOTORCYCLE' };
+            var statusLabel = { AVAILABLE: 'AVAILABLE', ON_RENT: 'ON RENT', MAINTENANCE: 'MAINTENANCE' };
+
+            function esc(str) {
+              return String(str == null ? '' : str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+
+            // Remove the hard-coded cards, keep the Booking & Terms aside
+            grid.querySelectorAll('.ride-card').forEach(function (card) { card.remove(); });
+
+            var html = '';
+            stored.forEach(function (v) {
+              var status = (v.status || 'AVAILABLE').toUpperCase();
+              var name = esc(v.name || 'Vehicle');
+              var img = v.image || 'assets/logo/logo.png';
+              var advance = Number(v.advance) || 500;
+
+              html +=
+                '<article class="ride-card reveal" data-bike="' + name + '" data-rate="' + advance + '">' +
+                  '<div class="ride-card-head">' +
+                    '<span class="status-pill' + (status !== 'AVAILABLE' ? ' is-unavailable' : '') + '">' +
+                      '<span class="status-dot"></span>' + (statusLabel[status] || status) +
+                    '</span>' +
+                    '<span class="cat-tag">' + (catLabel[v.category] || esc(v.category || '')) + '</span>' +
+                  '</div>' +
+                  '<div class="ride-media">' +
+                    '<img src="' + esc(img) + '" alt="' + name + ' available for rent" width="260" height="160" ' +
+                      'loading="lazy" decoding="async" onerror="this.src=\'assets/logo/logo.png\'">' +
+                  '</div>' +
+                  '<div class="ride-card-foot">' +
+                    '<div class="ride-meta">' +
+                      '<h3 class="ride-name">' + name + '</h3>' +
+                      '<div class="ride-price">' +
+                        '<span class="price-label">ADVANCE</span>' +
+                        '<strong class="price-val">&#8377;' + advance + '</strong>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="ride-actions">' +
+                      '<a href="bike-detail.html?id=' + encodeURIComponent(v.id || '') + '" class="btn-card-outline">View Details</a>' +
+                      (status === 'AVAILABLE'
+                        ? '<button class="btn-card-dark js-book" type="button" data-bike="' + name + '">Book Now</button>'
+                        : '<button class="btn-card-dark" type="button" disabled style="opacity:.5;cursor:not-allowed;">Unavailable</button>') +
+                    '</div>' +
+                  '</div>' +
+                '</article>';
+            });
+
+            if (note) {
+              note.insertAdjacentHTML('beforebegin', html);
+            } else {
+              grid.insertAdjacentHTML('beforeend', html);
+            }
+          })();
+        </script>
       </div>
     </section>
 

@@ -691,28 +691,6 @@
       });
     }
 
-    // KYC Upload Handlers
-    function bindKyc(btn, camBtn, fileInput, camInput, statusEl) {
-      if (btn && fileInput) {
-        btn.addEventListener('click', function () { fileInput.click(); });
-      }
-      if (camBtn && camInput) {
-        camBtn.addEventListener('click', function () { camInput.click(); });
-      }
-      var handleChange = function (input, targetBtn) {
-        if (input.files && input.files[0]) {
-          var name = input.files[0].name;
-          if (statusEl) statusEl.textContent = '✓ Attached: ' + (name.length > 18 ? name.slice(0, 15) + '...' : name);
-          if (targetBtn) targetBtn.classList.add('is-uploaded');
-        }
-      };
-      if (fileInput) fileInput.addEventListener('change', function () { handleChange(fileInput, btn); });
-      if (camInput) camInput.addEventListener('change', function () { handleChange(camInput, camBtn); });
-    }
-
-    bindKyc(kycIdBtn, kycIdCamBtn, kycIdFile, kycIdCam, kycIdStatus);
-    bindKyc(kycDlBtn, kycDlCamBtn, kycDlFile, kycDlCam, kycDlStatus);
-
     function focusables() {
       return $$('a[href], button:not([disabled]), input, select, textarea', modal)
         .filter(function (el) { return el.offsetParent !== null; });
@@ -1215,6 +1193,108 @@
     var bkPrintReceipt = document.getElementById('bkPrintReceipt');
     var bkNewBooking = document.getElementById('bkNewBooking');
 
+    // KYC File inputs and compression
+    var kycIdFile = document.getElementById('kycIdFile');
+    var kycIdCam = document.getElementById('kycIdCam');
+    var kycIdBtn = document.getElementById('kycIdBtn');
+    var kycIdCamBtn = document.getElementById('kycIdCamBtn');
+    var kycIdStatus = document.getElementById('kycIdStatus');
+
+    var kycDlFile = document.getElementById('kycDlFile');
+    var kycDlCam = document.getElementById('kycDlCam');
+    var kycDlBtn = document.getElementById('kycDlBtn');
+    var kycDlCamBtn = document.getElementById('kycDlCamBtn');
+    var kycDlStatus = document.getElementById('kycDlStatus');
+
+    var uploadedAadhaar = null;
+    var uploadedDl = null;
+
+    function compressKycImage(file, callback) {
+      if (!file || !file.type.match(/^image\//i)) {
+        if (callback) callback(null);
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var img = new Image();
+        img.onload = function () {
+          var maxDim = 800;
+          var w = img.width;
+          var h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          var canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          var compressed = canvas.toDataURL('image/jpeg', 0.72);
+          callback(compressed);
+        };
+        img.onerror = function () {
+          callback(e.target.result);
+        };
+        img.src = e.target.result;
+      };
+      reader.onerror = function () {
+        callback(null);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function wireKycUploader(btn, camBtn, fileInput, camInput, statusEl, onDone) {
+      if (btn && fileInput) {
+        btn.addEventListener('click', function () { fileInput.click(); });
+      }
+      if (camBtn && camInput) {
+        camBtn.addEventListener('click', function () { camInput.click(); });
+      }
+
+      var handleSelect = function (input, triggerBtn) {
+        var file = input.files && input.files[0];
+        if (!file) return;
+        if (statusEl) {
+          statusEl.textContent = '⏳ Processing ' + file.name + '...';
+          statusEl.style.color = '#d97706';
+        }
+        compressKycImage(file, function (dataUrl) {
+          if (!dataUrl) {
+            if (statusEl) statusEl.textContent = '⚠️ Could not read image';
+            return;
+          }
+          onDone({
+            name: file.name,
+            size: file.size,
+            dataUrl: dataUrl,
+            uploadedAt: new Date().toISOString()
+          });
+          if (statusEl) {
+            var shortName = file.name.length > 18 ? file.name.slice(0, 15) + '...' : file.name;
+            statusEl.innerHTML = '<span style="color:#059669;font-weight:600;">✓ Attached: ' + shortName + '</span>';
+          }
+          if (triggerBtn) triggerBtn.classList.add('is-uploaded');
+        });
+      };
+
+      if (fileInput) fileInput.addEventListener('change', function () { handleSelect(fileInput, btn); });
+      if (camInput) camInput.addEventListener('change', function () { handleSelect(camInput, camBtn); });
+    }
+
+    wireKycUploader(kycIdBtn, kycIdCamBtn, kycIdFile, kycIdCam, kycIdStatus, function (doc) {
+      uploadedAadhaar = doc;
+    });
+
+    wireKycUploader(kycDlBtn, kycDlCamBtn, kycDlFile, kycDlCam, kycDlStatus, function (doc) {
+      uploadedDl = doc;
+    });
+
     // Catalog details
     var FLEET_CATALOG = {
       'Vespa': { rate: 500, desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
@@ -1422,7 +1502,9 @@
           balanceDue: Math.max(0, totalEstimate - advancePayable),
           customerName: name,
           customerPhone: phone,
-          customerEmail: email
+          customerEmail: email,
+          kycAadhaar: uploadedAadhaar,
+          kycDl: uploadedDl
         };
 
         // Render Step 2 Summary
@@ -1527,9 +1609,7 @@
             contact: '+91' + activeBookingData.customerPhone,
             email: activeBookingData.customerEmail || ''
           },
-          theme: {
-            color: '#EF3138'
-          },
+          // No theme override — Razorpay uses its own default blue checkout theme
           handler: function (response) {
             handlePaymentSuccess(response, activeBookingData);
           },
@@ -1577,6 +1657,9 @@
         customerName: bookingData.customerName,
         customerPhone: bookingData.customerPhone,
         customerEmail: bookingData.customerEmail,
+        // KYC documents the customer attached during booking ({dataUrl, name})
+        kycAadhaar: bookingData.kycAadhaar || null,
+        kycDl: bookingData.kycDl || null,
         paymentMethod: 'Razorpay Online (Verified)',
         status: 'CONFIRMED',
         timestamp: new Date().toISOString(),
@@ -1587,7 +1670,16 @@
       try {
         var existing = JSON.parse(localStorage.getItem('vijay_arya_bookings') || '[]');
         existing.unshift(finalRecord);
-        localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+
+        try {
+          localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+        } catch (quotaErr) {
+          // Storage is full — keep the booking, drop the heavy document images
+          console.warn('Storage full, saving booking without KYC images:', quotaErr);
+          finalRecord.kycAadhaar = null;
+          finalRecord.kycDl = null;
+          localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+        }
         console.log('Booking saved successfully to LocalStorage:', finalRecord);
       } catch (e) {
         console.warn('LocalStorage error:', e);

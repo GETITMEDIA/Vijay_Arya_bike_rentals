@@ -932,7 +932,48 @@
       // 1. Get query parameter 'id' or default to 'vespa'
       var urlParams = new URLSearchParams(window.location.search);
       var bikeId = urlParams.get('id') || 'vespa';
-      var data = BIKES_DATA[bikeId] || BIKES_DATA['vespa'];
+      var data = BIKES_DATA[bikeId];
+
+      // Fall back to a vehicle added through the Admin Panel (localStorage)
+      if (!data) {
+        var adminFleet = [];
+        try { adminFleet = JSON.parse(localStorage.getItem('vijay_arya_fleet') || '[]'); } catch (e) { adminFleet = []; }
+
+        var v = adminFleet.filter(function (x) { return x.id === bikeId; })[0];
+        if (v) {
+          var catName = v.category === 'BIKE' ? 'MOTORCYCLE' : (v.category || 'VEHICLE');
+          var imgs = [];
+          if (v.image) imgs.push(v.image);
+          if (v.imageBack && v.imageBack !== v.image) imgs.push(v.imageBack);
+          if (imgs.length === 0) imgs.push('assets/logo/logo.png');
+
+          data = {
+            id: v.id,
+            title: v.name,
+            bikeName: v.name,
+            category: catName,
+            subtitle: catName.charAt(0) + catName.slice(1).toLowerCase() + ' · Available on rent',
+            color: 'As available',
+            description: v.desc || 'Available for rent at Vijay Arya Bike Rentals, Puducherry. Flat ₹' + (v.advance || 500) + ' advance booking.',
+            images: imgs,
+            specs: [
+              'Helmet included with rental',
+              'Original photo ID required',
+              'No security deposit needed',
+              'Regularly serviced & inspected',
+              'Smooth transmission & handling'
+            ],
+            included: [
+              'Complimentary sanitised helmet',
+              '24/7 Roadside assistance support',
+              'Valid RC and insurance documents',
+              'Flexible daily & weekly extensions'
+            ]
+          };
+        }
+      }
+
+      if (!data) data = BIKES_DATA['vespa'];
 
       // 2. Populate page details
       document.getElementById('pageTitle').textContent = data.title + ' Rent in Pondicherry | Vijay Arya Bike Rentals';
@@ -956,7 +997,7 @@
       // 3. Populate Specs Grid
       var specsGrid = document.getElementById('detailSpecsGrid');
       specsGrid.innerHTML = '';
-      data.specs.forEach(function (specText) {
+      (data.specs || []).forEach(function (specText) {
         var item = document.createElement('div');
         item.className = 'detail-check-item';
         item.innerHTML = '<span class="detail-check-ic">&check;</span><span>' + specText + '</span>';
@@ -966,7 +1007,7 @@
       // 4. Populate Included Grid
       var includedGrid = document.getElementById('detailIncludedGrid');
       includedGrid.innerHTML = '';
-      data.included.forEach(function (incText) {
+      (data.included || []).forEach(function (incText) {
         var item = document.createElement('div');
         item.className = 'detail-check-item';
         item.innerHTML = '<span class="detail-check-ic">&check;</span><span>' + incText + '</span>';
@@ -976,6 +1017,7 @@
       // 5. Setup Images & Thumbnails
       var currentImgIdx = 0;
       var mainImg = document.getElementById('detailMainImg');
+      if (mainImg && data.images && data.images[0]) mainImg.src = data.images[0];
       var thumbsList = document.getElementById('detailThumbsList');
       thumbsList.innerHTML = '';
 

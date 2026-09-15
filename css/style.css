@@ -6881,3 +6881,10 @@ html, body { overflow-x: hidden; }
     grid-template-columns: 1fr;
   }
 }
+
+/* Fleet card — non-available status (rendered from Admin Panel data) */
+.status-pill.is-unavailable { color: #B45309; }
+.status-pill.is-unavailable .status-dot {
+  background: #D97706;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+}
