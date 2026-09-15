@@ -1169,10 +1169,475 @@
     frameId = requestAnimationFrame(render);
   })();
 
+  /* ------------------------------------------------------------------
+     26. BOOKING DRAWER & RAZORPAY PAYMENT ENGINE
+     ------------------------------------------------------------------ */
+  (function bookingEngine() {
+    var RZP_KEY_ID = 'rzp_test_TcCsvzG1Ynmsq7'; // User's Razorpay Test API Key
 
+    var modal = document.getElementById('booking');
+    if (!modal) return;
 
+    var closeBtn = document.getElementById('bookClose');
+    var backdrop = modal.querySelector('[data-book-close]');
+    var bookTitle = document.getElementById('bookTitle');
+    var bookDesc = document.getElementById('bookDesc');
+    var bkBike = document.getElementById('bkBike');
+    var qtyLabel = document.getElementById('qtyLabel');
+    var qtyVal = document.getElementById('qtyVal');
+    var qtyMinus = document.getElementById('qtyMinus');
+    var qtyPlus = document.getElementById('qtyPlus');
 
+    var step1 = document.getElementById('bookStep1');
+    var step2 = document.getElementById('bookStep2');
+    var step3 = document.getElementById('bookStep3');
 
+    var bkStartDate = document.getElementById('bkStartDate');
+    var bkEndDate = document.getElementById('bkEndDate');
+    var bkStartTime = document.getElementById('bkStartTime');
+    var bkEndTime = document.getElementById('bkEndTime');
+    var bkName = document.getElementById('bkName');
+    var bkPhone = document.getElementById('bkPhone');
+    var bkEmail = document.getElementById('bkEmail');
+    var bkError = document.getElementById('bkError');
 
+    var bkSummary = document.getElementById('bkSummary');
+    var bkRzpAmount = document.getElementById('bkRzpAmount');
+    var bkRazorpayBtn = document.getElementById('bkRazorpayBtn');
+    var bkBack = document.getElementById('bkBack');
+    var bkUpi = document.getElementById('bkUpi');
+    var bkUpiId = document.getElementById('bkUpiId');
+    var bkCopy = document.getElementById('bkCopy');
+    var bkWhats = document.getElementById('bkWhats');
 
+    var bkReceiptDetails = document.getElementById('bkReceiptDetails');
+    var bkSuccessWhats = document.getElementById('bkSuccessWhats');
+    var bkPrintReceipt = document.getElementById('bkPrintReceipt');
+    var bkNewBooking = document.getElementById('bkNewBooking');
 
+    // Catalog details
+    var FLEET_CATALOG = {
+      'Vespa': { rate: 500, desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
+      'Honda Activa': { rate: 500, desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy rides.' },
+      'TVS Jupiter': { rate: 500, desc: 'Comfortable ride with extra footboard space and plush suspension.' },
+      'Suzuki Access 125': { rate: 500, desc: 'Powerful 125cc engine offering effortless pickup and comfortable seating.' },
+      'Honda Dio': { rate: 500, desc: 'Sporty design and lightweight handling, ideal for city sightseeing and cafes.' },
+      'Yamaha Fascino': { rate: 500, desc: 'Classic retro aesthetics combined with Yamaha refined 125cc performance.' },
+      'Yamaha Ray': { rate: 500, desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
+      'Honda Cliq': { rate: 500, desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
+      'Honda Navi': { rate: 500, desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' },
+      'Hero Splendor': { rate: 500, desc: 'Legendary Indian commuter motorcycle offering unmatched fuel efficiency.' },
+      'Yamaha FZ': { rate: 500, desc: 'Muscular street bike with superior road grip for cruising ECR and Auroville.' },
+      'Royal Enfield GT 650': { rate: 1200, desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
+    };
+
+    var currentQuantity = 1;
+    var currentBikeName = 'Vespa';
+    var activeBookingData = null;
+
+    // Helper: format YYYY-MM-DD
+    function toISODate(d) {
+      var month = '' + (d.getMonth() + 1);
+      var day = '' + d.getDate();
+      var year = d.getFullYear();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [year, month, day].join('-');
+    }
+
+    // Initialize date pickers
+    function initDates() {
+      var today = new Date();
+      var tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1);
+
+      var todayStr = toISODate(today);
+      var tomorrowStr = toISODate(tomorrow);
+
+      if (bkStartDate) {
+        bkStartDate.min = todayStr;
+        if (!bkStartDate.value) bkStartDate.value = todayStr;
+      }
+      if (bkEndDate) {
+        bkEndDate.min = todayStr;
+        if (!bkEndDate.value) bkEndDate.value = tomorrowStr;
+      }
+    }
+    initDates();
+
+    // Switch step
+    function showStep(stepNum) {
+      if (step1) step1.classList.toggle('is-active', stepNum === 1);
+      if (step2) step2.classList.toggle('is-active', stepNum === 2);
+      if (step3) step3.classList.toggle('is-active', stepNum === 3);
+
+      var panel = modal.querySelector('.booking-panel');
+      if (panel) panel.scrollTop = 0;
+    }
+
+    // Open booking modal
+    function openModal(bikeName) {
+      if (bikeName && FLEET_CATALOG[bikeName]) {
+        currentBikeName = bikeName;
+      } else if (bikeName) {
+        currentBikeName = bikeName;
+      } else {
+        currentBikeName = 'Vespa';
+      }
+
+      if (bkBike) bkBike.value = currentBikeName;
+      if (bookTitle) bookTitle.textContent = currentBikeName;
+      if (bookDesc) {
+        var info = FLEET_CATALOG[currentBikeName];
+        bookDesc.textContent = info ? info.desc : 'Explore Pondicherry in style with Vijay Arya Bike Rentals.';
+      }
+      if (qtyLabel) qtyLabel.textContent = 'How many ' + currentBikeName + '?';
+
+      currentQuantity = 1;
+      if (qtyVal) qtyVal.textContent = '1';
+      if (bkError) { bkError.hidden = true; bkError.textContent = ''; }
+
+      showStep(1);
+
+      modal.hidden = false;
+      window.requestAnimationFrame(function () {
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    // Close booking modal
+    function closeModal() {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      setTimeout(function () {
+        if (!modal.classList.contains('is-open')) {
+          modal.hidden = true;
+        }
+      }, 350);
+    }
+
+    // Event bindings for modal open / close
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+
+    // Global Book Buttons listener
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.js-book');
+      if (btn) {
+        e.preventDefault();
+        var bike = btn.getAttribute('data-bike') || '';
+        if (!bike) {
+          var card = btn.closest('[data-bike]');
+          if (card) bike = card.getAttribute('data-bike');
+        }
+        openModal(bike);
+      }
+    });
+
+    // Quantity buttons
+    if (qtyMinus) {
+      qtyMinus.addEventListener('click', function () {
+        if (currentQuantity > 1) {
+          currentQuantity--;
+          if (qtyVal) qtyVal.textContent = String(currentQuantity);
+        }
+      });
+    }
+
+    if (qtyPlus) {
+      qtyPlus.addEventListener('click', function () {
+        if (currentQuantity < 10) {
+          currentQuantity++;
+          if (qtyVal) qtyVal.textContent = String(currentQuantity);
+        }
+      });
+    }
+
+    // Step 1: Submit & Validate -> Go to Step 2
+    if (step1) {
+      step1.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (bkError) { bkError.hidden = true; bkError.textContent = ''; }
+
+        var name = (bkName && bkName.value) ? bkName.value.trim() : '';
+        var phone = (bkPhone && bkPhone.value) ? bkPhone.value.replace(/[^0-9]/g, '') : '';
+        var email = (bkEmail && bkEmail.value) ? bkEmail.value.trim() : '';
+        var sDate = bkStartDate ? bkStartDate.value : '';
+        var eDate = bkEndDate ? bkEndDate.value : '';
+        var sTime = bkStartTime ? bkStartTime.value : '09:00';
+        var eTime = bkEndTime ? bkEndTime.value : '19:00';
+
+        if (!sDate || !eDate) {
+          showError('Please select both Start Date and End Date.');
+          return;
+        }
+
+        var startObj = new Date(sDate + 'T00:00:00');
+        var endObj = new Date(eDate + 'T00:00:00');
+        if (endObj < startObj) {
+          showError('End Date must be on or after Start Date.');
+          return;
+        }
+
+        if (!name || name.length < 2) {
+          showError('Please enter your full name.');
+          if (bkName) bkName.focus();
+          return;
+        }
+
+        if (!phone || phone.length !== 10) {
+          showError('Please enter a valid 10-digit WhatsApp phone number.');
+          if (bkPhone) bkPhone.focus();
+          return;
+        }
+
+        // Calculate rental days
+        var timeDiff = endObj.getTime() - startObj.getTime();
+        var days = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
+        if (days === 0) days = 1;
+
+        var catalogInfo = FLEET_CATALOG[currentBikeName] || { rate: 500 };
+        var dailyRate = catalogInfo.rate;
+        var totalEstimate = dailyRate * days * currentQuantity;
+        var advancePayable = 500 * currentQuantity;
+
+        activeBookingData = {
+          bikeName: currentBikeName,
+          quantity: currentQuantity,
+          startDate: sDate,
+          endDate: eDate,
+          startTime: sTime,
+          endTime: eTime,
+          days: days,
+          dailyRate: dailyRate,
+          estimatedTotal: totalEstimate,
+          advancePaid: advancePayable,
+          balanceDue: Math.max(0, totalEstimate - advancePayable),
+          customerName: name,
+          customerPhone: phone,
+          customerEmail: email
+        };
+
+        // Render Step 2 Summary
+        renderSummary(activeBookingData);
+        showStep(2);
+      });
+    }
+
+    function showError(msg) {
+      if (bkError) {
+        bkError.textContent = msg;
+        bkError.hidden = false;
+        bkError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function renderSummary(data) {
+      if (bkSummary) {
+        bkSummary.innerHTML =
+          '<div class="booking-summary-header">' +
+            '<h4>' + data.bikeName + (data.quantity > 1 ? ' (' + data.quantity + ' Vehicles)' : '') + '</h4>' +
+            '<span class="summary-badge">' + data.days + ' ' + (data.days === 1 ? 'Day' : 'Days') + ' Rental</span>' +
+          '</div>' +
+          '<div class="summary-row"><span>Pickup Date:</span><strong>' + data.startDate + ' @ ' + data.startTime + '</strong></div>' +
+          '<div class="summary-row"><span>Return Date:</span><strong>' + data.endDate + ' @ ' + data.endTime + '</strong></div>' +
+          '<div class="summary-row"><span>Rider Name:</span><strong>' + data.customerName + '</strong></div>' +
+          '<div class="summary-row"><span>WhatsApp:</span><strong>+91 ' + data.customerPhone + '</strong></div>' +
+          '<div class="summary-row"><span>Daily Rate:</span><strong>&#8377;' + data.dailyRate + ' / day &times; ' + data.quantity + '</strong></div>' +
+          '<div class="summary-row"><span>Estimated Total Rent:</span><strong>&#8377;' + data.estimatedTotal + '</strong></div>' +
+          '<div class="summary-row total-row"><span>Advance to Pay Now:</span><strong style="color:var(--red);font-size:16px;">&#8377;' + data.advancePaid + '</strong></div>' +
+          '<div class="summary-row" style="font-size:11.5px;color:#6b7280;"><span>Balance at shop pickup:</span><span>&#8377;' + data.balanceDue + '</span></div>';
+      }
+
+      if (bkRzpAmount) {
+        bkRzpAmount.textContent = '₹' + data.advancePaid;
+      }
+
+      if (bkRazorpayBtn) {
+        var span = bkRazorpayBtn.querySelector('span');
+        if (span) span.textContent = 'Pay ₹' + data.advancePaid + ' via Razorpay';
+      }
+
+      // Manual UPI App link
+      if (bkUpi) {
+        var upiLink = 'upi://pay?pa=7200011799@okbizaxis&pn=Vijay%20Arya%20Bike%20Rentals&am=' + data.advancePaid + '&cu=INR&tn=Advance%20Booking%20for%20' + encodeURIComponent(data.bikeName);
+        bkUpi.href = upiLink;
+      }
+
+      // Manual WhatsApp link for Step 2 fallback
+      if (bkWhats) {
+        var msg2 = 'Hi Vijay Arya Bike Rentals, I want to book ' + data.quantity + ' ' + data.bikeName + ' from ' + data.startDate + ' to ' + data.endDate + '. My Name: ' + data.customerName + ', Phone: ' + data.customerPhone + '. Advance payable: Rs.' + data.advancePaid;
+        bkWhats.href = 'https://wa.me/919600334488?text=' + encodeURIComponent(msg2);
+      }
+    }
+
+    // Step 2 Back Button
+    if (bkBack) {
+      bkBack.addEventListener('click', function () {
+        showStep(1);
+      });
+    }
+
+    // Copy UPI ID button
+    if (bkCopy && bkUpiId) {
+      bkCopy.addEventListener('click', function () {
+        var text = bkUpiId.textContent || '7200011799@okbizaxis';
+        navigator.clipboard.writeText(text).then(function () {
+          var orig = bkCopy.textContent;
+          bkCopy.textContent = 'Copied!';
+          setTimeout(function () { bkCopy.textContent = orig; }, 2000);
+        }).catch(function () {
+          alert('UPI ID: ' + text);
+        });
+      });
+    }
+
+    // ================================================================
+    // RAZORPAY CHECKOUT TRIGGER
+    // ================================================================
+    if (bkRazorpayBtn) {
+      bkRazorpayBtn.addEventListener('click', function () {
+        if (!activeBookingData) {
+          alert('Please complete step 1 booking details.');
+          showStep(1);
+          return;
+        }
+
+        if (typeof Razorpay === 'undefined') {
+          alert('Razorpay Checkout SDK is still loading. Please check your internet connection or reload the page.');
+          return;
+        }
+
+        var rzpOptions = {
+          key: RZP_KEY_ID,
+          amount: activeBookingData.advancePaid * 100, // paise
+          currency: 'INR',
+          name: 'Vijay Arya Bike Rentals',
+          description: 'Advance for ' + activeBookingData.bikeName + ' (' + activeBookingData.quantity + ' Vehicle' + (activeBookingData.quantity > 1 ? 's' : '') + ')',
+          image: 'assets/logo/logo.png',
+          prefill: {
+            name: activeBookingData.customerName,
+            contact: '+91' + activeBookingData.customerPhone,
+            email: activeBookingData.customerEmail || ''
+          },
+          theme: {
+            color: '#EF3138'
+          },
+          handler: function (response) {
+            handlePaymentSuccess(response, activeBookingData);
+          },
+          modal: {
+            ondismiss: function () {
+              console.log('Razorpay modal closed by user');
+            }
+          }
+        };
+
+        try {
+          var rzp = new Razorpay(rzpOptions);
+          rzp.on('payment.failed', function (resp) {
+            alert('Payment could not be completed: ' + (resp.error.description || 'Unknown error'));
+          });
+          rzp.open();
+        } catch (err) {
+          console.error('Razorpay initialization error:', err);
+          alert('Unable to launch Razorpay. You can scan the UPI QR code below to complete your payment.');
+        }
+      });
+    }
+
+    // ================================================================
+    // PAYMENT SUCCESS & RECEIPT GENERATION
+    // ================================================================
+    function handlePaymentSuccess(rzpResponse, bookingData) {
+      var bookingId = 'VA-' + Date.now().toString().slice(-6);
+      var paymentId = rzpResponse.razorpay_payment_id || ('pay_' + Math.random().toString(36).substring(2, 11));
+
+      var finalRecord = {
+        bookingId: bookingId,
+        paymentId: paymentId,
+        bikeName: bookingData.bikeName,
+        quantity: bookingData.quantity,
+        startDate: bookingData.startDate,
+        endDate: bookingData.endDate,
+        startTime: bookingData.startTime,
+        endTime: bookingData.endTime,
+        days: bookingData.days,
+        dailyRate: bookingData.dailyRate,
+        estimatedTotal: bookingData.estimatedTotal,
+        advancePaid: bookingData.advancePaid,
+        balanceDue: bookingData.balanceDue,
+        customerName: bookingData.customerName,
+        customerPhone: bookingData.customerPhone,
+        customerEmail: bookingData.customerEmail,
+        paymentMethod: 'Razorpay Online (Verified)',
+        status: 'CONFIRMED',
+        timestamp: new Date().toISOString(),
+        formattedDate: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+      };
+
+      // Save to localStorage as JSON
+      try {
+        var existing = JSON.parse(localStorage.getItem('vijay_arya_bookings') || '[]');
+        existing.unshift(finalRecord);
+        localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+        console.log('Booking saved successfully to LocalStorage:', finalRecord);
+      } catch (e) {
+        console.warn('LocalStorage error:', e);
+      }
+
+      // Render Step 3 Receipt
+      if (bkReceiptDetails) {
+        bkReceiptDetails.innerHTML =
+          '<div class="receipt-item-row"><span>Booking Reference:</span><strong style="color:var(--red);">' + finalRecord.bookingId + '</strong></div>' +
+          '<div class="receipt-item-row highlight-paid"><span>Payment Status:</span><strong>&check; PAID via Razorpay (' + finalRecord.paymentId + ')</strong></div>' +
+          '<div class="receipt-item-row"><span>Vehicle:</span><strong>' + finalRecord.bikeName + (finalRecord.quantity > 1 ? ' (' + finalRecord.quantity + ' Vehicles)' : '') + '</strong></div>' +
+          '<div class="receipt-item-row"><span>Rental Duration:</span><strong>' + finalRecord.days + ' ' + (finalRecord.days === 1 ? 'Day' : 'Days') + ' (' + finalRecord.startDate + ' to ' + finalRecord.endDate + ')</strong></div>' +
+          '<div class="receipt-item-row"><span>Pickup Timing:</span><strong>' + finalRecord.startTime + ' &ndash; 9:00 PM</strong></div>' +
+          '<div class="receipt-item-row"><span>Customer:</span><strong>' + finalRecord.customerName + ' (' + finalRecord.customerPhone + ')</strong></div>' +
+          '<div class="receipt-item-row"><span>Advance Paid:</span><strong style="color:#059669;">&#8377;' + finalRecord.advancePaid + '</strong></div>' +
+          '<div class="receipt-item-row"><span>Balance at Pickup:</span><strong>&#8377;' + finalRecord.balanceDue + '</strong></div>';
+      }
+
+      // Populate WhatsApp confirmation URL
+      if (bkSuccessWhats) {
+        var whatsMsg =
+          '🎉 *VIJAY ARYA BIKE RENTALS - BOOKING CONFIRMATION*\n\n' +
+          '🆔 *Booking ID:* ' + finalRecord.bookingId + '\n' +
+          '💳 *Razorpay Payment ID:* ' + finalRecord.paymentId + '\n' +
+          '🏍️ *Vehicle:* ' + finalRecord.bikeName + ' (' + finalRecord.quantity + ' qty)\n' +
+          '📅 *Rental Dates:* ' + finalRecord.startDate + ' to ' + finalRecord.endDate + ' (' + finalRecord.days + ' days)\n' +
+          '⏰ *Pickup Time:* ' + finalRecord.startTime + '\n' +
+          '👤 *Customer:* ' + finalRecord.customerName + ' (+91 ' + finalRecord.customerPhone + ')\n' +
+          '💰 *Advance Paid:* ₹' + finalRecord.advancePaid + ' (PAID via Razorpay)\n' +
+          '💵 *Balance at Shop:* ₹' + finalRecord.balanceDue + '\n\n' +
+          'Please reserve my vehicle. I will carry my original Driving Licence and ID at pickup.';
+        bkSuccessWhats.href = 'https://wa.me/919600334488?text=' + encodeURIComponent(whatsMsg);
+      }
+
+      showStep(3);
+    }
+
+    // Print Receipt
+    if (bkPrintReceipt) {
+      bkPrintReceipt.addEventListener('click', function () {
+        window.print();
+      });
+    }
+
+    // Book another ride reset
+    if (bkNewBooking) {
+      bkNewBooking.addEventListener('click', function () {
+        if (step1) step1.reset();
+        initDates();
+        showStep(1);
+      });
+    }
+  })();

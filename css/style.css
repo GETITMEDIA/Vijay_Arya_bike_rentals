@@ -302,11 +302,11 @@ iframe { border: 0; display: block; }
   display: flex; align-items: center; gap: 24px;
 }
 
-.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
-.brand-mark { width: 115px; height: auto; flex: none; }
+.brand { display: flex; align-items: center; gap: 14px; text-decoration: none; margin-right: auto; }
+.brand-mark { height: 92px; width: auto; max-height: calc(var(--header-h) - 12px); flex: none; object-fit: contain; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-name {
-  font-family: var(--serif); font-size: 19px; font-weight: 700;
+  font-family: var(--serif); font-size: 21px; font-weight: 700;
   color: var(--black); letter-spacing: -.01em;
 }
 .brand-sub {
@@ -314,14 +314,14 @@ iframe { border: 0; display: block; }
   text-transform: uppercase; color: var(--muted); margin-top: 2px;
 }
 
-.nav-desktop ul { display: flex; gap: 6px; }
+.nav-desktop ul { display: flex; gap: 10px; align-items: center; }
 .nav-link {
-  position: relative; display: block; padding: 10px 16px;
-  font-size: 14.5px; font-weight: 500; text-decoration: none; color: var(--ink);
+  position: relative; display: block; padding: 10px 18px;
+  font-size: 15.5px; font-weight: 600; text-decoration: none; color: var(--ink);
   border-radius: var(--r-sm); transition: color .18s var(--ease);
 }
 .nav-link::after {
-  content: ""; position: absolute; left: 16px; right: 16px; bottom: 4px;
+  content: ""; position: absolute; left: 18px; right: 18px; bottom: 4px;
   height: 2.5px; background: #EF3138;
   transform: scaleX(0); transform-origin: left; transition: transform .22s var(--ease);
 }
@@ -605,13 +605,13 @@ body.nav-open { overflow: hidden; }
 /* ---------- 6. Hero Banner (Light Aesthetic Reference Match) ---------- */
 .hero-light-banner {
   position: relative;
-  min-height: 580px;
+  min-height: min(52vh, 460px);
   display: flex;
   align-items: center;
   overflow: hidden;
   background: #FFFFFF;
   color: #0F172A;
-  padding: 56px 0 64px;
+  padding: 32px 0 36px;
 }
 
 .hero-light-backdrop {
@@ -1103,12 +1103,17 @@ body.nav-open { overflow: hidden; }
   }
   .hero-light-fade-overlay {
     background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.8) 0%,
-      rgba(255, 255, 255, 0.5) 40%,
-      rgba(255, 255, 255, 0.5) 70%,
-      rgba(255, 255, 255, 0.9) 100%
+      90deg,
+      #FFFFFF 0%,
+      rgba(255, 255, 255, 0.97) 40%,
+      rgba(255, 255, 255, 0.82) 55%,
+      rgba(255, 255, 255, 0.4) 72%,
+      rgba(255, 255, 255, 0.06) 88%,
+      transparent 100%
     );
+  }
+  .hero-light-content {
+    max-width: 66%;
   }
   .hero-light-badge-wrap {
     justify-content: flex-start;
@@ -1958,7 +1963,7 @@ body.nav-open { overflow: hidden; }
 .exp-v { display: block; color: var(--muted); font-size: 15.5px; }
 
 /* ---------- 10. Fleet Cards (User Reference Matching) ---------- */
-.fleet { background: #FAF7F2; padding: clamp(60px, 8vw, 96px) 0; }
+.fleet { background: #FAF7F2; padding: clamp(28px, 4vw, 48px) 0 clamp(60px, 8vw, 96px); }
 .fleet-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3816,9 +3821,9 @@ body.bk-open { overflow: hidden; }
 .link-red:hover, .link-red-light:hover { transform: translateX(3px); }
 .link-red, .link-red-light { transition: border-color .18s var(--ease), color .18s var(--ease), transform .22s var(--ease); }
 
-/* Brand mark */
-.brand-mark { transition: transform .35s var(--ease); }
-.brand:hover .brand-mark { transform: rotate(-7deg) scale(1.07); }
+/* Brand mark — no hover animation */
+.brand-mark { transition: none; }
+.brand:hover .brand-mark { transform: none; }
 
 /* Header shrink once scrolled */
 .site-header.is-scrolled .header-inner { height: calc(var(--header-h) - 8px); }
@@ -3957,7 +3962,7 @@ body.bk-open { overflow: hidden; }
   .pay-qr { max-width: 260px; margin-inline: auto; }
   .booking-panel { padding: 28px 22px 26px; max-height: calc(100dvh - 28px); }
   .booking { padding: 14px; }
-  .brand-mark { width: 85px; }
+  .brand-mark { height: 58px; width: auto; }
   .brand-name { font-size: 17px; }
   .brand-sub { font-size: 9.5px; }
   .hero { padding-top: 36px; }
@@ -5303,14 +5308,14 @@ html, body { overflow-x: hidden; }
 /* ---------- 25b. Hero Light Banner — Tablet (≤991px) ---------- */
 @media (max-width: 991px) {
   .hero-light-banner {
-    min-height: 420px;
-    padding: 44px 0 52px;
+    min-height: min(46vh, 380px);
+    padding: 28px 0 32px;
   }
   .hero-light-container {
-    min-height: 380px;
+    min-height: auto;
   }
   .hero-light-content {
-    max-width: 100%;
+    max-width: 68%;
     text-align: left;
   }
   .hero-vespa-tagline-wrap {
@@ -5325,24 +5330,41 @@ html, body { overflow-x: hidden; }
 @media (max-width: 640px) {
   .hero-light-banner {
     min-height: auto;
-    padding: 32px 0 40px;
+    padding: 18px 0 20px;
   }
   .hero-light-container {
     min-height: auto;
   }
+  .hero-light-content {
+    max-width: 100%;
+  }
+  .hero-light-fade-overlay {
+    background: linear-gradient(
+      90deg,
+      #FFFFFF 0%,
+      rgba(255, 255, 255, 0.96) 45%,
+      rgba(255, 255, 255, 0.78) 62%,
+      rgba(255, 255, 255, 0.35) 80%,
+      transparent 100%
+    );
+  }
   .hero-light-headline {
-    font-size: clamp(26px, 7.5vw, 34px);
-    line-height: 1.18;
+    font-size: clamp(24px, 6.8vw, 31px);
+    line-height: 1.16;
+    margin-bottom: 10px;
   }
   .hero-light-sub {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 22px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    color: #1F2937;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
   }
   .hero-light-actions {
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 28px;
+    gap: 10px;
+    margin-bottom: 0;
   }
   .hero-light-actions .btn-light-red,
   .hero-light-actions .btn-trial,
@@ -6061,5 +6083,801 @@ html, body { overflow-x: hidden; }
   }
   .contact-form-card h3 {
     font-size: 22px;
+  }
+}
+
+/* ==========================================================================
+   26. BOOKING DRAWER & RAZORPAY CHECKOUT MODAL
+   ========================================================================== */
+.booking {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.booking.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.booking-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 17, 23, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  cursor: pointer;
+}
+
+.booking-panel {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 100%;
+  background: #ffffff;
+  color: var(--ink);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: -12px 0 45px rgba(0, 0, 0, 0.28);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 32px 28px 48px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.booking.is-open .booking-panel {
+  transform: translateX(0);
+}
+
+.booking-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.booking-close:hover {
+  background: #fee2e2;
+  color: var(--red);
+  transform: rotate(90deg);
+}
+
+/* Drawer Header */
+.drawer-head {
+  margin-bottom: 20px;
+  padding-right: 36px;
+}
+
+.drawer-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.drawer-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+
+.drawer-sub {
+  font-size: 13.5px;
+  color: #6b7280;
+  margin: 0 0 12px;
+  line-height: 1.45;
+}
+
+.drawer-price-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.drawer-price-tag strong {
+  font-size: 15px;
+  color: var(--red);
+}
+
+/* Guest Info Box */
+.guest-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+}
+
+.guest-box-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+.guest-box p {
+  font-size: 12.5px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Steps Display */
+.booking-step {
+  display: none;
+}
+
+.booking-step.is-active {
+  display: block;
+  animation: fadeInStep 0.3s ease;
+}
+
+@keyframes fadeInStep {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Drawer Sections */
+.drawer-section {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.section-num-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #374151;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+/* Form Fields */
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.field input[type="text"],
+.field input[type="tel"],
+.field input[type="email"],
+.field input[type="date"],
+.field input[type="time"],
+.field select {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--sans);
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  transition: all 0.2s ease;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(239, 49, 56, 0.15);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.input-prefix-group {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.input-prefix-group .prefix-text {
+  padding: 0 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #6b7280;
+  background: #f3f4f6;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  border-right: 1.5px solid #d1d5db;
+}
+
+.input-prefix-group input {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Quantity Counter */
+.qty-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+
+.qty-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 2px;
+}
+
+.qty-info p {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.qty-counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.qty-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.qty-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* KYC upload */
+.kyc-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 10px;
+}
+
+.kyc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.kyc-card {
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+
+.kyc-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+.kyc-hint {
+  font-size: 11px;
+  color: #9ca3af;
+  margin: 0 0 8px;
+}
+
+.kyc-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.kyc-btn {
+  font-size: 11px;
+  padding: 5px 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Drawer Footer */
+.drawer-footer {
+  margin-top: 10px;
+}
+
+.drawer-fineprint {
+  font-size: 11.5px;
+  color: #9ca3af;
+  text-align: center;
+  margin: 10px 0 0;
+  line-height: 1.4;
+}
+
+.field-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+/* ==========================================================================
+   STEP 2: RAZORPAY PAYMENT CARDS
+   ========================================================================== */
+.booking-summary {
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.booking-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 12px;
+}
+
+.booking-summary-header h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.summary-badge {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 6px;
+}
+
+.summary-row.total-row {
+  border-top: 1px dashed #d1d5db;
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Razorpay Highlight Card */
+.pay-rzp-card {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 22px 20px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid #374151;
+  position: relative;
+  overflow: hidden;
+}
+
+.pay-rzp-card::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(239, 49, 56, 0.35) 0%, rgba(239, 49, 56, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.pay-rzp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.pay-badge-secure {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #34d399;
+  margin-bottom: 4px;
+}
+
+.pay-rzp-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px;
+}
+
+.pay-rzp-sub {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.pay-rzp-badge-tag {
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.pay-rzp-amount-box {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.pay-rzp-lbl {
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.pay-rzp-price {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.pay-rzp-btn {
+  box-shadow: 0 4px 14px rgba(239, 49, 56, 0.4);
+  font-size: 15px;
+  font-weight: 700;
+  height: 48px;
+  letter-spacing: 0.3px;
+}
+
+.pay-rzp-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 49, 56, 0.6);
+}
+
+/* Pay Divider */
+.pay-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.pay-divider::before,
+.pay-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pay-divider span {
+  padding: 0 12px;
+}
+
+/* Pay Grid (QR) */
+.pay-grid {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.pay-qr img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+}
+
+.pay-copy .pay-amount {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pay-copy .pay-amount strong {
+  font-size: 16px;
+  color: var(--red);
+}
+
+.pay-copy .pay-note {
+  font-size: 11.5px;
+  color: #6b7280;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+
+.pay-upi {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 4px 8px;
+  margin-bottom: 10px;
+}
+
+.pay-upi-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+.pay-upi code {
+  font-size: 11px;
+  font-weight: 600;
+  color: #111827;
+  flex: 1;
+  word-break: break-all;
+}
+
+.pay-copy-btn {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pay-send {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* ==========================================================================
+   STEP 3: RECEIPT & CONFIRMATION SCREEN
+   ========================================================================== */
+.receipt-card {
+  padding: 10px 0;
+}
+
+.receipt-success-badge {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.receipt-check-icon {
+  width: 60px;
+  height: 60px;
+  background: #10b981;
+  color: #ffffff;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+  animation: popSuccess 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popSuccess {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.receipt-title {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: #111827;
+  margin: 0 0 6px;
+}
+
+.receipt-sub {
+  font-size: 13.5px;
+  color: #4b5563;
+  margin: 0;
+}
+
+.receipt-details-box {
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+
+.receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #4b5563;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.receipt-item-row:last-child {
+  border-bottom: none;
+}
+
+.receipt-item-row strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.receipt-item-row.highlight-paid {
+  background: #ecfdf5;
+  margin: 6px -12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.receipt-item-row.highlight-paid strong {
+  color: #047857;
+  font-size: 14px;
+}
+
+.receipt-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp:hover {
+  background: #1ebc59;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+}
+
+/* ==========================================================================
+   PRINT STYLES FOR RECEIPT
+   ========================================================================== */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .booking, .booking-panel, #bookStep3, #bookStep3 * {
+    visibility: visible;
+  }
+  .booking {
+    position: static;
+    display: block;
+    opacity: 1;
+  }
+  .booking-panel {
+    position: static;
+    max-width: 100%;
+    box-shadow: none;
+    padding: 0;
+  }
+  .booking-close, .receipt-actions, .booking-backdrop, .drawer-head, .guest-box {
+    display: none !important;
+  }
+}
+
+/* Mobile responsive drawer */
+@media (max-width: 540px) {
+  .booking-panel {
+    max-width: 100%;
+    padding: 24px 18px 40px;
+  }
+  .pay-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .pay-qr {
+    max-width: 140px;
+    margin: 0 auto;
+  }
+  .pay-upi {
+    justify-content: center;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
   }
 }
