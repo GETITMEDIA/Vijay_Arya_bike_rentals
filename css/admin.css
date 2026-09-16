@@ -85,6 +85,31 @@
   --r-sm: 8px;
 }
 
+/* ── SPINNER / LOADING ANIMATIONS (PRODUCTION GRADE) ── */
+.spinner-mini {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.spinner-mini-dark {
+  border-color: rgba(0, 0, 0, 0.2);
+  border-top-color: var(--n-900);
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.btn-loading {
+  opacity: 0.85 !important;
+  cursor: wait !important;
+  pointer-events: none !important;
+}
+
 /* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -3620,3 +3645,16 @@ img, svg, video, canvas { max-width: 100%; }
   .btn-card-action { font-size: 11px; padding: 0 6px; }
   .btn-card-delete { flex: 0 0 34px; }
 }
+
+/* Neutral confirm dialog (log out, etc.) — not a destructive red one */
+.confirm-modal.is-neutral .confirm-icon {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.confirm-modal.is-neutral .btn-danger-admin {
+  background: var(--brand);
+  box-shadow: var(--sh-brand);
+}
+
+.confirm-modal.is-neutral .btn-danger-admin:hover { background: var(--brand-dark); }

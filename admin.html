@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=20.0">
+  <link rel="stylesheet" href="css/admin.css?v=21.0">
 </head>
 
 <body>
@@ -49,6 +49,15 @@
 
   <!-- ============================ 1. LOGIN GATE ============================ -->
   <div class="login-gate" id="loginGate">
+    <script>
+      (function () {
+        try {
+          if (sessionStorage.getItem('vijay_arya_admin_session') === 'true' || localStorage.getItem('vijay_arya_admin_session') === 'true') {
+            document.getElementById('loginGate').classList.add('is-hidden');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <div class="login-card">
       <img src="assets/logo/logo.png" alt="Vijay Arya Logo" class="login-logo">
       <h2>Vijay Arya Rentals</h2>
@@ -59,7 +68,7 @@
           <label for="adminEmail">Email Address</label>
           <div class="input-icon-wrap">
             <svg class="ic input-ic"><use href="#ic-mail"></use></svg>
-            <input type="email" id="adminEmail" class="login-field" placeholder="admin@vijayarya.com" autocomplete="username" autofocus required>
+            <input type="email" id="adminEmail" class="login-field" placeholder="admin@example.com" autocomplete="username" autofocus required>
           </div>
         </div>
 
@@ -75,12 +84,11 @@
         </div>
 
         <button type="submit" class="login-btn" id="loginSubmitBtn">
-          <span>Sign In to Admin Panel</span>
+          <span>Log In</span>
           <svg class="ic"><use href="#ic-arrow-right"></use></svg>
         </button>
 
         <p class="login-error" id="loginError">Incorrect email or password. Try again!</p>
-        <p class="login-hint">Default login: <strong>admin@vijayarya.com</strong> / <strong>vijay@1973</strong></p>
       </form>
     </div>
   </div>
@@ -316,9 +324,9 @@
 
             <select class="filter-select" id="transStatusFilter">
               <option value="ALL">All statuses</option>
-              <option value="CONFIRMED">Advance Paid</option>
-              <option value="ONGOING">Bike Collected</option>
-              <option value="COMPLETED">Returned &amp; Paid</option>
+              <option value="ADVANCE_PAID">Advance Paid</option>
+              <option value="BIKE_COLLECTED">Bike Collected</option>
+              <option value="RETURNED_PAID">Returned &amp; Paid</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
 
@@ -543,6 +551,15 @@
   <!-- TOAST CONTAINER -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- Firebase (compat build) + data layer -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-config.js?v=3.0"></script>
+  <script src="js/data-service.js?v=5.0"></script>
+  <script src="js/kyc-store.js?v=1.0"></script>
+
   <!-- ============================ 4. SCRIPT LOGIC ============================ -->
   <script>
   (function () {
@@ -565,15 +582,10 @@
     ];
 
     // LocalStorage Keys
+    // LocalStorage Keys
     var KEY_FLEET = 'vijay_arya_fleet';
     var KEY_BOOKINGS = 'vijay_arya_bookings';
-    var KEY_EMAIL = 'vijay_arya_admin_email';
-    var KEY_PASS = 'vijay_arya_admin_password';
     var KEY_AUTH = 'vijay_arya_admin_session';
-
-    // Default credentials (changeable from Data & Settings tab)
-    var DEFAULT_EMAIL = 'admin@vijayarya.com';
-    var DEFAULT_PASSWORD = 'vijay@1973';
     var PLACEHOLDER_IMG = 'assets/logo/logo.png';
 
     // Inline SVG icon helper (for JS-rendered markup)
@@ -588,10 +600,7 @@
     // Helper: Toast Message
     function showToast(msg) {
       var container = document.getElementById('toastContainer');
-
-      // One message at a time — a new toast replaces the previous one
       container.innerHTML = '';
-
       var toast = document.createElement('div');
       toast.className = 'toast-msg';
       toast.innerHTML = icon('check') + '<span>' + msg + '</span>';
@@ -604,24 +613,33 @@
     }
 
     // ================================================================
-    // AUTHENTICATION & LOGIN GATE
+    // AUTHENTICATION & LOGIN GATE (PURE FIREBASE AUTH)
     // ================================================================
-    function getAdminEmail() {
-      return (localStorage.getItem(KEY_EMAIL) || DEFAULT_EMAIL).toLowerCase();
-    }
-
-    function getAdminPassword() {
-      return localStorage.getItem(KEY_PASS) || DEFAULT_PASSWORD;
-    }
-
     function checkAuth() {
-      var isAuth = sessionStorage.getItem(KEY_AUTH);
+      var isAuth = sessionStorage.getItem(KEY_AUTH) === 'true' || localStorage.getItem(KEY_AUTH) === 'true';
       var gate = document.getElementById('loginGate');
-      if (isAuth === 'true') {
+      if (isAuth) {
         gate.classList.add('is-hidden');
       } else {
         gate.classList.remove('is-hidden');
       }
+    }
+
+    // Keep session in sync with live Firebase Auth
+    if (window.DataService) {
+      DataService.onAuth(function (user) {
+        if (user && user.email) {
+          sessionStorage.setItem(KEY_AUTH, 'true');
+          localStorage.setItem(KEY_AUTH, 'true');
+          sessionStorage.setItem('vijay_arya_admin_session_email', user.email);
+          document.getElementById('loginGate').classList.add('is-hidden');
+          renderTopbar();
+        } else {
+          if (sessionStorage.getItem(KEY_AUTH) !== 'true' && localStorage.getItem(KEY_AUTH) !== 'true') {
+            document.getElementById('loginGate').classList.remove('is-hidden');
+          }
+        }
+      });
     }
 
     document.getElementById('loginForm').addEventListener('submit', function (e) {
@@ -629,19 +647,61 @@
       var email = document.getElementById('adminEmail').value.trim().toLowerCase();
       var password = document.getElementById('adminPassword').value;
       var errorEl = document.getElementById('loginError');
+      var submitBtn = document.getElementById('loginSubmitBtn');
+      var origBtnHtml = submitBtn.innerHTML;
 
-      if (email === getAdminEmail() && password === getAdminPassword()) {
+      function unlock(displayEmail) {
         sessionStorage.setItem(KEY_AUTH, 'true');
+        localStorage.setItem(KEY_AUTH, 'true');
+        sessionStorage.setItem('vijay_arya_admin_session_email', displayEmail);
         document.getElementById('loginGate').classList.add('is-hidden');
         document.getElementById('adminPassword').value = '';
         errorEl.style.display = 'none';
-        showToast('Welcome back, Admin!');
+        showToast('Welcome, ' + displayName(displayEmail) + '!');
         renderTopbar();
         loadData();
-      } else {
+      }
+
+      function reject(message) {
+        errorEl.textContent = message || "Incorrect email or password. Try again!";
         errorEl.style.display = 'block';
         document.getElementById('adminPassword').value = '';
         document.getElementById('adminPassword').focus();
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-mini"></span><span>Logging in...</span>';
+      submitBtn.classList.add('btn-loading');
+
+      if (window.DataService && DataService.isLive()) {
+        DataService.signIn(email, password).then(function (cred) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origBtnHtml;
+          submitBtn.classList.remove('btn-loading');
+          unlock((cred && cred.user && cred.user.email) || email);
+        }).catch(function (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origBtnHtml;
+          submitBtn.classList.remove('btn-loading');
+          console.warn('Firebase Auth sign-in error:', err);
+
+          var msg = 'Incorrect email or password. Try again!';
+          if (err && err.code === 'auth/user-not-found') {
+            msg = 'No account found with this email address.';
+          } else if (err && (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential')) {
+            msg = 'Incorrect password. Please try again.';
+          } else if (err && err.code === 'auth/invalid-email') {
+            msg = 'Please enter a valid email address.';
+          } else if (err && err.code === 'auth/too-many-requests') {
+            msg = 'Too many attempts. Please wait a minute and try again.';
+          }
+          reject(msg);
+        });
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origBtnHtml;
+        submitBtn.classList.remove('btn-loading');
+        reject('Not connected. Please check your internet connection.');
       }
     });
 
@@ -656,46 +716,95 @@
     });
 
     document.getElementById('logoutBtn').addEventListener('click', function () {
-      sessionStorage.removeItem(KEY_AUTH);
-      document.getElementById('adminPassword').value = '';
-      document.getElementById('loginGate').classList.remove('is-hidden');
-      document.getElementById('adminEmail').focus();
-      showToast('Logged out successfully.');
+      askConfirm({
+        title: 'Log out?',
+        text: 'You will need to enter your email and password again to open the admin panel.',
+        okText: 'Log out',
+        tone: 'neutral'
+      }, function () {
+        if (window.DataService) DataService.signOut();
+        sessionStorage.removeItem(KEY_AUTH);
+        localStorage.removeItem(KEY_AUTH);
+        sessionStorage.removeItem('vijay_arya_admin_session_email');
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('loginGate').classList.remove('is-hidden');
+        document.getElementById('adminEmail').focus();
+        showToast('Logged out successfully.');
+      });
     });
 
     // ================================================================
     // DATA MANAGEMENT
     // ================================================================
+    // Normalise cached/legacy vehicle records
+    function healFleet(list) {
+      list.forEach(function (v) {
+        if (v.image === 'assets/rentel-bikes/hero_splendor_main_view.png') {
+          v.image = 'assets/rentel-bikes/hero_splender_main_view.png';
+        }
+        if (v.image === 'assets/rentel-bikes/honda_cliq_main_view.png') {
+          v.image = 'assets/rentel-bikes/honda_clic_main_view.png';
+        }
+        if (v.category !== 'SCOOTER' && v.category !== 'BIKE') v.category = 'BIKE';
+        if (!v.imageBack) {
+          var def = DEFAULT_FLEET.find(function (d) { return d.id === v.id; });
+          if (def) v.imageBack = def.imageBack;
+        }
+      });
+      return list;
+    }
+
+    // Live data: Firestore when configured, browser storage otherwise
     function loadData() {
+      if (window.DataService && DataService.isLive()) {
+        // Ask Firestore itself how many vehicles exist — an empty collection
+        // gets the 12 standard bikes written into it automatically.
+        if (DataService.countFleetDocs) {
+          DataService.countFleetDocs().then(function (count) {
+            console.log('[fleet] Firestore "vehicles" documents:', count);
+            if (count !== 0) return;
+
+            console.log('[fleet] Collection is empty — seeding the standard fleet…');
+            return DataService.seedAllDefaultsToFirestore().then(function (n) {
+              showToast('Cloud database set up with ' + n + ' vehicles.');
+            });
+          }).catch(function (err) {
+            console.error('[fleet] Auto-seed failed:', err);
+            if (err && err.hint) console.error('[fleet] ' + err.hint);
+            showToast('Cloud not reachable — working offline. Press "Sync" to retry.');
+
+            // Print a full diagnosis so the cause is visible in the console
+            DataService.diagnose().then(function (report) {
+              console.warn('[fleet] Cloud diagnostics:\n  ' + report.lines.join('\n  '));
+            });
+          });
+        }
+
+        DataService.watchFleet(function (list) {
+          fleet = healFleet(list || []);
+          renderFleetGrid();
+          updateStats();
+        });
+
+        DataService.watchBookings(function (list) {
+          bookings = list || [];
+          renderRecentBookings();
+          renderAllBookings();
+          updateStats();
+        });
+        return;
+      }
+
+      loadLocalData();
+    }
+
+    function loadLocalData() {
       // Load fleet
       var savedFleet = localStorage.getItem(KEY_FLEET);
       if (savedFleet) {
         try {
-          fleet = JSON.parse(savedFleet);
-          // Auto-heal typo filenames & missing imageBack from cached data
-          var healed = false;
-          fleet.forEach(function (v) {
-            if (v.image === 'assets/rentel-bikes/hero_splendor_main_view.png') {
-              v.image = 'assets/rentel-bikes/hero_splender_main_view.png';
-              healed = true;
-            }
-            if (v.image === 'assets/rentel-bikes/honda_cliq_main_view.png') {
-              v.image = 'assets/rentel-bikes/honda_clic_main_view.png';
-              healed = true;
-            }
-            // Only Scooter and Motorcycle categories are used now
-            if (v.category !== 'SCOOTER' && v.category !== 'BIKE') {
-              v.category = 'BIKE';
-              healed = true;
-            }
-            var def = DEFAULT_FLEET.find(function (d) { return d.id === v.id; });
-            if (def) {
-              if (!v.imageBack) { v.imageBack = def.imageBack; healed = true; }
-            }
-          });
-          if (healed) {
-            localStorage.setItem(KEY_FLEET, JSON.stringify(fleet));
-          }
+          fleet = healFleet(JSON.parse(savedFleet));
+          localStorage.setItem(KEY_FLEET, JSON.stringify(fleet));
         } catch (e) { fleet = DEFAULT_FLEET.slice(); }
       } else {
         fleet = DEFAULT_FLEET.slice();
@@ -713,14 +822,16 @@
       renderAll();
     }
 
+    // Local mirror + immediate redraw. Firestore writes go through the
+    // specific DataService calls and come back via the live listeners.
     function saveFleet() {
-      localStorage.setItem(KEY_FLEET, JSON.stringify(fleet));
+      if (!DataService.isLive()) localStorage.setItem(KEY_FLEET, JSON.stringify(fleet));
       renderFleetGrid();
       updateStats();
     }
 
     function saveBookings() {
-      localStorage.setItem(KEY_BOOKINGS, JSON.stringify(bookings));
+      if (!DataService.isLive()) localStorage.setItem(KEY_BOOKINGS, JSON.stringify(bookings));
       renderRecentBookings();
       renderAllBookings();
       updateStats();
@@ -987,7 +1098,7 @@
 
       var html = '';
       recent.forEach(function (b) {
-        var statusBadge = getStatusBadge(b.status || 'CONFIRMED');
+        var statusBadge = getStatusBadge(b.status);
         html += '<tr>' +
           '<td data-label="Booking"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
           '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">' + (b.customerPhone || '') + '</span></div></td>' +
@@ -1149,9 +1260,14 @@
 
         item.status = next;
         saveFleet();
-
         var label = STATUS_OPTIONS.filter(function (o) { return o.value === next; })[0].label;
         showToast(item.name + ' is now ' + label);
+
+        DataService.setVehicleStatus(id, next).then(function (res) {
+          if (res && !res.cloud && DataService.isLive()) {
+            showToast('Status saved locally (Cloud write failed: ' + res.error + ')');
+          }
+        });
         return;
       }
 
@@ -1170,7 +1286,16 @@
     function askConfirm(opts, onYes) {
       document.getElementById('confirmTitle').textContent = opts.title || 'Are you sure?';
       document.getElementById('confirmText').textContent = opts.text || '';
-      confirmOkBtn.textContent = opts.okText || 'Delete';
+      confirmOkBtn.innerHTML = opts.okText || 'Delete';
+      confirmOkBtn.disabled = false;
+      confirmOkBtn.classList.remove('btn-loading');
+
+      // 'neutral' for ordinary confirmations, red destructive styling otherwise
+      var neutral = opts.tone === 'neutral';
+      confirmModal.classList.toggle('is-neutral', neutral);
+      document.querySelector('#confirmModal .confirm-icon').innerHTML =
+        '<svg class="ic"><use href="#ic-' + (neutral ? 'lock' : 'trash') + '"></use></svg>';
+
       confirmAction = onYes;
       confirmModal.classList.add('is-open');
     }
@@ -1178,12 +1303,22 @@
     function closeConfirm() {
       confirmModal.classList.remove('is-open');
       confirmAction = null;
+      confirmOkBtn.disabled = false;
+      confirmOkBtn.classList.remove('btn-loading');
     }
 
     confirmOkBtn.addEventListener('click', function () {
       var run = confirmAction;
-      closeConfirm();
-      if (typeof run === 'function') run();
+      if (typeof run === 'function') {
+        confirmOkBtn.innerHTML = '<span class="spinner-mini"></span><span>Deleting...</span>';
+        confirmOkBtn.classList.add('btn-loading');
+        confirmOkBtn.disabled = true;
+        Promise.resolve(run()).finally(function () {
+          closeConfirm();
+        });
+      } else {
+        closeConfirm();
+      }
     });
 
     confirmModal.querySelectorAll('[data-confirm-cancel]').forEach(function (el) {
@@ -1201,12 +1336,21 @@
 
       askConfirm({
         title: 'Delete "' + item.name + '"?',
-        text: 'This vehicle will be removed from your fleet and from the website. This cannot be undone.',
+        text: 'This vehicle will be removed from your fleet and from the website.',
         okText: 'Delete vehicle'
       }, function () {
+        // The local list updates immediately; the cloud result only changes
+        // the message, so a slow network never blocks the UI.
         fleet = fleet.filter(function (x) { return x.id !== id; });
         saveFleet();
-        showToast(item.name + ' deleted from fleet.');
+
+        return DataService.deleteVehicle(id).then(function (res) {
+          if (res && res.cloud === false && DataService.isLive()) {
+            showToast('Deleted locally (Cloud delete failed: ' + res.error + ')');
+          } else {
+            showToast(item.name + ' removed from fleet.');
+          }
+        });
       });
     };
 
@@ -1330,6 +1474,9 @@
 
     vehForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      var submitBtn = document.getElementById('vehSubmitBtn');
+      var origBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+
       var editId = document.getElementById('vehEditId').value;
       var name = document.getElementById('vehName').value.trim();
       var cat = document.getElementById('vehCategory').value;
@@ -1339,46 +1486,110 @@
       var backImg = backInput.value.trim() || frontImg;
       var desc = document.getElementById('vehDesc').value.trim();
 
-      if (editId) {
-        var existing = fleet.find(function (x) { return x.id === editId; });
-        if (existing) {
-          existing.name = name;
-          existing.category = cat;
-          existing.advance = advance;
-          existing.status = status;
-          existing.image = frontImg;
-          existing.imageBack = backImg;
-          existing.desc = desc;
-        }
-        showToast(name + ' updated successfully with new photos.');
-      } else {
-        var newId = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        fleet.unshift({
-          id: newId + '-' + Date.now().toString().slice(-4),
-          name: name,
-          category: cat,
-          advance: advance,
-          status: status,
-          image: frontImg,
-          imageBack: backImg,
-          desc: desc
-        });
-        showToast('New vehicle added to fleet with Front & Back photos!');
+      var record = {
+        id: editId || (name.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Date.now().toString().slice(-4)),
+        name: name,
+        category: cat,
+        advance: advance,
+        status: status,
+        image: frontImg,
+        imageBack: backImg,
+        desc: desc
+      };
+
+      if (submitBtn) {
+        submitBtn.innerHTML = '<span class="spinner-mini"></span><span>Saving vehicle...</span>';
+        submitBtn.classList.add('btn-loading');
+        submitBtn.disabled = true;
       }
 
-      saveFleet();
-      vehModal.classList.remove('is-open');
+      function restoreSubmitBtn() {
+        if (submitBtn) {
+          submitBtn.innerHTML = origBtnHtml;
+          submitBtn.classList.remove('btn-loading');
+          submitBtn.disabled = false;
+        }
+      }
+
+      // The modal always closes and the button always comes back, whatever
+      // the network does — a hard 8s guard backs up the service timeouts.
+      var settled = false;
+
+      function finish(result) {
+        if (settled) return;
+        settled = true;
+
+        restoreSubmitBtn();
+
+        if (editId) {
+          var existing = fleet.find(function (x) { return x.id === editId; });
+          if (existing) Object.keys(record).forEach(function (k) { existing[k] = record[k]; });
+        } else if (!fleet.some(function (x) { return x.id === record.id; })) {
+          fleet.unshift(record);
+        }
+        saveFleet();
+        vehModal.classList.remove('is-open');
+
+        if (result && result.cloud) {
+          showToast('✓ Vehicle saved to Cloud Database!');
+        } else {
+          var reason = (result && result.error) || 'no response from Firestore';
+          console.warn('Vehicle kept locally only:', reason);
+          showToast('Saved locally (Cloud write failed: ' + reason + ')');
+        }
+      }
+
+      var guard = setTimeout(function () {
+        finish({ cloud: false, error: 'request took too long' });
+      }, 8000);
+
+      DataService.saveVehicle(record).then(function (result) {
+        clearTimeout(guard);
+        // Older call sites resolved with just the id
+        finish(typeof result === 'string' ? { cloud: false, error: 'unknown status' } : result);
+      }).catch(function (err) {
+        clearTimeout(guard);
+        finish({ cloud: false, error: (err && (err.code || err.message)) || 'unknown error' });
+      });
     });
 
     // ================================================================
     // RENDER: ALL TRANSACTIONS & BOOKINGS TABLE
     // ================================================================
+    // ----------------------------------------------------------------
+    // Booking stages. The value stored in Firestore is the readable one,
+    // so the database is understandable without opening this file.
+    // ----------------------------------------------------------------
+    var BOOKING_STAGES = [
+      { value: 'ADVANCE_PAID',   label: 'Advance Paid',    css: 'confirmed' },
+      { value: 'BIKE_COLLECTED', label: 'Bike Collected',  css: 'ongoing' },
+      { value: 'RETURNED_PAID',  label: 'Returned & Paid', css: 'completed' },
+      { value: 'CANCELLED',      label: 'Cancelled',       css: 'cancelled' }
+    ];
+
+    // Older bookings used short codes — map them to the readable values
+    var LEGACY_STATUS = {
+      CONFIRMED: 'ADVANCE_PAID',
+      ONGOING: 'BIKE_COLLECTED',
+      COMPLETED: 'RETURNED_PAID',
+      CANCELLED: 'CANCELLED'
+    };
+
+    function normalizeStatus(status) {
+      var s = String(status || 'ADVANCE_PAID').toUpperCase();
+      if (LEGACY_STATUS[s]) s = LEGACY_STATUS[s];
+      return BOOKING_STAGES.some(function (x) { return x.value === s; }) ? s : 'ADVANCE_PAID';
+    }
+
+    function stageOf(status) {
+      var v = normalizeStatus(status);
+      return BOOKING_STAGES.filter(function (x) { return x.value === v; })[0];
+    }
+
     function getStatusBadge(status) {
-      var s = (status || 'CONFIRMED').toUpperCase();
-      if (s === 'CONFIRMED') return '<span class="badge-status-pill badge-confirmed">Advance Paid</span>';
-      if (s === 'ONGOING') return '<span class="badge-status-pill badge-ongoing">Bike Collected</span>';
-      if (s === 'COMPLETED') return '<span class="badge-status-pill badge-completed">Returned &amp; Paid</span>';
-      return '<span class="badge-status-pill badge-cancelled">Cancelled</span>';
+      var st = stageOf(status);
+      return '<span class="badge-status-pill badge-' + st.css + '">' +
+        st.label.replace('&', '&amp;') + '</span>';
     }
 
     // Bookings matching every filter on the Transactions tab (search + status + dates)
@@ -1395,7 +1606,7 @@
       return bookings.filter(function (b) {
         var str = ((b.bookingId || '') + ' ' + (b.paymentId || '') + ' ' + (b.customerName || '') + ' ' + (b.customerPhone || '') + ' ' + (b.bikeName || '')).toLowerCase();
         var matchSearch = str.indexOf(search) > -1;
-        var matchStatus = (statusFilter === 'ALL' || (b.status || 'CONFIRMED') === statusFilter);
+        var matchStatus = (statusFilter === 'ALL' || normalizeStatus(b.status) === statusFilter);
         var matchDate = withinRange(bookingDate(b, dateField), from, to);
         return matchSearch && matchStatus && matchDate;
       });
@@ -1416,13 +1627,13 @@
       var html = '';
       filtered.forEach(function (b) {
         // Booking lifecycle: advance paid → bike handed over → returned & balance paid
-        var cur = (b.status || 'CONFIRMED').toUpperCase();
-        var statusSelect = '<select class="status-select status-' + cur.toLowerCase() + '" ' +
+        var cur = normalizeStatus(b.status);
+        var statusSelect = '<select class="status-select status-' + stageOf(cur).css + '" ' +
           'title="Booking stage" onchange="updateBookingStatus(\'' + b.bookingId + '\', this.value)">' +
-          '<option value="CONFIRMED"' + (cur === 'CONFIRMED' ? ' selected' : '') + '>Advance Paid</option>' +
-          '<option value="ONGOING"' + (cur === 'ONGOING' ? ' selected' : '') + '>Bike Collected</option>' +
-          '<option value="COMPLETED"' + (cur === 'COMPLETED' ? ' selected' : '') + '>Returned &amp; Paid</option>' +
-          '<option value="CANCELLED"' + (cur === 'CANCELLED' ? ' selected' : '') + '>Cancelled</option>' +
+          BOOKING_STAGES.map(function (st) {
+            return '<option value="' + st.value + '"' + (cur === st.value ? ' selected' : '') + '>' +
+              st.label.replace('&', '&amp;') + '</option>';
+          }).join('') +
         '</select>';
 
         var whatsBtn = b.customerPhone ? '<a href="https://wa.me/91' + b.customerPhone + '?text=' + encodeURIComponent('Hi ' + b.customerName + ', regarding your Vijay Arya Bike booking (' + b.bookingId + ')...') + '" target="_blank" class="table-action-icon-btn" title="Chat on WhatsApp">' + icon('chat') + '</a>' : '';
@@ -1502,20 +1713,24 @@
       var item = bookings.find(function (x) { return x.bookingId === bookingId; });
       if (!item) return;
 
-      var STAGE_TEXT = {
-        CONFIRMED: 'Advance paid',
-        ONGOING: 'Bike collected',
-        COMPLETED: 'Returned & fully paid',
-        CANCELLED: 'Cancelled'
-      };
+      var stage = stageOf(newStatus);
 
-      item.status = newStatus;
+      item.status = stage.value;
+      item.statusLabel = stage.label;          // plain text, for reading in Firestore
+      item.statusUpdatedAt = new Date().toISOString();
 
       // Once the bike is returned the balance is settled at the shop
-      if (newStatus === 'COMPLETED') item.balanceDue = 0;
+      if (stage.value === 'RETURNED_PAID') item.balanceDue = 0;
+
+      DataService.updateBooking(bookingId, {
+        status: item.status,
+        statusLabel: item.statusLabel,
+        statusUpdatedAt: item.statusUpdatedAt,
+        balanceDue: item.balanceDue
+      }).catch(function (err) { console.warn('Booking update failed:', err); });
 
       saveBookings();
-      showToast(bookingId + ' — ' + (STAGE_TEXT[newStatus] || newStatus));
+      showToast(bookingId + ' — ' + stage.label);
     };
 
     window.deleteBooking = function (bookingId) {
@@ -1526,6 +1741,11 @@
       }, function () {
         bookings = bookings.filter(function (x) { return x.bookingId !== bookingId; });
         saveBookings();
+        DataService.deleteBooking(bookingId).catch(function (err) {
+          console.warn('Booking delete failed:', err);
+        });
+        // Remove the customer's documents along with the booking
+        if (window.KycStore) window.KycStore.remove(bookingId);
         showToast('Booking ' + bookingId + ' deleted.');
       });
     };
@@ -1542,43 +1762,76 @@
     var lightboxTitle = document.getElementById('lightboxDocTitle');
     var lightboxDownload = document.getElementById('lightboxDownloadBtn');
 
+    // Helper: extract URL, name, and format from any document record (Firebase URL, dataUrl, or object)
+    function getDocMedia(doc) {
+      if (!doc) return { url: '', name: '', isPdf: false, inStore: false };
+      if (typeof doc === 'string') {
+        var isP = doc.indexOf('application/pdf') > -1 || doc.toLowerCase().indexOf('.pdf') > -1;
+        return { url: doc, name: isP ? 'Document.pdf' : 'Document.jpg', isPdf: isP, inStore: false };
+      }
+      var url = doc.dataUrl || doc.url || doc.src || '';
+      var isPdf = (doc.type === 'pdf') || (url.indexOf('application/pdf') > -1) || (url.toLowerCase().indexOf('.pdf') > -1);
+      return {
+        url: url,
+        name: doc.name || (isPdf ? 'Document.pdf' : 'Document.jpg'),
+        isPdf: isPdf,
+        inStore: Boolean(doc.inStore && !url)
+      };
+    }
+
     // A KYC document card: thumbnail + View and Download actions
     function kycDocCard(b, which) {
-      var doc = which === 'aadhaar' ? b.kycAadhaar : b.kycDl;
+      var docRaw = which === 'aadhaar' ? b.kycAadhaar : b.kycDl;
       var label = which === 'aadhaar' ? 'Aadhaar / Photo ID' : 'Driving Licence';
-      var isPdf = (doc.type === 'pdf') || (doc.dataUrl || '').indexOf('application/pdf') > -1;
-
+      var media = getDocMedia(docRaw);
       var safeName = ((b.customerName || 'customer') + '_' + label)
         .toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
-      var fileName = safeName + (isPdf ? '.pdf' : '.jpg');
+      var fileName = safeName + (media.isPdf ? '.pdf' : '.jpg');
       var title = label + ' — ' + (b.customerName || 'Customer');
 
-      var thumb = isPdf
+      if (!media.url) {
+        return '<div class="kyc-doc-card">' +
+          '<div class="kyc-doc-thumb-box"><div class="kyc-doc-pdf">' + icon('file', 'ic-xl') + '<span>Customer Device</span></div></div>' +
+          '<div class="kyc-doc-info">' +
+            '<strong>' + label + '</strong>' +
+            '<span>' + (docRaw && docRaw.name ? docRaw.name : 'Attached during booking') + '</span>' +
+          '</div>' +
+          '<div class="kyc-doc-actions">' +
+            '<span class="kyc-table-pill kyc-table-pending" style="font-size:11px;padding:4px 8px;">Counter verify</span>' +
+          '</div>' +
+        '</div>';
+      }
+
+      var safeUrl = media.url.replace(/'/g, "%27");
+      var thumb = media.isPdf
         ? '<div class="kyc-doc-pdf">' + icon('file', 'ic-xl') + '<span>PDF document</span></div>'
-        : '<img src="' + doc.dataUrl + '" alt="' + label + '" class="kyc-doc-thumb">' +
+        : '<img src="' + media.url + '" alt="' + label + '" class="kyc-doc-thumb" onerror="this.src=\'assets/logo/logo.png\'">' +
           '<div class="kyc-zoom-overlay">' + icon('eye') + '<span>Enlarge</span></div>';
 
       return '<div class="kyc-doc-card">' +
         '<div class="kyc-doc-thumb-box"' +
-          (isPdf ? '' : ' onclick="openDocLightbox(\'' + doc.dataUrl + '\', \'' + title.replace(/'/g, '') + '\')"') + '>' +
+          (media.isPdf ? '' : ' onclick="openDocLightbox(\'' + safeUrl + '\', \'' + title.replace(/'/g, "\\'") + '\')"') + '>' +
           thumb +
         '</div>' +
         '<div class="kyc-doc-info">' +
           '<strong>' + label + '</strong>' +
-          '<span>' + (doc.name || fileName) + '</span>' +
+          '<span>' + (media.name || fileName) + '</span>' +
         '</div>' +
         '<div class="kyc-doc-actions">' +
-          (isPdf
-            ? '<a class="kyc-doc-btn" href="' + doc.dataUrl + '" target="_blank" rel="noopener">' + icon('eye') + '<span>View</span></a>'
-            : '<button type="button" class="kyc-doc-btn" onclick="openDocLightbox(\'' + doc.dataUrl + '\', \'' + title.replace(/'/g, '') + '\')">' + icon('eye') + '<span>View</span></button>') +
-          '<a class="kyc-doc-btn kyc-doc-btn-primary" href="' + doc.dataUrl + '" download="' + fileName + '">' +
+          (media.isPdf
+            ? '<a class="kyc-doc-btn" href="' + media.url + '" target="_blank" rel="noopener">' + icon('eye') + '<span>View PDF</span></a>'
+            : '<button type="button" class="kyc-doc-btn" onclick="openDocLightbox(\'' + safeUrl + '\', \'' + title.replace(/'/g, "\\'") + '\')">' + icon('eye') + '<span>View</span></button>') +
+          '<a class="kyc-doc-btn kyc-doc-btn-primary" href="' + media.url + '" download="' + fileName + '" target="_blank">' +
             icon('download') + '<span>Download</span></a>' +
         '</div>' +
       '</div>';
     }
 
     window.openDocLightbox = function (imgSrc, title) {
-      if (!imgSrc) return;
+      if (!imgSrc || imgSrc === 'undefined' || imgSrc === 'null') {
+        showToast('Image preview not available.');
+        return;
+      }
       lightboxImg.src = imgSrc;
       lightboxTitle.textContent = title || 'KYC Document Verification';
       lightboxDownload.href = imgSrc;
@@ -1590,9 +1843,28 @@
       var b = bookings.find(function (x) { return x.bookingId === bookingId; });
       if (!b) return;
 
+      var needsAadhaar = b.kycAadhaar && !getDocMedia(b.kycAadhaar).url;
+      var needsDl = b.kycDl && !getDocMedia(b.kycDl).url;
+
+      // Documents live in the KYC store; older bookings embedded them inline
+      if (window.KycStore && (needsAadhaar || needsDl)) {
+        window.KycStore.get(bookingId).then(function (stored) {
+          if (stored) {
+            if (needsAadhaar && stored.aadhaar) b.kycAadhaar = stored.aadhaar;
+            if (needsDl && stored.dl) b.kycDl = stored.dl;
+          }
+          renderReceipt(b);
+        }).catch(function () { renderReceipt(b); });
+        return;
+      }
+
+      renderReceipt(b);
+    };
+
+    function renderReceipt(b) {
       var kycDocsHtml = '';
-      var hasAadhaar = Boolean(b.kycAadhaar && b.kycAadhaar.dataUrl);
-      var hasDl = Boolean(b.kycDl && b.kycDl.dataUrl);
+      var hasAadhaar = Boolean(b.kycAadhaar);
+      var hasDl = Boolean(b.kycDl);
 
       if (hasAadhaar || hasDl) {
         kycDocsHtml = '<div class="receipt-kyc-section">' +
@@ -1643,7 +1915,7 @@
         kycDocsHtml;
 
       receiptModal.classList.add('is-open');
-    };
+    }
 
     document.getElementById('btnReceiptPrint').addEventListener('click', function () {
       window.print();
@@ -1687,7 +1959,7 @@
           b.estimatedTotal || 500,
           b.advancePaid || 500,
           b.balanceDue || 0,
-          b.status || 'CONFIRMED',
+          '"' + stageOf(b.status).label + '"',
           '"' + (b.formattedDate || '') + '"'
         ].join(',');
       });
@@ -1712,16 +1984,51 @@
     }
 
     // Topbar: today's date and the signed-in account
+    // "admin@vijayarya.com" → "Admin"
+    function displayName(email) {
+      if (!email) return 'Admin';
+      var name = email.split('@')[0].replace(/[._-]+/g, ' ').trim();
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+
     function renderTopbar() {
+      var email = sessionStorage.getItem('vijay_arya_admin_session_email') || '';
+
       document.getElementById('topbarDate').textContent =
         new Date().toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
-      document.getElementById('topbarUser').textContent = getAdminEmail();
+
+      var userEl = document.getElementById('topbarUser');
+      userEl.textContent = displayName(email);
+      userEl.title = email || 'Signed in';   // full address on hover
     }
 
     // Initialize
     renderTopbar();
     checkAuth();
-    loadData();
+
+    // Firestore rules require a signed-in admin for writes, so wait for the
+    // auth state before loading (and possibly seeding) cloud data.
+    if (window.DataService && DataService.isLive()) {
+      var started = false;
+      DataService.onAuth(function (user) {
+        if (user && !started) {
+          started = true;
+          console.log('[auth] Signed in as', user.email, '— loading cloud data');
+          loadData();
+        }
+      });
+
+      // Never leave the panel empty if auth is slow or the user is signed out
+      setTimeout(function () {
+        if (!started) {
+          started = true;
+          console.log('[auth] No signed-in user yet — showing cached data');
+          loadData();
+        }
+      }, 2500);
+    } else {
+      loadData();
+    }
 
   })();
   </script>
