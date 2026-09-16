@@ -1311,6 +1311,26 @@
       'Royal Enfield GT 650': { rate: 1200, desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
     };
 
+    // Live fleet sync for booking modal & website catalog
+    if (window.DataService) {
+      window.DataService.watchFleet(function (fleetList) {
+        if (fleetList && Array.isArray(fleetList)) {
+          fleetList.forEach(function (v) {
+            if (v && v.name) {
+              FLEET_CATALOG[v.name] = {
+                rate: Number(v.rate) || 500,
+                advance: Number(v.advance) || 500,
+                desc: v.desc || (v.name + ' available for rent at Vijay Arya Bike Rentals, Puducherry.')
+              };
+            }
+          });
+          if (typeof window.syncLiveFleet === 'function') {
+            window.syncLiveFleet(fleetList);
+          }
+        }
+      });
+    }
+
     var currentQuantity = 1;
     var currentBikeName = 'Vespa';
     var activeBookingData = null;
@@ -1636,6 +1656,10 @@
     // ================================================================
     // PAYMENT SUCCESS & RECEIPT GENERATION
     // ================================================================
+    function global_KycStore() {
+      return (typeof window !== 'undefined' && window.KycStore) ? window.KycStore : null;
+    }
+
     function handlePaymentSuccess(rzpResponse, bookingData) {
       var bookingId = 'VA-' + Date.now().toString().slice(-6);
       var paymentId = rzpResponse.razorpay_payment_id || ('pay_' + Math.random().toString(36).substring(2, 11));
@@ -1666,21 +1690,48 @@
         formattedDate: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
       };
 
-      // Save to localStorage as JSON
+      // 1a. Send the booking (and its KYC images) to the shared database, so
+      //     it appears in the shop's admin panel on any device.
+      if (window.DataService && DataService.isLive()) {
+        DataService.addBooking(finalRecord).then(function () {
+          console.log('Booking synced to Firestore:', bookingId);
+        }).catch(function (err) {
+          console.warn('Booking sync failed (kept locally):', err);
+        });
+      }
+
+      // 1b. KYC images also go to the local document store, so they can be
+      //     reopened even without a connection.
+      if (global_KycStore() && (finalRecord.kycAadhaar || finalRecord.kycDl)) {
+        global_KycStore().put(bookingId, {
+          aadhaar: finalRecord.kycAadhaar,
+          dl: finalRecord.kycDl
+        }).then(function (ok) {
+          console.log('KYC documents stored for ' + bookingId + ':', ok);
+        }).catch(function (err) {
+          console.warn('KYC document store error:', err);
+        });
+      }
+
+      // 2. The booking row keeps only light metadata + a pointer to the store
+      var bookingRow = JSON.parse(JSON.stringify(finalRecord));
+      ['kycAadhaar', 'kycDl'].forEach(function (key) {
+        if (bookingRow[key]) {
+          bookingRow[key] = {
+            name: bookingRow[key].name,
+            size: bookingRow[key].size,
+            type: bookingRow[key].type || 'image',
+            uploadedAt: bookingRow[key].uploadedAt,
+            inStore: true
+          };
+        }
+      });
+
       try {
         var existing = JSON.parse(localStorage.getItem('vijay_arya_bookings') || '[]');
-        existing.unshift(finalRecord);
-
-        try {
-          localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
-        } catch (quotaErr) {
-          // Storage is full — keep the booking, drop the heavy document images
-          console.warn('Storage full, saving booking without KYC images:', quotaErr);
-          finalRecord.kycAadhaar = null;
-          finalRecord.kycDl = null;
-          localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
-        }
-        console.log('Booking saved successfully to LocalStorage:', finalRecord);
+        existing.unshift(bookingRow);
+        localStorage.setItem('vijay_arya_bookings', JSON.stringify(existing));
+        console.log('Booking saved successfully:', bookingRow);
       } catch (e) {
         console.warn('LocalStorage error:', e);
       }

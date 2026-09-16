@@ -585,71 +585,92 @@
         <p class="models-note">Availability changes day to day. We confirm your vehicle on a quick call before you
           arrive.</p>
 
-        <!-- Sync fleet cards with vehicles managed in the Admin Panel (localStorage) -->
+        <!-- Fleet cards come from the vehicles the admin manages (Firestore, or
+             browser storage in offline demo mode). -->
         <script>
-          (function syncFleetFromAdmin() {
-            var stored;
-            try { stored = JSON.parse(localStorage.getItem('vijay_arya_fleet') || 'null'); } catch (e) { return; }
-            if (!stored || !Array.isArray(stored) || stored.length === 0) return;
+          (function syncFleet() {
+            function render(stored) {
+              if (!stored || !Array.isArray(stored) || stored.length === 0) return;
 
-            var grid = document.querySelector('.fleet-grid');
-            if (!grid) return;
+              var grid = document.querySelector('.fleet-grid');
+              if (!grid) return;
 
-            var note = grid.querySelector('.ride-note');
-            var catLabel = { SCOOTER: 'SCOOTER', BIKE: 'MOTORCYCLE' };
-            var statusLabel = { AVAILABLE: 'AVAILABLE', ON_RENT: 'ON RENT', MAINTENANCE: 'MAINTENANCE' };
+              var note = grid.querySelector('.ride-note');
+              var catLabel = { SCOOTER: 'SCOOTER', BIKE: 'MOTORCYCLE' };
+              var statusLabel = { AVAILABLE: 'AVAILABLE', ON_RENT: 'ON RENT', MAINTENANCE: 'MAINTENANCE' };
 
-            function esc(str) {
-              return String(str == null ? '' : str)
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            }
+              function esc(str) {
+                return String(str == null ? '' : str)
+                  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+              }
 
-            // Remove the hard-coded cards, keep the Booking & Terms aside
-            grid.querySelectorAll('.ride-card').forEach(function (card) { card.remove(); });
+              // Remove previous ride-cards, keep the Booking & Terms aside
+              grid.querySelectorAll('.ride-card').forEach(function (card) { card.remove(); });
 
-            var html = '';
-            stored.forEach(function (v) {
-              var status = (v.status || 'AVAILABLE').toUpperCase();
-              var name = esc(v.name || 'Vehicle');
-              var img = v.image || 'assets/logo/logo.png';
-              var advance = Number(v.advance) || 500;
+              var html = '';
+              stored.forEach(function (v) {
+                var status = (v.status || 'AVAILABLE').toUpperCase();
+                var name = esc(v.name || 'Vehicle');
+                var img = v.image || 'assets/logo/logo.png';
+                var advance = Number(v.advance) || 500;
 
-              html +=
-                '<article class="ride-card reveal" data-bike="' + name + '" data-rate="' + advance + '">' +
-                  '<div class="ride-card-head">' +
-                    '<span class="status-pill' + (status !== 'AVAILABLE' ? ' is-unavailable' : '') + '">' +
-                      '<span class="status-dot"></span>' + (statusLabel[status] || status) +
-                    '</span>' +
-                    '<span class="cat-tag">' + (catLabel[v.category] || esc(v.category || '')) + '</span>' +
-                  '</div>' +
-                  '<div class="ride-media">' +
-                    '<img src="' + esc(img) + '" alt="' + name + ' available for rent" width="260" height="160" ' +
-                      'loading="lazy" decoding="async" onerror="this.src=\'assets/logo/logo.png\'">' +
-                  '</div>' +
-                  '<div class="ride-card-foot">' +
-                    '<div class="ride-meta">' +
-                      '<h3 class="ride-name">' + name + '</h3>' +
-                      '<div class="ride-price">' +
-                        '<span class="price-label">ADVANCE</span>' +
-                        '<strong class="price-val">&#8377;' + advance + '</strong>' +
+                html +=
+                  '<article class="ride-card reveal is-in" data-bike="' + name + '" data-rate="' + advance + '">' +
+                    '<div class="ride-card-head">' +
+                      '<span class="status-pill' + (status !== 'AVAILABLE' ? ' is-unavailable' : '') + '">' +
+                        '<span class="status-dot"></span>' + (statusLabel[status] || status) +
+                      '</span>' +
+                      '<span class="cat-tag">' + (catLabel[v.category] || esc(v.category || '')) + '</span>' +
+                    '</div>' +
+                    '<div class="ride-media">' +
+                      '<img src="' + esc(img) + '" alt="' + name + ' available for rent" width="260" height="160" ' +
+                        'loading="lazy" decoding="async" onerror="this.src=\'assets/logo/logo.png\'">' +
+                    '</div>' +
+                    '<div class="ride-card-foot">' +
+                      '<div class="ride-meta">' +
+                        '<h3 class="ride-name">' + name + '</h3>' +
+                        '<div class="ride-price">' +
+                          '<span class="price-label">ADVANCE</span>' +
+                          '<strong class="price-val">&#8377;' + advance + '</strong>' +
+                        '</div>' +
+                      '</div>' +
+                      '<div class="ride-actions">' +
+                        '<a href="bike-detail.html?id=' + encodeURIComponent(v.id || '') + '" class="btn-card-outline">View Details</a>' +
+                        (status === 'AVAILABLE'
+                          ? '<button class="btn-card-dark js-book" type="button" data-bike="' + name + '">Book Now</button>'
+                          : '<button class="btn-card-dark" type="button" disabled style="opacity:.5;cursor:not-allowed;">Unavailable</button>') +
                       '</div>' +
                     '</div>' +
-                    '<div class="ride-actions">' +
-                      '<a href="bike-detail.html?id=' + encodeURIComponent(v.id || '') + '" class="btn-card-outline">View Details</a>' +
-                      (status === 'AVAILABLE'
-                        ? '<button class="btn-card-dark js-book" type="button" data-bike="' + name + '">Book Now</button>'
-                        : '<button class="btn-card-dark" type="button" disabled style="opacity:.5;cursor:not-allowed;">Unavailable</button>') +
-                    '</div>' +
-                  '</div>' +
-                '</article>';
-            });
+                  '</article>';
+              });
 
-            if (note) {
-              note.insertAdjacentHTML('beforebegin', html);
-            } else {
-              grid.insertAdjacentHTML('beforeend', html);
+              if (note) {
+                note.insertAdjacentHTML('beforebegin', html);
+              } else {
+                grid.insertAdjacentHTML('beforeend', html);
+              }
             }
+
+            // Expose render globally so the Firebase bootstrap can connect it
+            window.syncLiveFleet = render;
+
+            // ── Deferred Firebase connection ──
+            // Firebase SDK loads AFTER this inline script, so DataService
+            // is not yet available. We render from localStorage immediately,
+            // and the bootstrap <script> at the bottom calls
+            // window._connectLiveFleet() once DataService is ready.
+            window._connectLiveFleet = function () {
+              if (window.DataService) {
+                window.DataService.watchFleet(render);
+              }
+            };
+
+            // Instant render from localStorage cache (no waiting for Firebase)
+            try {
+              var saved = JSON.parse(localStorage.getItem("vijay_arya_fleet") || "null");
+              if (saved && saved.length) render(saved);
+            } catch (e) {}
           })();
         </script>
       </div>
@@ -1436,7 +1457,19 @@
 
   <!-- Razorpay Checkout SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script src="js/script.js?v=1.1" defer></script>
+  <!-- Firebase (compat build) + data layer -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-config.js?v=3.0"></script>
+  <script src="js/data-service.js?v=5.0"></script>
+  <script src="js/kyc-store.js?v=2.0"></script>
+  <!-- Bootstrap: connect the fleet grid to live Firestore once DataService is ready -->
+  <script>
+    if (window._connectLiveFleet) window._connectLiveFleet();
+  </script>
+  <script src="js/script.js?v=2.0" defer></script>
 </body>
 
 </html>
