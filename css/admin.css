@@ -3645,3 +3645,16 @@ img, svg, video, canvas { max-width: 100%; }
   .btn-card-action { font-size: 11px; padding: 0 6px; }
   .btn-card-delete { flex: 0 0 34px; }
 }
+
+/* Neutral confirm dialog (log out, etc.) — not a destructive red one */
+.confirm-modal.is-neutral .confirm-icon {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.confirm-modal.is-neutral .btn-danger-admin {
+  background: var(--brand);
+  box-shadow: var(--sh-brand);
+}
+
+.confirm-modal.is-neutral .btn-danger-admin:hover { background: var(--brand-dark); }

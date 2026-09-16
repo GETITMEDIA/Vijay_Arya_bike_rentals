@@ -1685,7 +1685,9 @@
         kycAadhaar: bookingData.kycAadhaar || null,
         kycDl: bookingData.kycDl || null,
         paymentMethod: 'Razorpay Online (Verified)',
-        status: 'CONFIRMED',
+        // Booking stage: ADVANCE_PAID → BIKE_COLLECTED → RETURNED_PAID (or CANCELLED)
+        status: 'ADVANCE_PAID',
+        statusLabel: 'Advance Paid',
         timestamp: new Date().toISOString(),
         formattedDate: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
       };

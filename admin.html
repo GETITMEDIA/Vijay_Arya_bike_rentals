@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=20.0">
+  <link rel="stylesheet" href="css/admin.css?v=21.0">
 </head>
 
 <body>
@@ -84,7 +84,7 @@
         </div>
 
         <button type="submit" class="login-btn" id="loginSubmitBtn">
-          <span>Sign In with Firebase Auth</span>
+          <span>Log In</span>
           <svg class="ic"><use href="#ic-arrow-right"></use></svg>
         </button>
 
@@ -324,9 +324,9 @@
 
             <select class="filter-select" id="transStatusFilter">
               <option value="ALL">All statuses</option>
-              <option value="CONFIRMED">Advance Paid</option>
-              <option value="ONGOING">Bike Collected</option>
-              <option value="COMPLETED">Returned &amp; Paid</option>
+              <option value="ADVANCE_PAID">Advance Paid</option>
+              <option value="BIKE_COLLECTED">Bike Collected</option>
+              <option value="RETURNED_PAID">Returned &amp; Paid</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
 
@@ -657,7 +657,7 @@
         document.getElementById('loginGate').classList.add('is-hidden');
         document.getElementById('adminPassword').value = '';
         errorEl.style.display = 'none';
-        showToast('Welcome, ' + displayEmail + '!');
+        showToast('Welcome, ' + displayName(displayEmail) + '!');
         renderTopbar();
         loadData();
       }
@@ -670,7 +670,7 @@
       }
 
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner-mini"></span><span>Signing in with Firebase...</span>';
+      submitBtn.innerHTML = '<span class="spinner-mini"></span><span>Logging in...</span>';
       submitBtn.classList.add('btn-loading');
 
       if (window.DataService && DataService.isLive()) {
@@ -687,9 +687,9 @@
 
           var msg = 'Incorrect email or password. Try again!';
           if (err && err.code === 'auth/user-not-found') {
-            msg = 'User not found in Firebase. Please add this user in Firebase Console → Authentication → Users tab.';
+            msg = 'No account found with this email address.';
           } else if (err && (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential')) {
-            msg = 'Invalid password for this Firebase account.';
+            msg = 'Incorrect password. Please try again.';
           } else if (err && err.code === 'auth/invalid-email') {
             msg = 'Please enter a valid email address.';
           } else if (err && err.code === 'auth/too-many-requests') {
@@ -701,7 +701,7 @@
         submitBtn.disabled = false;
         submitBtn.innerHTML = origBtnHtml;
         submitBtn.classList.remove('btn-loading');
-        reject('Firebase is not connected. Check your internet connection.');
+        reject('Not connected. Please check your internet connection.');
       }
     });
 
@@ -716,14 +716,21 @@
     });
 
     document.getElementById('logoutBtn').addEventListener('click', function () {
-      if (window.DataService) DataService.signOut();
-      sessionStorage.removeItem(KEY_AUTH);
-      localStorage.removeItem(KEY_AUTH);
-      sessionStorage.removeItem('vijay_arya_admin_session_email');
-      document.getElementById('adminPassword').value = '';
-      document.getElementById('loginGate').classList.remove('is-hidden');
-      document.getElementById('adminEmail').focus();
-      showToast('Logged out successfully.');
+      askConfirm({
+        title: 'Log out?',
+        text: 'You will need to enter your email and password again to open the admin panel.',
+        okText: 'Log out',
+        tone: 'neutral'
+      }, function () {
+        if (window.DataService) DataService.signOut();
+        sessionStorage.removeItem(KEY_AUTH);
+        localStorage.removeItem(KEY_AUTH);
+        sessionStorage.removeItem('vijay_arya_admin_session_email');
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('loginGate').classList.remove('is-hidden');
+        document.getElementById('adminEmail').focus();
+        showToast('Logged out successfully.');
+      });
     });
 
     // ================================================================
@@ -1091,7 +1098,7 @@
 
       var html = '';
       recent.forEach(function (b) {
-        var statusBadge = getStatusBadge(b.status || 'CONFIRMED');
+        var statusBadge = getStatusBadge(b.status);
         html += '<tr>' +
           '<td data-label="Booking"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
           '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">' + (b.customerPhone || '') + '</span></div></td>' +
@@ -1282,6 +1289,13 @@
       confirmOkBtn.innerHTML = opts.okText || 'Delete';
       confirmOkBtn.disabled = false;
       confirmOkBtn.classList.remove('btn-loading');
+
+      // 'neutral' for ordinary confirmations, red destructive styling otherwise
+      var neutral = opts.tone === 'neutral';
+      confirmModal.classList.toggle('is-neutral', neutral);
+      document.querySelector('#confirmModal .confirm-icon').innerHTML =
+        '<svg class="ic"><use href="#ic-' + (neutral ? 'lock' : 'trash') + '"></use></svg>';
+
       confirmAction = onYes;
       confirmModal.classList.add('is-open');
     }
@@ -1542,12 +1556,40 @@
     // ================================================================
     // RENDER: ALL TRANSACTIONS & BOOKINGS TABLE
     // ================================================================
+    // ----------------------------------------------------------------
+    // Booking stages. The value stored in Firestore is the readable one,
+    // so the database is understandable without opening this file.
+    // ----------------------------------------------------------------
+    var BOOKING_STAGES = [
+      { value: 'ADVANCE_PAID',   label: 'Advance Paid',    css: 'confirmed' },
+      { value: 'BIKE_COLLECTED', label: 'Bike Collected',  css: 'ongoing' },
+      { value: 'RETURNED_PAID',  label: 'Returned & Paid', css: 'completed' },
+      { value: 'CANCELLED',      label: 'Cancelled',       css: 'cancelled' }
+    ];
+
+    // Older bookings used short codes — map them to the readable values
+    var LEGACY_STATUS = {
+      CONFIRMED: 'ADVANCE_PAID',
+      ONGOING: 'BIKE_COLLECTED',
+      COMPLETED: 'RETURNED_PAID',
+      CANCELLED: 'CANCELLED'
+    };
+
+    function normalizeStatus(status) {
+      var s = String(status || 'ADVANCE_PAID').toUpperCase();
+      if (LEGACY_STATUS[s]) s = LEGACY_STATUS[s];
+      return BOOKING_STAGES.some(function (x) { return x.value === s; }) ? s : 'ADVANCE_PAID';
+    }
+
+    function stageOf(status) {
+      var v = normalizeStatus(status);
+      return BOOKING_STAGES.filter(function (x) { return x.value === v; })[0];
+    }
+
     function getStatusBadge(status) {
-      var s = (status || 'CONFIRMED').toUpperCase();
-      if (s === 'CONFIRMED') return '<span class="badge-status-pill badge-confirmed">Advance Paid</span>';
-      if (s === 'ONGOING') return '<span class="badge-status-pill badge-ongoing">Bike Collected</span>';
-      if (s === 'COMPLETED') return '<span class="badge-status-pill badge-completed">Returned &amp; Paid</span>';
-      return '<span class="badge-status-pill badge-cancelled">Cancelled</span>';
+      var st = stageOf(status);
+      return '<span class="badge-status-pill badge-' + st.css + '">' +
+        st.label.replace('&', '&amp;') + '</span>';
     }
 
     // Bookings matching every filter on the Transactions tab (search + status + dates)
@@ -1564,7 +1606,7 @@
       return bookings.filter(function (b) {
         var str = ((b.bookingId || '') + ' ' + (b.paymentId || '') + ' ' + (b.customerName || '') + ' ' + (b.customerPhone || '') + ' ' + (b.bikeName || '')).toLowerCase();
         var matchSearch = str.indexOf(search) > -1;
-        var matchStatus = (statusFilter === 'ALL' || (b.status || 'CONFIRMED') === statusFilter);
+        var matchStatus = (statusFilter === 'ALL' || normalizeStatus(b.status) === statusFilter);
         var matchDate = withinRange(bookingDate(b, dateField), from, to);
         return matchSearch && matchStatus && matchDate;
       });
@@ -1585,13 +1627,13 @@
       var html = '';
       filtered.forEach(function (b) {
         // Booking lifecycle: advance paid → bike handed over → returned & balance paid
-        var cur = (b.status || 'CONFIRMED').toUpperCase();
-        var statusSelect = '<select class="status-select status-' + cur.toLowerCase() + '" ' +
+        var cur = normalizeStatus(b.status);
+        var statusSelect = '<select class="status-select status-' + stageOf(cur).css + '" ' +
           'title="Booking stage" onchange="updateBookingStatus(\'' + b.bookingId + '\', this.value)">' +
-          '<option value="CONFIRMED"' + (cur === 'CONFIRMED' ? ' selected' : '') + '>Advance Paid</option>' +
-          '<option value="ONGOING"' + (cur === 'ONGOING' ? ' selected' : '') + '>Bike Collected</option>' +
-          '<option value="COMPLETED"' + (cur === 'COMPLETED' ? ' selected' : '') + '>Returned &amp; Paid</option>' +
-          '<option value="CANCELLED"' + (cur === 'CANCELLED' ? ' selected' : '') + '>Cancelled</option>' +
+          BOOKING_STAGES.map(function (st) {
+            return '<option value="' + st.value + '"' + (cur === st.value ? ' selected' : '') + '>' +
+              st.label.replace('&', '&amp;') + '</option>';
+          }).join('') +
         '</select>';
 
         var whatsBtn = b.customerPhone ? '<a href="https://wa.me/91' + b.customerPhone + '?text=' + encodeURIComponent('Hi ' + b.customerName + ', regarding your Vijay Arya Bike booking (' + b.bookingId + ')...') + '" target="_blank" class="table-action-icon-btn" title="Chat on WhatsApp">' + icon('chat') + '</a>' : '';
@@ -1671,24 +1713,24 @@
       var item = bookings.find(function (x) { return x.bookingId === bookingId; });
       if (!item) return;
 
-      var STAGE_TEXT = {
-        CONFIRMED: 'Advance paid',
-        ONGOING: 'Bike collected',
-        COMPLETED: 'Returned & fully paid',
-        CANCELLED: 'Cancelled'
-      };
+      var stage = stageOf(newStatus);
 
-      item.status = newStatus;
+      item.status = stage.value;
+      item.statusLabel = stage.label;          // plain text, for reading in Firestore
+      item.statusUpdatedAt = new Date().toISOString();
 
       // Once the bike is returned the balance is settled at the shop
-      if (newStatus === 'COMPLETED') item.balanceDue = 0;
+      if (stage.value === 'RETURNED_PAID') item.balanceDue = 0;
 
       DataService.updateBooking(bookingId, {
-        status: newStatus,
+        status: item.status,
+        statusLabel: item.statusLabel,
+        statusUpdatedAt: item.statusUpdatedAt,
         balanceDue: item.balanceDue
-      }).catch(function (err) { console.warn("Booking update failed:", err); });
+      }).catch(function (err) { console.warn('Booking update failed:', err); });
+
       saveBookings();
-      showToast(bookingId + ' — ' + (STAGE_TEXT[newStatus] || newStatus));
+      showToast(bookingId + ' — ' + stage.label);
     };
 
     window.deleteBooking = function (bookingId) {
@@ -1917,7 +1959,7 @@
           b.estimatedTotal || 500,
           b.advancePaid || 500,
           b.balanceDue || 0,
-          b.status || 'CONFIRMED',
+          '"' + stageOf(b.status).label + '"',
           '"' + (b.formattedDate || '') + '"'
         ].join(',');
       });
@@ -1942,11 +1984,22 @@
     }
 
     // Topbar: today's date and the signed-in account
+    // "admin@vijayarya.com" → "Admin"
+    function displayName(email) {
+      if (!email) return 'Admin';
+      var name = email.split('@')[0].replace(/[._-]+/g, ' ').trim();
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+
     function renderTopbar() {
+      var email = sessionStorage.getItem('vijay_arya_admin_session_email') || '';
+
       document.getElementById('topbarDate').textContent =
         new Date().toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
-      document.getElementById("topbarUser").textContent =
-        sessionStorage.getItem("vijay_arya_admin_session_email") || "Admin";
+
+      var userEl = document.getElementById('topbarUser');
+      userEl.textContent = displayName(email);
+      userEl.title = email || 'Signed in';   // full address on hover
     }
 
     // Initialize
