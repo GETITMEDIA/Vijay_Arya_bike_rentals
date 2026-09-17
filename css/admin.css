@@ -3658,3 +3658,13 @@ img, svg, video, canvas { max-width: 100%; }
 }
 
 .confirm-modal.is-neutral .btn-danger-admin:hover { background: var(--brand-dark); }
+
+/* "Load older bookings" control */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.load-more-wrap[hidden] { display: none; }
+.load-more-wrap .btn-secondary-admin { min-width: 220px; justify-content: center; }

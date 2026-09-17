@@ -6888,3 +6888,22 @@ html, body { overflow-x: hidden; }
   background: #D97706;
   box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
 }
+
+/* Long vehicle names must wrap inside the card, never spill out (v3.1) */
+.ride-card { overflow: hidden; }
+
+.ride-meta { align-items: flex-start; }
+
+.ride-name {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.ride-price { flex: 0 0 auto; white-space: nowrap; }
+
+@media (max-width: 480px) {
+  .ride-name { font-size: 18px; }
+}
