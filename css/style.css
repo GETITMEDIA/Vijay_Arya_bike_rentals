@@ -6905,3 +6905,405 @@ html, body { overflow-x: hidden; }
 @media (max-width: 480px) {
   .ride-name { font-size: 18px; }
 }
+
+/* ==========================================================================
+   Google Pay / UPI advance payment (booking step 2) + screenshot request
+   ========================================================================== */
+.upi-pay-card {
+  background: #FFFFFF;
+  border: 1px solid #E7E5E4;
+  border-radius: 18px;
+  padding: 20px;
+  margin: 18px 0;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .04);
+}
+
+.upi-pay-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.upi-pay-kicker {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #A8A29E;
+  margin-bottom: 4px;
+}
+
+.upi-pay-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #1C1917;
+}
+
+.upi-pay-sub {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #78716C;
+}
+
+.upi-pay-amount {
+  flex: none;
+  text-align: right;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 12px;
+  padding: 8px 14px;
+}
+
+.upi-pay-amount span {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #B91C1C;
+}
+
+.upi-pay-amount strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: #B91C1C;
+  line-height: 1.1;
+}
+
+.upi-open-btn[hidden] { display: none !important; }
+
+.upi-open-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #78716C;
+  text-align: center;
+}
+
+.upi-or {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #A8A29E;
+}
+
+.upi-or::before,
+.upi-or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #E7E5E4;
+}
+
+.pay-note-small { font-size: 12.5px; color: #57534E; margin-top: 10px; }
+
+.upi-after {
+  margin-top: 18px;
+  padding: 16px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 14px;
+}
+
+.upi-after h5 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #14532D;
+}
+
+.upi-steps {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #166534;
+}
+
+.pay-send { margin-top: 14px; text-align: center; }
+.pay-send-note { font-size: 12.5px; color: #78716C; margin: 0 0 10px; }
+.pay-send-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Step 3 — screenshot request */
+.screenshot-alert {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 14px;
+  text-align: left;
+}
+
+.screenshot-alert[hidden] { display: none; }
+
+.screenshot-alert-icon { font-size: 26px; line-height: 1; }
+
+.screenshot-alert strong {
+  display: block;
+  font-size: 14.5px;
+  color: #78350F;
+  margin-bottom: 4px;
+}
+
+.screenshot-alert p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #92400E;
+}
+
+.screenshot-alert a { color: #B45309; text-decoration: underline; }
+
+.receipt-item-row.highlight-pending {
+  background: #FFFBEB;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.receipt-item-row.highlight-pending strong { color: #B45309; }
+
+@media (max-width: 480px) {
+  .upi-pay-card { padding: 16px; }
+  .upi-pay-title { font-size: 17px; }
+  .upi-pay-amount strong { font-size: 19px; }
+  .pay-send-actions { grid-template-columns: 1fr; }
+}
+
+/* ---- Choose-a-UPI-app list ---- */
+.upi-apps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+  animation: upiAppsIn .2s ease;
+}
+
+.upi-apps[hidden] { display: none; }
+
+@keyframes upiAppsIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.upi-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 6px 12px;
+  background: #FFFFFF;
+  border: 1.5px solid #E7E5E4;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #1C1917;
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+
+.upi-app:hover,
+.upi-app:focus-visible {
+  border-color: #1C1917;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+}
+
+.upi-app-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: #FFFFFF;
+}
+
+.upi-logo-gpay {
+  background: conic-gradient(#4285F4 0 25%, #EA4335 0 50%, #FBBC05 0 75%, #34A853 0);
+}
+
+.upi-logo-phonepe { background: #5F259F; }
+.upi-logo-paytm   { background: #00BAF2; }
+.upi-logo-other   { background: #1C1917; font-size: 12px; letter-spacing: .04em; }
+
+.upi-app-name {
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.25;
+}
+
+/* ---- Big QR code ---- */
+.upi-qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  background: #FAFAF9;
+  border: 1px solid #E7E5E4;
+  border-radius: 16px;
+  transition: box-shadow .3s ease, border-color .3s ease;
+}
+
+.upi-qr-block.is-highlight {
+  border-color: #EF3138;
+  box-shadow: 0 0 0 4px rgba(239, 49, 56, .18);
+}
+
+.upi-qr {
+  margin: 0;
+  width: 100%;
+  max-width: 300px;
+  background: #FFFFFF;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+}
+
+.upi-qr img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.upi-id-row {
+  width: 100%;
+  max-width: 360px;
+  justify-content: space-between;
+}
+
+.upi-qr-block .pay-note-small { margin: 0; text-align: center; }
+
+@media (max-width: 480px) {
+  .upi-apps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .upi-qr { max-width: 260px; }
+  .upi-qr-block { padding: 14px; }
+}
+
+/* Single "Pay with Google Pay" button — small Google "G" mark on the left */
+.upi-open-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.upi-btn-g {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  color: #4285F4;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+/* Live UPI QR (carries the amount) */
+.upi-qr-live {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background: #FFFFFF;
+  border-radius: 10px;
+}
+
+.upi-qr-live[hidden],
+.upi-qr-static[hidden] { display: none !important; }
+
+.upi-qr-live img,
+.upi-qr-live canvas {
+  display: block;
+  width: 100% !important;
+  max-width: 240px;
+  height: auto !important;
+  image-rendering: pixelated;
+}
+
+.upi-qr-cap {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #57534E;
+  text-align: center;
+}
+
+/* "Use another UPI app" link under the Google Pay button */
+.upi-other-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1C1917;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.upi-other-link:hover { color: #EF3138; }
+
+/* UPI transaction ID (UTR) field in the "Paid? Confirm your booking" box */
+.utr-label {
+  display: block;
+  margin: 4px 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #14532D;
+}
+
+.utr-label span { font-weight: 500; color: #15803D; }
+
+.utr-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: #1C1917;
+  background: #FFFFFF;
+  border: 2px solid #86EFAC;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.utr-input::placeholder { letter-spacing: normal; font-weight: 500; color: #A8A29E; }
+.utr-input:focus { border-color: #16A34A; box-shadow: 0 0 0 4px rgba(22, 163, 74, .15); }
+.utr-input.is-invalid { border-color: #DC2626; box-shadow: 0 0 0 4px rgba(220, 38, 38, .12); }
+
+.utr-help {
+  margin: 6px 0 12px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #166534;
+}
+
+.utr-error {
+  margin: -6px 0 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #B91C1C;
+}
+
+.utr-error[hidden] { display: none; }

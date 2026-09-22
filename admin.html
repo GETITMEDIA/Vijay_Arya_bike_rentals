@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=24.0">
+  <link rel="stylesheet" href="css/admin.css?v=26.0">
 </head>
 
 <body>
@@ -201,6 +201,7 @@
                 <div class="stat-label">Advance Collected</div>
                 <div class="stat-value" id="statRevenue">&#8377;0</div>
                 <div class="stat-sub" id="statRevenueSub">All bookings</div>
+                <div class="stat-pending-note" id="statPendingNote" hidden></div>
               </div>
             </div>
 
@@ -324,6 +325,7 @@
 
             <select class="filter-select" id="transStatusFilter">
               <option value="ALL">All statuses</option>
+              <option value="PAYMENT_PENDING">Payment Pending</option>
               <option value="ADVANCE_PAID">Advance Paid</option>
               <option value="BIKE_COLLECTED">Bike Collected</option>
               <option value="RETURNED_PAID">Returned &amp; Paid</option>
@@ -1079,9 +1081,23 @@
     function updateStats() {
       var scoped = dashboardBookings();
 
+      // Only money actually received counts: GPay advances still waiting for
+      // their screenshot, and cancelled bookings, are left out.
       var totalRev = scoped.reduce(function (sum, b) {
+        var st = normalizeStatus(b.status);
+        if (st === 'PAYMENT_PENDING' || st === 'CANCELLED') return sum;
         return sum + (Number(b.advancePaid) || 0);
       }, 0);
+
+      var pendingCount = scoped.filter(function (b) {
+        return normalizeStatus(b.status) === 'PAYMENT_PENDING';
+      }).length;
+      var pendingEl = document.getElementById('statPendingNote');
+      if (pendingEl) {
+        pendingEl.hidden = pendingCount === 0;
+        pendingEl.textContent = pendingCount + ' payment' + (pendingCount === 1 ? '' : 's') +
+          ' waiting for screenshot check';
+      }
 
       var availableCount = fleet.filter(function (v) { return v.status === 'AVAILABLE'; }).length;
 
@@ -1110,7 +1126,8 @@
           '<td data-label="Booking"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
           '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">' + (b.customerPhone || '') + '</span></div></td>' +
           '<td data-label="Vehicle"><strong>' + (b.bikeName || 'Vehicle') + '</strong></td>' +
-          '<td data-label="Rental dates"><span class="cell-dates">' + (b.startDate || '—') + ' → ' + (b.endDate || '—') + '</span></td>' +
+          '<td data-label="Rental dates"><div class="stack-cell"><span class="cell-dates">' + fmtDay(b.startDate) + ' → ' + fmtDay(b.endDate) + '</span>' +
+            '<small class="cell-muted">' + (b.startTime ? 'Pickup ' + fmtTime(b.startTime) : '') + '</small></div></td>' +
           '<td data-label="Advance"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong></td>' +
           '<td data-label="Status">' + statusBadge + '</td>' +
           '<td data-label="Receipt"><button class="table-action-icon-btn" title="View receipt" onclick="viewReceipt(\'' + b.bookingId + '\')">' + icon('file') + '</button></td>' +
@@ -1589,6 +1606,8 @@
     // so the database is understandable without opening this file.
     // ----------------------------------------------------------------
     var BOOKING_STAGES = [
+      // GPay / UPI bookings start here until the WhatsApp screenshot is checked
+      { value: 'PAYMENT_PENDING', label: 'Payment Pending', css: 'pending' },
       { value: 'ADVANCE_PAID',   label: 'Advance Paid',    css: 'confirmed' },
       { value: 'BIKE_COLLECTED', label: 'Bike Collected',  css: 'ongoing' },
       { value: 'RETURNED_PAID',  label: 'Returned & Paid', css: 'completed' },
@@ -1657,6 +1676,13 @@
         return;
       }
 
+      // The same UPI transaction ID on two bookings means one screenshot was
+      // reused — flag it so it is checked before anyone gets a bike.
+      var utrDupes = {};
+      bookings.forEach(function (x) {
+        if (x.upiRef) utrDupes[x.upiRef] = (utrDupes[x.upiRef] || 0) + 1;
+      });
+
       var html = '';
       filtered.forEach(function (b) {
         // Booking lifecycle: advance paid → bike handed over → returned & balance paid
@@ -1685,12 +1711,15 @@
 
         html += '<tr>' +
           '<td data-label="Booking"><div class="stack-cell"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span>' +
-            '<span class="payment-id-tag" title="Razorpay payment ID">' + (b.paymentId || 'N/A') + '</span></div></td>' +
+            '<span class="payment-id-tag" title="Payment method">' + (b.paymentId || 'GPay / UPI') + '</span>' +
+            (b.upiRef ? '<span class="utr-tag' + (utrDupes[b.upiRef] > 1 ? ' is-dupe' : '') + '" title="UPI transaction ID">UTR ' + b.upiRef + (utrDupes[b.upiRef] > 1 ? ' · used twice!' : '') + '</span>' : '') +
+            '<span class="cell-meta"><em>Booked</em>' + fmtDateTime(b.timestamp) + '</span></div></td>' +
           '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">+91 ' + (b.customerPhone || '') + '</span></div></td>' +
           '<td data-label="Vehicle"><div class="stack-cell"><strong>' + (b.bikeName || 'Vehicle') + '</strong>' +
             '<small class="cell-muted">Qty ' + (b.quantity || 1) + '</small></div></td>' +
           '<td data-label="Rental period"><div class="stack-cell"><strong>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</strong>' +
-            '<small class="cell-muted">' + (b.startDate || '—') + ' → ' + (b.endDate || '—') + '</small></div></td>' +
+            '<span class="cell-meta"><em>From</em>' + fmtDay(b.startDate) + (b.startTime ? ' · ' + fmtTime(b.startTime) : '') + '</span>' +
+            '<span class="cell-meta"><em>To</em>' + fmtDay(b.endDate) + (b.endTime ? ' · ' + fmtTime(b.endTime) : '') + '</span></div></td>' +
           '<td data-label="Advance"><div class="stack-cell"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong>' +
             '<small class="cell-muted">Due ₹' + (b.balanceDue || 0) + '</small></div></td>' +
           '<td data-label="KYC">' + kycBadge + '</td>' +
@@ -1854,6 +1883,39 @@
       };
     }
 
+    // ---- Date / time display helpers (Indian format, shop time zone) ----
+    // "2026-09-22" → "22 Sep 2026"
+    function fmtDay(ymd) {
+      if (!ymd) return '—';
+      var d = new Date(ymd + 'T00:00:00');
+      if (isNaN(d.getTime())) return ymd;
+      return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    // "09:00" → "9:00 AM"
+    function fmtTime(hhmm) {
+      if (!hhmm) return '';
+      var parts = String(hhmm).split(':');
+      var h = parseInt(parts[0], 10);
+      var m = parts[1] || '00';
+      if (isNaN(h)) return hhmm;
+      var suffix = h >= 12 ? 'PM' : 'AM';
+      var h12 = h % 12 || 12;
+      return h12 + ':' + m.slice(0, 2) + ' ' + suffix;
+    }
+
+    // ISO timestamp → "22 Sep 2026, 4:35 PM"
+    function fmtDateTime(iso) {
+      if (!iso) return '—';
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: 'numeric', minute: '2-digit', hour12: true,
+        timeZone: 'Asia/Kolkata'
+      }).replace(/(am|pm)$/i, function (x) { return x.toUpperCase(); });
+    }
+
     // A KYC document card: thumbnail + View and Download actions
     function kycDocCard(b, which) {
       var docRaw = which === 'aadhaar' ? b.kycAadhaar : b.kycDl;
@@ -1977,14 +2039,18 @@
         '</div>' +
         '<div style="background:#f8fafc;border:1.5px solid var(--admin-border);border-radius:12px;padding:16px;margin-bottom:16px;">' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Booking Reference:</span><strong style="color:var(--admin-primary);">' + (b.bookingId || 'N/A') + '</strong></div>' +
-          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Razorpay Payment ID:</span><span class="payment-id-tag">' + (b.paymentId || 'N/A') + '</span></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Payment:</span><span class="payment-id-tag">' + (b.paymentId ? 'Razorpay ' + b.paymentId : 'GPay / UPI → ' + (b.upiId || '7200011799@okbizaxis')) + '</span></div>' +
+          (b.upiRef ? '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>UPI Transaction ID (UTR):</span><strong class="utr-strong">' + b.upiRef + '</strong></div>' : '') +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Customer Name:</span><strong>' + (b.customerName || 'N/A') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>WhatsApp Phone:</span><strong>+91 ' + (b.customerPhone || '') + '</strong></div>' +
           (b.customerEmail ? '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Email Address:</span><span>' + b.customerEmail + '</span></div>' : '') +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Vehicle Reserved:</span><strong>' + (b.bikeName || 'Vehicle') + ' (' + (b.quantity || 1) + ' qty)</strong></div>' +
-          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Rental Dates:</span><span>' + (b.startDate || '') + ' to ' + (b.endDate || '') + ' (' + (b.days || 1) + ' days)</span></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Booked On:</span><strong>' + fmtDateTime(b.timestamp) + '</strong></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Pickup:</span><strong>' + fmtDay(b.startDate) + (b.startTime ? ' &middot; ' + fmtTime(b.startTime) : '') + '</strong></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Return:</span><strong>' + fmtDay(b.endDate) + (b.endTime ? ' &middot; ' + fmtTime(b.endTime) : '') + '</strong></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Duration:</span><span>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</span></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Estimated Total:</span><strong>₹' + (b.estimatedTotal || 500) + '</strong></div>' +
-          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:var(--success);border-top:1px dashed var(--admin-border);padding-top:8px;"><span>Advance Paid Online:</span><strong>₹' + (b.advancePaid || 500) + ' (PAID via Razorpay)</strong></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:var(--success);border-top:1px dashed var(--admin-border);padding-top:8px;"><span>Advance:</span><strong>₹' + (b.advancePaid || 500) + (normalizeStatus(b.status) === 'PAYMENT_PENDING' ? ' — awaiting screenshot check' : ' (received)') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--admin-text-muted);"><span>Balance Due at Shop:</span><strong>₹' + (b.balanceDue || 0) + '</strong></div>' +
         '</div>' +
         kycDocsHtml;
@@ -1997,10 +2063,24 @@
     });
 
     // Close Modals
+    // Close only the modal the button belongs to — closing the document
+    // lightbox must leave the booking receipt open underneath.
     document.querySelectorAll('[data-close-modal]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        document.querySelectorAll('.admin-modal').forEach(function (m) { m.classList.remove('is-open'); });
+        var modal = btn.closest('.admin-modal');
+        if (modal) modal.classList.remove('is-open');
       });
+    });
+
+    // Esc closes the top-most open modal only
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var open = Array.prototype.slice.call(document.querySelectorAll('.admin-modal.is-open'));
+      if (!open.length) return;
+      open.sort(function (a, b) {
+        return (parseInt(getComputedStyle(b).zIndex, 10) || 0) - (parseInt(getComputedStyle(a).zIndex, 10) || 0);
+      });
+      if (open[0].id !== 'confirmModal') open[0].classList.remove('is-open');
     });
 
     // ================================================================

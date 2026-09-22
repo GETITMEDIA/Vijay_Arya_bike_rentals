@@ -1193,6 +1193,63 @@
     var bkPrintReceipt = document.getElementById('bkPrintReceipt');
     var bkNewBooking = document.getElementById('bkNewBooking');
 
+    // ---- Payment settings ----------------------------------------------
+    // Advance is paid straight to the shop's UPI ID (Google Pay / any UPI app);
+    // the customer then sends the payment screenshot on WhatsApp and the shop
+    // confirms the booking in the admin panel.
+    var SHOP_UPI_ID = '7200011799@okbizaxis';
+    var SHOP_UPI_NAME = 'Vijay Arya Bike Rentals';
+    var SHOP_WHATSAPP = '919600334488';          // country code + number, no "+"
+
+    // Razorpay is kept as a switchable backup. true = show the Razorpay card too.
+    var RAZORPAY_ENABLED = false;
+
+    var bkUpiPaidBtn = document.getElementById('bkUpiPaidBtn');
+    var bkRzpCard = document.getElementById('bkRzpCard');
+    if (bkRzpCard) bkRzpCard.hidden = !RAZORPAY_ENABLED;
+
+    /**
+     * Draw a UPI QR code that carries the amount. Falls back to the printed
+     * Google Pay QR (where the amount is typed by hand) if the QR library
+     * could not load.
+     */
+    function renderUpiQr(upiUrl, amount) {
+      var box = document.getElementById('bkUpiQr');
+      var fallback = document.getElementById('bkUpiQrStatic');
+      var cap = document.getElementById('bkUpiQrCap');
+      if (!box) return;
+
+      box.innerHTML = '';
+
+      if (typeof window.QRCode !== 'function') {
+        console.warn('[upi] QR library unavailable — showing the printed QR instead');
+        box.hidden = true;
+        if (fallback) fallback.hidden = false;
+        if (cap) cap.textContent = 'Scan with any UPI app and enter ₹' + amount;
+        return;
+      }
+
+      try {
+        /* global QRCode */
+        new QRCode(box, {
+          text: upiUrl,
+          width: 240,
+          height: 240,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        box.hidden = false;
+        if (fallback) fallback.hidden = true;
+        if (cap) cap.textContent = 'Scan with GPay, PhonePe or Paytm — ₹' + amount + ' fills in automatically';
+      } catch (err) {
+        console.warn('[upi] QR render failed:', err);
+        box.hidden = true;
+        if (fallback) fallback.hidden = false;
+        if (cap) cap.textContent = 'Scan with any UPI app and enter ₹' + amount;
+      }
+    }
+
     // KYC File inputs and compression
     var kycIdFile = document.getElementById('kycIdFile');
     var kycIdCam = document.getElementById('kycIdCam');
@@ -1567,10 +1624,64 @@
         if (span) span.textContent = 'Pay ₹' + data.advancePaid + ' via Razorpay';
       }
 
-      // Manual UPI App link
-      if (bkUpi) {
-        var upiLink = 'upi://pay?pa=7200011799@okbizaxis&pn=Vijay%20Arya%20Bike%20Rentals&am=' + data.advancePaid + '&cu=INR&tn=Advance%20Booking%20for%20' + encodeURIComponent(data.bikeName);
-        bkUpi.href = upiLink;
+      // ---- UPI app deep links -------------------------------------------
+      // Same payment details, opened in the app the customer picks.
+      var note = ('Advance ' + data.bikeName + ' ' + data.startDate).slice(0, 60);
+      var upiQuery =
+        'pa=' + encodeURIComponent(SHOP_UPI_ID) +
+        '&pn=' + encodeURIComponent(SHOP_UPI_NAME) +
+        '&am=' + encodeURIComponent(String(data.advancePaid)) +
+        '&cu=INR' +
+        '&tn=' + encodeURIComponent(note);
+
+      var ua = navigator.userAgent;
+      var isAndroid = /Android/i.test(ua);
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var isPhone = isAndroid || isIOS;
+
+      // Android: an intent:// link opens exactly that app, and falls back to the
+      // generic UPI chooser if the app is not installed.
+      // iPhone: each app registers its own URL scheme.
+      function androidIntent(pkg) {
+        return 'intent://pay?' + upiQuery +
+          '#Intent;scheme=upi;package=' + pkg +
+          ';S.browser_fallback_url=' + encodeURIComponent('upi://pay?' + upiQuery) + ';end';
+      }
+
+      var APP_LINKS = {
+        gpay: isAndroid ? androidIntent('com.google.android.apps.nbu.paisa.user')
+          : isIOS ? 'gpay://upi/pay?' + upiQuery
+          : 'upi://pay?' + upiQuery,
+        phonepe: isAndroid ? androidIntent('com.phonepe.app')
+          : isIOS ? 'phonepe://pay?' + upiQuery
+          : 'upi://pay?' + upiQuery,
+        paytm: isAndroid ? androidIntent('net.one97.paytm')
+          : isIOS ? 'paytmmp://pay?' + upiQuery
+          : 'upi://pay?' + upiQuery,
+        other: 'upi://pay?' + upiQuery
+      };
+
+      // One button, plain UPI link: the phone shows every installed UPI app
+      // (GPay, PhonePe, Paytm, BHIM…) so customers without GPay can still pay.
+      if (bkUpi) bkUpi.href = APP_LINKS.other;
+
+      // Live QR with the amount in it — scanned from a laptop screen, the
+      // customer's UPI app opens with the advance already filled in.
+      renderUpiQr('upi://pay?' + upiQuery, data.advancePaid);
+
+      var amountText = '₹' + data.advancePaid;
+      ['bkUpiAmount', 'bkUpiAmountInline'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = amountText;
+      });
+      var upiBtnText = document.getElementById('bkUpiBtnText');
+      if (upiBtnText) upiBtnText.textContent = 'Pay ' + amountText + ' — GPay / UPI';
+
+      var upiHint = document.getElementById('bkUpiHint');
+      if (upiHint) {
+        upiHint.textContent = isPhone
+          ? 'Choose GPay, PhonePe, Paytm or any UPI app — ' + amountText + ' is filled in for you.'
+          : 'On a computer? Scan the QR code below with your phone.';
       }
 
       // Manual WhatsApp link for Step 2 fallback
@@ -1602,7 +1713,70 @@
     }
 
     // ================================================================
-    // RAZORPAY CHECKOUT TRIGGER
+    // "Pay with Google Pay" — opens GPay on a phone. A computer has no GPay
+    // app, so point the customer at the QR code instead of failing silently.
+    // ================================================================
+    function pointAtQr(e) {
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return; // phone: let the link open the app
+
+      e.preventDefault();
+      var qr = document.querySelector('.upi-qr-block');
+      if (qr) {
+        qr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        qr.classList.add('is-highlight');
+        setTimeout(function () { qr.classList.remove('is-highlight'); }, 1800);
+      }
+      alert('UPI apps open only on a phone.\n\nScan the QR code with your phone — the amount is filled in for you.');
+    }
+
+    if (bkUpi) bkUpi.addEventListener('click', pointAtQr);
+
+    // ================================================================
+    // GOOGLE PAY / UPI — "I've paid" → booking saved as PAYMENT_PENDING
+    // ================================================================
+    if (bkUpiPaidBtn) {
+      bkUpiPaidBtn.addEventListener('click', function () {
+        if (!activeBookingData) {
+          alert('Please complete step 1 booking details.');
+          showStep(1);
+          return;
+        }
+
+        // The UPI transaction ID lets the shop match this booking to a real
+        // payment in their GPay history in seconds — required, 12 digits.
+        var utrInput = document.getElementById('bkUtr');
+        var utrError = document.getElementById('bkUtrError');
+        var utr = utrInput ? utrInput.value.replace(/\s+/g, '') : '';
+
+        function utrFail(msg) {
+          if (utrError) { utrError.textContent = msg; utrError.hidden = false; }
+          if (utrInput) { utrInput.classList.add('is-invalid'); utrInput.focus(); }
+        }
+
+        if (!utr) {
+          utrFail('Please enter the 12-digit UPI transaction ID from your payment.');
+          return;
+        }
+        if (!/^\d{12}$/.test(utr)) {
+          utrFail('The UPI transaction ID has exactly 12 digits — please check and try again.');
+          return;
+        }
+        if (utrError) utrError.hidden = true;
+        if (utrInput) utrInput.classList.remove('is-invalid');
+
+        // Guard against double taps creating two bookings
+        if (bkUpiPaidBtn.disabled) return;
+        bkUpiPaidBtn.disabled = true;
+
+        handlePaymentSuccess({ method: 'upi', upiRef: utr }, activeBookingData);
+        if (utrInput) utrInput.value = '';
+
+        setTimeout(function () { bkUpiPaidBtn.disabled = false; }, 1500);
+      });
+    }
+
+    // ================================================================
+    // RAZORPAY CHECKOUT TRIGGER (backup — only when RAZORPAY_ENABLED)
     // ================================================================
     if (bkRazorpayBtn) {
       bkRazorpayBtn.addEventListener('click', function () {
@@ -1662,7 +1836,11 @@
 
     function handlePaymentSuccess(rzpResponse, bookingData) {
       var bookingId = 'VA-' + Date.now().toString().slice(-6);
-      var paymentId = rzpResponse.razorpay_payment_id || ('pay_' + Math.random().toString(36).substring(2, 11));
+
+      // UPI (Google Pay) payments are confirmed by the shop from the WhatsApp
+      // screenshot; Razorpay payments are verified by the gateway.
+      var isUpi = !rzpResponse || rzpResponse.method === 'upi' || !rzpResponse.razorpay_payment_id;
+      var paymentId = isUpi ? '' : rzpResponse.razorpay_payment_id;
 
       var finalRecord = {
         bookingId: bookingId,
@@ -1684,10 +1862,14 @@
         // KYC documents the customer attached during booking ({dataUrl, name})
         kycAadhaar: bookingData.kycAadhaar || null,
         kycDl: bookingData.kycDl || null,
-        paymentMethod: 'Razorpay Online (Verified)',
-        // Booking stage: ADVANCE_PAID → BIKE_COLLECTED → RETURNED_PAID (or CANCELLED)
-        status: 'ADVANCE_PAID',
-        statusLabel: 'Advance Paid',
+        paymentMethod: isUpi ? 'Google Pay / UPI (screenshot on WhatsApp)' : 'Razorpay Online (Verified)',
+        upiId: isUpi ? SHOP_UPI_ID : '',
+        upiRef: isUpi ? String((rzpResponse && rzpResponse.upiRef) || '') : '',   // 12-digit UTR the customer entered
+        // Booking stage:
+        //   PAYMENT_PENDING → ADVANCE_PAID → BIKE_COLLECTED → RETURNED_PAID (or CANCELLED)
+        // UPI bookings wait in PAYMENT_PENDING until the shop checks the screenshot.
+        status: isUpi ? 'PAYMENT_PENDING' : 'ADVANCE_PAID',
+        statusLabel: isUpi ? 'Payment Pending' : 'Advance Paid',
         timestamp: new Date().toISOString(),
         formattedDate: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
       };
@@ -1738,42 +1920,199 @@
         console.warn('LocalStorage error:', e);
       }
 
+      // Step 3 heading depends on how the advance was paid
+      var titleEl = document.getElementById('bkReceiptTitle');
+      var subEl = document.getElementById('bkReceiptSub');
+      var shotAlert = document.getElementById('bkScreenshotAlert');
+      var whatsText = document.getElementById('bkSuccessWhatsText');
+
+      if (titleEl) titleEl.textContent = isUpi ? 'Booking Received!' : 'Booking Confirmed!';
+      if (subEl) {
+        subEl.textContent = isUpi
+          ? 'One last step — send us your payment screenshot.'
+          : 'Advance payment received. Your ride is reserved!';
+      }
+      if (shotAlert) shotAlert.hidden = !isUpi;
+      if (whatsText) {
+        whatsText.textContent = isUpi ? 'Send Payment Screenshot on WhatsApp' : 'Send Receipt on WhatsApp';
+      }
+
+      var paymentRow = isUpi
+        ? '<div class="receipt-item-row highlight-pending"><span>Payment Status:</span><strong>⏳ To be verified by the shop</strong></div>' +
+          '<div class="receipt-item-row"><span>UPI Transaction ID:</span><strong>' + finalRecord.upiRef + '</strong></div>'
+        : '<div class="receipt-item-row highlight-paid"><span>Payment Status:</span><strong>&check; PAID via Razorpay (' + finalRecord.paymentId + ')</strong></div>';
+
       // Render Step 3 Receipt
       if (bkReceiptDetails) {
         bkReceiptDetails.innerHTML =
           '<div class="receipt-item-row"><span>Booking Reference:</span><strong style="color:var(--red);">' + finalRecord.bookingId + '</strong></div>' +
-          '<div class="receipt-item-row highlight-paid"><span>Payment Status:</span><strong>&check; PAID via Razorpay (' + finalRecord.paymentId + ')</strong></div>' +
+          paymentRow +
           '<div class="receipt-item-row"><span>Vehicle:</span><strong>' + finalRecord.bikeName + (finalRecord.quantity > 1 ? ' (' + finalRecord.quantity + ' Vehicles)' : '') + '</strong></div>' +
           '<div class="receipt-item-row"><span>Rental Duration:</span><strong>' + finalRecord.days + ' ' + (finalRecord.days === 1 ? 'Day' : 'Days') + ' (' + finalRecord.startDate + ' to ' + finalRecord.endDate + ')</strong></div>' +
           '<div class="receipt-item-row"><span>Pickup Timing:</span><strong>' + finalRecord.startTime + ' &ndash; 9:00 PM</strong></div>' +
           '<div class="receipt-item-row"><span>Customer:</span><strong>' + finalRecord.customerName + ' (' + finalRecord.customerPhone + ')</strong></div>' +
-          '<div class="receipt-item-row"><span>Advance Paid:</span><strong style="color:#059669;">&#8377;' + finalRecord.advancePaid + '</strong></div>' +
+          '<div class="receipt-item-row"><span>' + (isUpi ? 'Advance (to verify):' : 'Advance Paid:') + '</span><strong style="color:#059669;">&#8377;' + finalRecord.advancePaid + '</strong></div>' +
           '<div class="receipt-item-row"><span>Balance at Pickup:</span><strong>&#8377;' + finalRecord.balanceDue + '</strong></div>';
       }
 
       // Populate WhatsApp confirmation URL
       if (bkSuccessWhats) {
-        var whatsMsg =
-          '🎉 *VIJAY ARYA BIKE RENTALS - BOOKING CONFIRMATION*\n\n' +
-          '🆔 *Booking ID:* ' + finalRecord.bookingId + '\n' +
-          '💳 *Razorpay Payment ID:* ' + finalRecord.paymentId + '\n' +
-          '🏍️ *Vehicle:* ' + finalRecord.bikeName + ' (' + finalRecord.quantity + ' qty)\n' +
-          '📅 *Rental Dates:* ' + finalRecord.startDate + ' to ' + finalRecord.endDate + ' (' + finalRecord.days + ' days)\n' +
-          '⏰ *Pickup Time:* ' + finalRecord.startTime + '\n' +
-          '👤 *Customer:* ' + finalRecord.customerName + ' (+91 ' + finalRecord.customerPhone + ')\n' +
-          '💰 *Advance Paid:* ₹' + finalRecord.advancePaid + ' (PAID via Razorpay)\n' +
-          '💵 *Balance at Shop:* ₹' + finalRecord.balanceDue + '\n\n' +
-          'Please reserve my vehicle. I will carry my original Driving Licence and ID at pickup.';
-        bkSuccessWhats.href = 'https://wa.me/919600334488?text=' + encodeURIComponent(whatsMsg);
+        var whatsMsg = isUpi
+          ? '📸 *PAYMENT SCREENSHOT — VIJAY ARYA BIKE RENTALS*\n\n' +
+            'Hi, I have paid the advance by Google Pay / UPI. My payment screenshot is attached.\n\n' +
+            '🆔 *Booking ID:* ' + finalRecord.bookingId + '\n' +
+            '🏍️ *Vehicle:* ' + finalRecord.bikeName + ' (' + finalRecord.quantity + ' qty)\n' +
+            '📅 *Dates:* ' + finalRecord.startDate + ' to ' + finalRecord.endDate + ' (' + finalRecord.days + ' days)\n' +
+            '⏰ *Pickup:* ' + finalRecord.startTime + '\n' +
+            '👤 *Name:* ' + finalRecord.customerName + '\n' +
+            '📞 *Phone:* +91 ' + finalRecord.customerPhone + '\n' +
+            '💰 *Advance paid:* ₹' + finalRecord.advancePaid + ' to ' + SHOP_UPI_ID + '\n' +
+            '🔢 *UPI Transaction ID:* ' + finalRecord.upiRef + '\n' +
+            '💵 *Balance at shop:* ₹' + finalRecord.balanceDue + '\n\n' +
+            'Please confirm my booking. I will bring my original ID & Driving Licence at pickup.'
+          : '🎉 *VIJAY ARYA BIKE RENTALS - BOOKING CONFIRMATION*\n\n' +
+            '🆔 *Booking ID:* ' + finalRecord.bookingId + '\n' +
+            '💳 *Razorpay Payment ID:* ' + finalRecord.paymentId + '\n' +
+            '🏍️ *Vehicle:* ' + finalRecord.bikeName + ' (' + finalRecord.quantity + ' qty)\n' +
+            '📅 *Rental Dates:* ' + finalRecord.startDate + ' to ' + finalRecord.endDate + ' (' + finalRecord.days + ' days)\n' +
+            '⏰ *Pickup Time:* ' + finalRecord.startTime + '\n' +
+            '👤 *Customer:* ' + finalRecord.customerName + ' (+91 ' + finalRecord.customerPhone + ')\n' +
+            '💰 *Advance Paid:* ₹' + finalRecord.advancePaid + ' (PAID via Razorpay)\n' +
+            '💵 *Balance at Shop:* ₹' + finalRecord.balanceDue + '\n\n' +
+            'Please reserve my vehicle. I will carry my original Driving Licence and ID at pickup.';
+        bkSuccessWhats.href = 'https://wa.me/' + SHOP_WHATSAPP + '?text=' + encodeURIComponent(whatsMsg);
       }
 
+      lastReceipt = { record: finalRecord, isUpi: isUpi };
       showStep(3);
     }
 
-    // Print Receipt
+    // ================================================================
+    // RECEIPT — one clean page, printed or saved as PDF.
+    // window.print() on the booking page printed the whole site (11 blank
+    // sheets); the receipt now gets its own small document instead.
+    // ================================================================
+    var lastReceipt = null;
+
+    function escHtml(v) {
+      return String(v == null ? '' : v)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function receiptDocument(r, isUpi) {
+      var logo = new URL('assets/logo/logo.png', window.location.href).href;
+      var row = function (label, value, strong) {
+        return '<tr><td>' + label + '</td><td' + (strong ? ' class="b"' : '') + '>' + value + '</td></tr>';
+      };
+
+      var status = isUpi
+        ? '<span class="pill pend">Payment pending &mdash; screenshot to be verified</span>'
+        : '<span class="pill ok">Advance paid</span>';
+
+      return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">' +
+        '<title>Receipt ' + escHtml(r.bookingId) + ' | Vijay Arya Bike Rentals</title>' +
+        '<style>' +
+        '@page{size:A4;margin:16mm}' +
+        '*{box-sizing:border-box}' +
+        'body{font-family:Arial,Helvetica,sans-serif;color:#1c1917;margin:0;padding:24px}' +
+        '.wrap{max-width:640px;margin:0 auto}' +
+        '.head{display:flex;align-items:center;gap:14px;border-bottom:2px solid #ef3138;padding-bottom:14px;margin-bottom:18px}' +
+        '.head img{width:64px;height:auto}' +
+        '.head h1{font-size:20px;margin:0}' +
+        '.head p{margin:2px 0 0;font-size:12px;color:#57534e}' +
+        '.title{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}' +
+        '.title h2{font-size:16px;margin:0}' +
+        '.id{font-weight:700;color:#ef3138}' +
+        '.pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}' +
+        '.ok{background:#d1fae5;color:#065f46}.pend{background:#fef3c7;color:#92400e}' +
+        'table{width:100%;border-collapse:collapse;font-size:13px}' +
+        'td{padding:9px 4px;border-bottom:1px solid #e7e5e4;vertical-align:top}' +
+        'td:first-child{color:#78716c;width:42%}.b{font-weight:700}' +
+        '.total td{border-bottom:0;font-size:15px}' +
+        '.note{margin-top:18px;padding:12px 14px;background:#fafaf9;border:1px solid #e7e5e4;border-radius:8px;font-size:12px;line-height:1.55;color:#44403c}' +
+        '.foot{margin-top:20px;font-size:11px;color:#a8a29e;text-align:center}' +
+        '.bar{margin:20px 0 0;text-align:center}' +
+        '.bar button{font:inherit;font-weight:700;padding:10px 22px;border:0;border-radius:8px;background:#ef3138;color:#fff;cursor:pointer}' +
+        '.wm{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);font-size:46px;font-weight:900;color:rgba(220,38,38,.13);white-space:nowrap;pointer-events:none;text-align:center;line-height:1.15;z-index:0}' +
+        '.wrap{position:relative;z-index:1}' +
+        '@media print{.bar{display:none}body{padding:0}.wm{color:rgba(220,38,38,.16)}}' +
+        '</style></head><body>' +
+        (isUpi ? '<div class="wm">NOT CONFIRMED<br>PAYMENT NOT YET VERIFIED</div>' : '') +
+        '<div class="wrap">' +
+
+        '<div class="head"><img src="' + logo + '" alt="">' +
+          '<div><h1>Vijay Arya Bike Rentals</h1>' +
+          '<p>No: 31A, Thennanjalai Road, Puducherry &middot; +91 96003 34488 &middot; Since 1973</p></div></div>' +
+
+        '<div class="title"><h2>Booking Receipt &nbsp;<span class="id">' + escHtml(r.bookingId) + '</span></h2>' + status + '</div>' +
+
+        '<table>' +
+          row('Booked on', escHtml(r.formattedDate || '')) +
+          row('Customer', escHtml(r.customerName) + ' &middot; +91 ' + escHtml(r.customerPhone), true) +
+          (r.customerEmail ? row('Email', escHtml(r.customerEmail)) : '') +
+          row('Vehicle', escHtml(r.bikeName) + (r.quantity > 1 ? ' &times; ' + r.quantity : ''), true) +
+          row('Rental dates', escHtml(r.startDate) + ' to ' + escHtml(r.endDate) +
+            ' (' + r.days + ' day' + (r.days === 1 ? '' : 's') + ')') +
+          row('Pickup time', escHtml(r.startTime || '')) +
+          row('Payment', isUpi
+            ? 'Google Pay / UPI to ' + escHtml(r.upiId || SHOP_UPI_ID) + (r.upiRef ? '<br>UTR <b>' + escHtml(r.upiRef) + '</b>' : '')
+            : 'Razorpay &middot; ' + escHtml(r.paymentId)) +
+          row('Estimated rent', '&#8377;' + r.estimatedTotal) +
+          row(isUpi ? 'Advance (to be verified)' : 'Advance paid', '&#8377;' + r.advancePaid, true) +
+          '<tr class="total"><td>Balance at pickup</td><td class="b">&#8377;' + r.balanceDue + '</td></tr>' +
+        '</table>' +
+
+        '<div class="note">' +
+          (isUpi
+            ? '<b>Next step:</b> send your payment screenshot on WhatsApp to +91 96003 34488 with this booking ID. ' +
+              'Your booking is confirmed once the payment is verified.<br>'
+            : '') +
+          'Please bring your <b>original ID and Driving Licence</b> at pickup. Helmet included. No security deposit.' +
+        '</div>' +
+
+        '<div class="bar"><button onclick="window.print()">Print / Save as PDF</button></div>' +
+        '<p class="foot">Thank you for riding with Vijay Arya Bike Rentals.</p>' +
+        '</div></body></html>';
+    }
+
     if (bkPrintReceipt) {
       bkPrintReceipt.addEventListener('click', function () {
-        window.print();
+        if (!lastReceipt) {
+          alert('No receipt yet — please complete a booking first.');
+          return;
+        }
+
+        var html = receiptDocument(lastReceipt.record, lastReceipt.isUpi);
+        var win = window.open('', '_blank');
+
+        // Pop-up blocked → download the receipt as a file instead
+        if (!win) {
+          var blob = new Blob([html], { type: 'text/html' });
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'Receipt-' + lastReceipt.record.bookingId + '.html';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+          return;
+        }
+
+        win.document.open();
+        win.document.write(html);
+        win.document.close();
+
+        // Wait for the logo so the PDF is complete, then open the print dialog
+        var printed = false;
+        function go() {
+          if (printed) return;
+          printed = true;
+          win.focus();
+          win.print();
+        }
+        win.onload = go;
+        setTimeout(go, 800);
       });
     }
 
