@@ -59,8 +59,8 @@
   --sh-brand: 0 4px 14px rgba(239,49,56,.25);
 
   /* Fonts */
-  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --serif: "Playfair Display", Georgia, serif;
+  --sans: "Josefin Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --serif: "Josefin Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
 
   /* ── Legacy aliases (used by inline styles in admin.html) ── */
