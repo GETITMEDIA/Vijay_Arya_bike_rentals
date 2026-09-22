@@ -21,6 +21,9 @@
 
   var app = null, db = null, storage = null, auth = null;
   var seedAttempted = false;
+  var olderBookings = [];      // pages fetched beyond the live window
+  var lastLiveDoc = null;      // cursor for startAfter()
+  var hasMoreBookings = false;
   var mode = 'local';
 
   // ---------------------------------------------------------------- setup
@@ -115,6 +118,48 @@
 
   var UPLOAD_TIMEOUT = 5000;   // Storage upload may never settle — cap it
   var WRITE_TIMEOUT = 5000;    // Same for a Firestore write
+  var BOOKINGS_PAGE = 50;      // Newest N bookings held live; older ones on demand
+
+  // ------------------------------------------------- shared live listeners
+  // One Firestore listener per collection, however many parts of the page ask
+  // for the data. Re-rendering or switching tabs must never open a new one.
+  var listeners = {};          // name → { unsubscribe, subscribers[], last }
+
+  function subscribe(name, start, callback) {
+    var entry = listeners[name];
+
+    if (!entry) {
+      entry = listeners[name] = { subscribers: [], unsubscribe: null, last: null };
+      entry.unsubscribe = start(function (data) {
+        entry.last = data;
+        entry.subscribers.forEach(function (fn) {
+          try { fn(data); } catch (e) { console.error('[' + name + '] subscriber error:', e); }
+        });
+      });
+      console.info('[' + name + '] live listener opened');
+    } else if (entry.last) {
+      callback(entry.last);          // serve the snapshot we already hold
+    }
+
+    entry.subscribers.push(callback);
+
+    return function stop() {
+      entry.subscribers = entry.subscribers.filter(function (fn) { return fn !== callback; });
+      if (entry.subscribers.length === 0 && entry.unsubscribe) {
+        entry.unsubscribe();
+        delete listeners[name];
+        console.info('[' + name + '] live listener closed');
+      }
+    };
+  }
+
+  // Detach everything when the page goes away
+  global.addEventListener('pagehide', function () {
+    Object.keys(listeners).forEach(function (k) {
+      if (listeners[k].unsubscribe) listeners[k].unsubscribe();
+    });
+    listeners = {};
+  });
 
   /**
    * Resolve/reject `promise`, but never wait longer than `ms`.
@@ -171,6 +216,22 @@
       console.warn('Storage unavailable — keeping inline image:', e && e.message);
       return Promise.resolve(dataUrl);
     }
+  }
+
+  /**
+   * Delete every file under a Storage folder. Best effort — a failure here
+   * must never stop the Firestore delete that it accompanies.
+   */
+  function deleteStorageFolder(path) {
+    if (!storage) return Promise.resolve();
+
+    return storage.ref(path).listAll().then(function (res) {
+      return Promise.all(res.items.map(function (item) { return item.delete(); }));
+    }).then(function () {
+      console.log('[storage] cleared ' + path);
+    }).catch(function (err) {
+      console.info('[storage] could not clear ' + path + ':', (err && err.code) || err.message);
+    });
   }
 
   // Common seed fleet for initial population
@@ -243,65 +304,61 @@
       }
       return Promise.resolve(cached || DEFAULT_SEED_FLEET);
     },
-
     /** Live updates — callback(fleetArray). @returns {Function} unsubscribe */
     watchFleet: function (callback) {
-      var cached = lsGet(KEY_FLEET, null) || DEFAULT_SEED_FLEET;
-      callback(cached);
+      // Paint instantly from cache, then let the live snapshot take over
+      callback(lsGet(KEY_FLEET, null) || DEFAULT_SEED_FLEET);
 
-      if (init() === 'firebase') {
-        try {
-          return db.collection(COL_FLEET)
-            .onSnapshot(function (snap) {
-              if (snap.empty) {
-                // Seed once per page load — a failing seed must not retry in a loop
-                if (!seedAttempted) {
-                  seedAttempted = true;
-                  console.log('[fleet] Firestore "' + COL_FLEET + '" is empty' +
-                    (snap.metadata && snap.metadata.fromCache ? ' (from cache — offline)' : '') +
-                    ' — seeding the standard fleet…');
-                  DataService.seedAllDefaultsToFirestore().catch(function (err) {
-                    console.error('[fleet] Auto-seed failed:', (err && err.code) || err.message);
-                  });
-                }
+      if (init() !== 'firebase') return function () {};
 
-                // NEVER wipe the admin's own vehicles because the cloud reply
-                // was empty (offline / not yet seeded) — keep what we have.
-                var keep = lsGet(KEY_FLEET, null);
-                callback(keep && keep.length ? keep : DEFAULT_SEED_FLEET.slice());
-                return;
-              }
-              var live = docsToArray(snap);
-
-              // Vehicles added while the cloud was unreachable are not in the
-              // snapshot yet — keep showing them until they sync.
-              var local = lsGet(KEY_FLEET, []) || [];
-              var liveIds = {};
-              live.forEach(function (v) { liveIds[v.id] = true; });
-
-              local.forEach(function (v) {
-                var isDefault = DEFAULT_SEED_FLEET.some(function (d) { return d.id === v.id; });
-                if (!liveIds[v.id] && !isDefault) {
-                  v.pendingSync = true;
-                  live.push(v);
-                  console.info('[fleet] "' + v.name + '" is not in Firestore yet (pending sync).');
-                }
+      return subscribe('fleet', function (emit) {
+        return db.collection(COL_FLEET).onSnapshot(function (snap) {
+          if (snap.empty) {
+            // Seed once per page load — a failing seed must not retry in a loop
+            if (!seedAttempted) {
+              seedAttempted = true;
+              console.log('[fleet] Firestore "' + COL_FLEET + '" is empty' +
+                (snap.metadata && snap.metadata.fromCache ? ' (from cache — offline)' : '') +
+                ' — seeding the standard fleet…');
+              DataService.seedAllDefaultsToFirestore().catch(function (err) {
+                console.error('[fleet] Auto-seed failed:', (err && err.code) || err.message);
               });
+            }
 
-              live.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
-              lsSet(KEY_FLEET, live);
-              callback(live);
-            }, function (err) {
-              console.error("[fleet] Live listener error:", (err && err.code) || err.message,
-                err && err.code === "permission-denied"
-                  ? "→ publish the Firestore rules from firebase-rules.txt"
-                  : "");
-            });
-        } catch (e) {
-          console.warn('watchFleet error:', e);
-        }
-      }
-      return function () {};
+            // NEVER wipe the admin's own vehicles because the cloud reply was
+            // empty (offline / not yet seeded) — keep what we have.
+            var keep = lsGet(KEY_FLEET, null);
+            emit(keep && keep.length ? keep : DEFAULT_SEED_FLEET.slice());
+            return;
+          }
+
+          var live = docsToArray(snap);
+
+          // Vehicles added while the cloud was unreachable are not in the
+          // snapshot yet — keep showing them until they sync.
+          var local = lsGet(KEY_FLEET, []) || [];
+          var liveIds = {};
+          live.forEach(function (v) { liveIds[v.id] = true; });
+
+          local.forEach(function (v) {
+            var isDefault = DEFAULT_SEED_FLEET.some(function (d) { return d.id === v.id; });
+            if (!liveIds[v.id] && !isDefault) {
+              v.pendingSync = true;
+              live.push(v);
+              console.info('[fleet] "' + v.name + '" is not in Firestore yet (pending sync).');
+            }
+          });
+
+          live.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+          lsSet(KEY_FLEET, live);
+          emit(live);
+        }, function (err) {
+          console.error('[fleet] Live listener error:', (err && err.code) || err.message,
+            err && err.code === 'permission-denied'
+              ? '→ publish the Firestore rules from firebase-rules.txt'
+              : '');
+        });
+      }, callback);
     },
 
     /** Seed all default 12 bikes directly into Firestore */
@@ -438,6 +495,11 @@
       if (!v.createdAt) v.createdAt = Date.now();
       v.updatedAt = Date.now();
 
+      // Snapshot of the stored version BEFORE the local mirror overwrites it —
+      // this is what the changed-field diff is computed against.
+      var previousDoc = (lsGet(KEY_FLEET, []) || []).filter(function (x) { return x.id === id; })[0];
+      if (previousDoc) previousDoc = JSON.parse(JSON.stringify(previousDoc));
+
       // Immediate local sync
       var fleet = lsGet(KEY_FLEET, DEFAULT_SEED_FLEET.slice());
       var idx = fleet.findIndex(function (x) { return x.id === id; });
@@ -462,17 +524,72 @@
         if (cIdx > -1) cur[cIdx] = v; else cur.unshift(v);
         lsSet(KEY_FLEET, cur);
 
-        // 2. Firestore write — also capped, so the UI can never hang
-        var write = db.collection(COL_FLEET).doc(id).set(cleanDoc(v), { merge: true });
+        // 2. Build the Firestore document.
+        //    A Firestore document may not exceed 1 MiB. If a Storage upload
+        //    failed we still hold a base64 image — sending that would make the
+        //    whole write fail, so it is dropped from the cloud copy (the photo
+        //    stays available locally and is retried on the next save).
+        var docData = cleanDoc(v);
+        var droppedPhotos = [];
+
+        ['image', 'imageBack'].forEach(function (key) {
+          var val = docData[key];
+          if (typeof val === 'string' && val.indexOf('data:') === 0 && val.length > 300000) {
+            docData[key] = '';
+            droppedPhotos.push(key === 'image' ? 'front' : 'back');
+          }
+        });
+
+        if (droppedPhotos.length) {
+          console.warn('[vehicle] Photo(s) too large for Firestore (' + droppedPhotos.join(', ') +
+            ') — saved without them. Enable Firebase Storage so photos upload properly.');
+        }
+
+        // Editing an existing vehicle? Send only the fields that actually
+        // changed, so untouched data (and its photo URLs) is not rewritten.
+        var docRef = db.collection(COL_FLEET).doc(id);
+        var write;
+
+        if (vehicle.id && previousDoc && previousDoc.createdAt) {
+          var diff = {};
+          Object.keys(docData).forEach(function (k) {
+            if (k === 'updatedAt') { diff[k] = docData[k]; return; }
+            if (JSON.stringify(docData[k]) !== JSON.stringify(previousDoc[k])) diff[k] = docData[k];
+          });
+
+          if (Object.keys(diff).length <= 1) {
+            console.log('[vehicle] nothing changed for ' + id + ' — no write sent');
+            return { id: id, cloud: true, error: null, photosDropped: droppedPhotos };
+          }
+
+          console.log('[vehicle] updating ' + Object.keys(diff).length + ' field(s):',
+            Object.keys(diff).join(', '));
+          write = docRef.set(diff, { merge: true });
+        } else {
+          write = docRef.set(docData, { merge: true });
+        }
 
         return withTimeout(write, WRITE_TIMEOUT, new Error('Firestore write timed out after 5s'))
           .then(function () {
-            console.log('✓ Vehicle "' + v.name + '" written to Firestore/' + COL_FLEET + '/' + id);
-            return { id: id, cloud: true, error: null };
+            console.log('✓ Vehicle "' + v.name + '" written to Firestore/' + COL_FLEET + '/' + id +
+              (droppedPhotos.length ? ' (without ' + droppedPhotos.join(' & ') + ' photo)' : ''));
+            return {
+              id: id,
+              cloud: true,
+              error: null,
+              photosDropped: droppedPhotos
+            };
           })
           .catch(function (err) {
+            var code = (err && err.code) || '';
             var msg = (err && (err.code || err.message)) || 'unknown error';
             console.error('Firestore write failed for vehicle ' + id + ':', err);
+
+            if (code === 'permission-denied') {
+              msg = 'permission-denied — sign in again, or publish the Firestore rules';
+            } else if (code === 'invalid-argument') {
+              msg = 'the vehicle data is too large for one document (photo size)';
+            }
             return { id: id, cloud: false, error: msg };
           });
       }).catch(function (err) {
@@ -490,6 +607,9 @@
       if (init() !== 'firebase') {
         return Promise.resolve();
       }
+      // Remove the photos too, so Storage does not fill up with orphans
+      deleteStorageFolder('vehicles/' + id);
+
       return withTimeout(
         db.collection(COL_FLEET).doc(id).delete(),
         WRITE_TIMEOUT,
@@ -543,13 +663,72 @@
 
     /** Live updates — callback(bookingsArray). @returns {Function} unsubscribe */
     watchBookings: function (callback) {
-      if (init() === 'firebase') {
-        return db.collection(COL_BOOKINGS).orderBy('timestamp', 'desc')
-          .onSnapshot(function (snap) { callback(docsToArray(snap)); },
-                      function (err) { console.warn('watchBookings:', err); });
+      // Instant paint from the cached page, then the live snapshot
+      var cached = lsGet(KEY_BOOKINGS, []);
+      if (cached && cached.length) callback(cached);
+
+      if (init() !== 'firebase') {
+        if (!cached || !cached.length) callback([]);
+        return function () {};
       }
-      callback(lsGet(KEY_BOOKINGS, []));
-      return function () {};
+
+      return subscribe('bookings', function (emit) {
+        // Only the newest page stays live — older bookings load on demand
+        return db.collection(COL_BOOKINGS)
+          .orderBy('timestamp', 'desc')
+          .limit(BOOKINGS_PAGE)
+          .onSnapshot(function (snap) {
+            var live = docsToArray(snap);
+            olderBookings = olderBookings.filter(function (o) {
+              return !live.some(function (b) { return b.bookingId === o.bookingId; });
+            });
+
+            var all = live.concat(olderBookings);
+            lastLiveDoc = snap.docs.length ? snap.docs[snap.docs.length - 1] : null;
+            hasMoreBookings = snap.size === BOOKINGS_PAGE;
+
+            lsSet(KEY_BOOKINGS, all);
+            emit(all);
+          }, function (err) {
+            console.error('[bookings] Live listener error:', (err && err.code) || err.message);
+          });
+      }, callback);
+    },
+
+    /** True when older bookings remain beyond the loaded page. */
+    hasMoreBookings: function () { return hasMoreBookings; },
+
+    /**
+     * Fetch the next page of older bookings (one read batch, no listener).
+     * @returns {Promise<Array>} the full list, newest first
+     */
+    loadMoreBookings: function () {
+      if (init() !== 'firebase' || !lastLiveDoc) {
+        return Promise.resolve(lsGet(KEY_BOOKINGS, []));
+      }
+
+      var query = db.collection(COL_BOOKINGS)
+        .orderBy('timestamp', 'desc')
+        .startAfter(lastLiveDoc)
+        .limit(BOOKINGS_PAGE);
+
+      return withTimeout(query.get(), WRITE_TIMEOUT, new Error('no reply from Firestore'))
+        .then(function (snap) {
+          var page = docsToArray(snap);
+          if (snap.docs.length) lastLiveDoc = snap.docs[snap.docs.length - 1];
+          hasMoreBookings = snap.size === BOOKINGS_PAGE;
+
+          page.forEach(function (b) {
+            if (!olderBookings.some(function (o) { return o.bookingId === b.bookingId; })) {
+              olderBookings.push(b);
+            }
+          });
+
+          var all = lsGet(KEY_BOOKINGS, []).concat(page);
+          lsSet(KEY_BOOKINGS, all);
+          console.log('[bookings] loaded ' + page.length + ' older booking(s)');
+          return all;
+        });
     },
 
     /**
@@ -592,24 +771,51 @@
 
     /** @returns {Promise<void>} */
     updateBooking: function (bookingId, changes) {
-      if (init() !== 'firebase') {
-        var all = lsGet(KEY_BOOKINGS, []);
-        all.forEach(function (b) {
-          if (b.bookingId === bookingId) Object.keys(changes).forEach(function (k) { b[k] = changes[k]; });
-        });
-        lsSet(KEY_BOOKINGS, all);
-        return Promise.resolve();
-      }
-      return db.collection(COL_BOOKINGS).doc(bookingId).update(changes);
+      // Mirror locally first so the table reacts immediately
+      var all = lsGet(KEY_BOOKINGS, []);
+      all.forEach(function (b) {
+        if (b.bookingId === bookingId) Object.keys(changes).forEach(function (k) { b[k] = changes[k]; });
+      });
+      lsSet(KEY_BOOKINGS, all);
+
+      if (init() !== 'firebase') return Promise.resolve({ cloud: false, error: 'offline' });
+
+      // update() sends only these fields — unchanged data is not rewritten
+      return withTimeout(
+        db.collection(COL_BOOKINGS).doc(bookingId).update(cleanDoc(changes)),
+        WRITE_TIMEOUT,
+        new Error('Firestore update timed out after 5s')
+      ).then(function () {
+        return { cloud: true, error: null };
+      }).catch(function (err) {
+        var msg = (err && (err.code || err.message)) || 'unknown error';
+        console.error('Booking update failed for ' + bookingId + ':', err);
+        return { cloud: false, error: msg };
+      });
     },
 
     /** @returns {Promise<void>} */
     deleteBooking: function (bookingId) {
-      if (init() !== 'firebase') {
-        lsSet(KEY_BOOKINGS, lsGet(KEY_BOOKINGS, []).filter(function (b) { return b.bookingId !== bookingId; }));
-        return Promise.resolve();
-      }
-      return db.collection(COL_BOOKINGS).doc(bookingId).delete();
+      lsSet(KEY_BOOKINGS, lsGet(KEY_BOOKINGS, []).filter(function (b) { return b.bookingId !== bookingId; }));
+      olderBookings = olderBookings.filter(function (b) { return b.bookingId !== bookingId; });
+
+      if (init() !== 'firebase') return Promise.resolve({ cloud: false, error: 'offline' });
+
+      // The customer's KYC documents go with the booking
+      deleteStorageFolder('kyc/' + bookingId);
+
+      return withTimeout(
+        db.collection(COL_BOOKINGS).doc(bookingId).delete(),
+        WRITE_TIMEOUT,
+        new Error('Firestore delete timed out after 5s')
+      ).then(function () {
+        console.log('✓ Booking ' + bookingId + ' removed from Firestore/' + COL_BOOKINGS);
+        return { cloud: true, error: null };
+      }).catch(function (err) {
+        var msg = (err && (err.code || err.message)) || 'unknown error';
+        console.error('Booking delete failed for ' + bookingId + ':', err);
+        return { cloud: false, error: msg };
+      });
     },
 
     // ============================================================ ADMIN AUTH

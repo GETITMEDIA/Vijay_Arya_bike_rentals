@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=21.0">
+  <link rel="stylesheet" href="css/admin.css?v=23.0">
 </head>
 
 <body>
@@ -373,6 +373,13 @@
               </table>
             </div>
           </div>
+
+          <div class="load-more-wrap" id="loadMoreWrap" hidden>
+            <button type="button" class="btn-secondary-admin" id="btnLoadMoreBookings">
+              <svg class="ic"><use href="#ic-refresh"></use></svg>
+              <span>Load older bookings</span>
+            </button>
+          </div>
         </section>
 
 
@@ -557,7 +564,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js?v=3.0"></script>
-  <script src="js/data-service.js?v=5.0"></script>
+  <script src="js/data-service.js?v=7.0"></script>
   <script src="js/kyc-store.js?v=1.0"></script>
 
   <!-- ============================ 4. SCRIPT LOGIC ============================ -->
@@ -1411,8 +1418,25 @@
           var canvas = document.createElement('canvas');
           canvas.width = w; canvas.height = h;
           var ctx = canvas.getContext('2d');
+
+          // White backdrop — JPEG has no transparency
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
-          onDone(canvas.toDataURL('image/png', 0.85));
+
+          // JPEG, not PNG: PNG ignores the quality argument and a 900px photo
+          // comes out several MB, which is over the Firestore document limit.
+          var out = canvas.toDataURL('image/jpeg', 0.8);
+
+          // Still heavy? step the quality down until it is comfortably small
+          var quality = 0.8;
+          while (out.length > 700000 && quality > 0.4) {
+            quality -= 0.15;
+            out = canvas.toDataURL('image/jpeg', quality);
+          }
+
+          console.log('[photo] ' + w + '×' + h + ', ' + Math.round(out.length / 1024) + ' KB');
+          onDone(out);
         };
         img.onerror = function () { onDone(ev.target.result); };
         img.src = ev.target.result;
@@ -1531,11 +1555,15 @@
         vehModal.classList.remove('is-open');
 
         if (result && result.cloud) {
-          showToast('✓ Vehicle saved to Cloud Database!');
+          if (result.photosDropped && result.photosDropped.length) {
+            showToast('Vehicle saved — photo not uploaded (enable Firebase Storage)');
+          } else {
+            showToast('✓ Vehicle saved to Cloud Database!');
+          }
         } else {
           var reason = (result && result.error) || 'no response from Firestore';
           console.warn('Vehicle kept locally only:', reason);
-          showToast('Saved locally (Cloud write failed: ' + reason + ')');
+          showToast('Saved locally — ' + reason);
         }
       }
 
@@ -1619,6 +1647,11 @@
       var countEl = document.getElementById('transResultCount');
       countEl.textContent = filtered.length + ' of ' + bookings.length + ' bookings';
 
+      // Only offer "load older" when Firestore actually holds more
+      var moreWrap = document.getElementById('loadMoreWrap');
+      moreWrap.hidden = !(window.DataService && DataService.hasMoreBookings &&
+        DataService.hasMoreBookings());
+
       if (filtered.length === 0) {
         tbody.innerHTML = '<tr><td colspan="8" class="table-empty-state">' + icon('clipboard', 'ic-xl') + 'No bookings found for the selected search, status or date range.</td></tr>';
         return;
@@ -1673,6 +1706,29 @@
       tbody.innerHTML = html;
     }
 
+    // Load the next page of older bookings (one read batch, no extra listener)
+    document.getElementById('btnLoadMoreBookings').addEventListener('click', function () {
+      var btn = this;
+      var original = btn.innerHTML;
+      btn.disabled = true;
+      btn.classList.add('btn-loading');
+      btn.innerHTML = '<span class="spinner-mini spinner-mini-dark"></span><span>Loading…</span>';
+
+      DataService.loadMoreBookings().then(function (all) {
+        bookings = all || bookings;
+        renderAllBookings();
+        updateStats();
+        showToast('Older bookings loaded.');
+      }).catch(function (err) {
+        console.error('[bookings] load more failed:', err);
+        showToast('Could not load older bookings.');
+      }).then(function () {
+        btn.disabled = false;
+        btn.classList.remove('btn-loading');
+        btn.innerHTML = original;
+      });
+    });
+
     document.getElementById('transSearchInput').addEventListener('input', renderAllBookings);
     document.getElementById('transStatusFilter').addEventListener('change', renderAllBookings);
     // ---- Date range: one dropdown, with pickers only for a custom range ----
@@ -1709,11 +1765,18 @@
       });
     });
 
+    var statusWritesInFlight = {};   // bookingId → true while a write is pending
+
     window.updateBookingStatus = function (bookingId, newStatus) {
       var item = bookings.find(function (x) { return x.bookingId === bookingId; });
       if (!item) return;
 
       var stage = stageOf(newStatus);
+
+      // Same value, or a write already on its way — do not send it twice
+      if (normalizeStatus(item.status) === stage.value) return;
+      if (statusWritesInFlight[bookingId]) return;
+      statusWritesInFlight[bookingId] = true;
 
       item.status = stage.value;
       item.statusLabel = stage.label;          // plain text, for reading in Firestore
@@ -1727,7 +1790,15 @@
         statusLabel: item.statusLabel,
         statusUpdatedAt: item.statusUpdatedAt,
         balanceDue: item.balanceDue
-      }).catch(function (err) { console.warn('Booking update failed:', err); });
+      }).then(function (res) {
+        if (res && res.cloud === false && DataService.isLive()) {
+          showToast('Saved locally — ' + res.error);
+        }
+      }).catch(function (err) {
+        console.warn('Booking update failed:', err);
+      }).then(function () {
+        delete statusWritesInFlight[bookingId];
+      });
 
       saveBookings();
       showToast(bookingId + ' — ' + stage.label);
@@ -1741,12 +1812,16 @@
       }, function () {
         bookings = bookings.filter(function (x) { return x.bookingId !== bookingId; });
         saveBookings();
-        DataService.deleteBooking(bookingId).catch(function (err) {
-          console.warn('Booking delete failed:', err);
-        });
         // Remove the customer's documents along with the booking
         if (window.KycStore) window.KycStore.remove(bookingId);
-        showToast('Booking ' + bookingId + ' deleted.');
+
+        return DataService.deleteBooking(bookingId).then(function (res) {
+          if (res && res.cloud === false && DataService.isLive()) {
+            showToast('Deleted locally — ' + res.error);
+          } else {
+            showToast('Booking ' + bookingId + ' deleted.');
+          }
+        });
       });
     };
 
