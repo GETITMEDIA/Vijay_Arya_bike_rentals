@@ -390,9 +390,6 @@
           <option value="Yamaha Ray">Yamaha Ray</option>
           <option value="Honda Cliq">Honda Cliq</option>
           <option value="Honda Navi">Honda Navi</option>
-          <option value="Hero Splendor">Hero Splendor</option>
-          <option value="Yamaha FZ">Yamaha FZ</option>
-          <option value="Royal Enfield GT 650">Royal Enfield GT 650</option>
         </select>
 
         <section class="drawer-section">
@@ -645,9 +642,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js?v=3.0"></script>
-  <script src="js/data-service.js?v=7.0"></script>
+  <script src="js/data-service.js?v=8.0"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="js/script.js?v=3.5"></script>
+  <script src="js/script.js?v=3.6"></script>
   <script>
     (function () {
       'use strict';
@@ -672,7 +669,7 @@
             'Petrol engine',
             'Electric start',
             'Mileage: 48–52 kmpl',
-            'Comfortable seating for 2 riders'
+            'Comfortable seating for 2 people'
           ],
           included: [
             'Sporty modern design',
@@ -702,7 +699,7 @@
             'Petrol engine',
             'Electric & Kick start',
             'Mileage: 45–50 kmpl',
-            'Comfortable seating for 2 riders'
+            'Comfortable seating for 2 people'
           ],
           included: [
             'Iconic retro styling',
@@ -732,7 +729,7 @@
             'Petrol engine',
             'Electric start',
             'Mileage: 50–55 kmpl',
-            'Comfortable seating for 2 riders'
+            'Comfortable seating for 2 people'
           ],
           included: [
             'Telescopic front suspension',
@@ -882,7 +879,7 @@
             'Petrol engine',
             'Electric start',
             'Mileage: 55–60 kmpl',
-            'Low seat height for easy rider access'
+            'Low seat height, easy to get on and off'
           ],
           included: [
             'Block pattern tires',
@@ -897,7 +894,7 @@
           id: 'honda-navi',
           bikeName: 'Honda Navi',
           title: 'Honda Navi 110',
-          category: 'MINI BIKE · FUN',
+          category: 'SCOOTER · FUN',
           subtitle: 'Fun crossover bike blending scooter ease with motorcycle thrill.',
           color: 'COLOUR · PATRIOT RED',
           description: 'Rent the Honda Navi for a unique, adventurous ride. Lightweight crossover design with automatic gearless drive and motorcycle riding feel.',
@@ -912,7 +909,7 @@
             'Petrol engine',
             'Electric start',
             'Mileage: 50–55 kmpl',
-            'Comfortable seating for 2 riders'
+            'Comfortable seating for 2 people'
           ],
           included: [
             'Fun motorcycle ergonomics',
@@ -920,66 +917,6 @@
             'High ground clearance',
             'Custom lockable storage box',
             'Lightweight handling',
-            'Regularly serviced'
-          ]
-        },
-        'hero-splendor': {
-          id: 'hero-splendor',
-          bikeName: 'Hero Splendor',
-          title: 'Hero Splendor Plus',
-          category: 'MOTORCYCLE · UTILITY',
-          subtitle: 'India\'s most iconic fuel-efficient commuter motorcycle.',
-          color: 'COLOUR · BLACK & SILVER',
-          description: 'Rent the Hero Splendor Plus for maximum mileage and gear bike performance. Extremely smooth, reliable, and comfortable for long village & coastal tours.',
-          advance: '₹500',
-          images: [
-            'assets/rentel-bikes/hero_splender_main_view.png',
-            'assets/rentel-bikes/hero_spleander_side_view.png'
-          ],
-          specs: [
-            '97.2 cc xSens FI engine',
-            '4-speed manual gear transmission',
-            'Petrol engine',
-            'Electric start',
-            'Mileage: 65–70 kmpl',
-            'Long flat comfort seat'
-          ],
-          included: [
-            'Unmatched fuel mileage',
-            'i3S idle stop-start system',
-            'Tubeless tires',
-            'Rear luggage carrier',
-            'Ultra-reliable engine',
-            'Regularly serviced'
-          ]
-        },
-        'yamaha-fz': {
-          id: 'yamaha-fz',
-          bikeName: 'Yamaha FZ',
-          title: 'Yamaha FZ FI 150',
-          category: 'MOTORCYCLE · SPORT',
-          subtitle: 'Muscular streetfighter bike built for highway & city cruising.',
-          color: 'COLOUR · METALLIC BLACK & BLUE',
-          description: 'Rent the Yamaha FZ FI for a powerful 150cc motorcycle ride. Features wide radial tires, mono-cross suspension, and ABS for superior braking control.',
-          advance: '₹500',
-          images: [
-            'assets/rentel-bikes/yamaha_fz_main_view.png',
-            'assets/rentel-bikes/yamaha_fz_side_view.png'
-          ],
-          specs: [
-            '149 cc Blue Core FI engine',
-            '5-speed manual gear transmission',
-            'Petrol engine',
-            'Electric start',
-            'Mileage: 45–50 kmpl',
-            'Step-up comfortable dual seat'
-          ],
-          included: [
-            'Single-channel ABS safety',
-            'Muscular tank & LED headlight',
-            'Monocross rear suspension',
-            'Wide radial rear tire',
-            'Digital LCD instrument cluster',
             'Regularly serviced'
           ]
         }
@@ -1089,7 +1026,7 @@
         var v = fleetList.filter(function (x) { return x.id === bikeId || x.name.toLowerCase() === bikeId.toLowerCase(); })[0];
         if (!v) return null;
 
-        var catName = v.category === 'BIKE' ? 'MOTORCYCLE' : (v.category || 'VEHICLE');
+        var catName = 'SCOOTER';
         var imgs = [];
         if (v.image) imgs.push(v.image);
         if (v.imageBack && v.imageBack !== v.image) imgs.push(v.imageBack);

@@ -285,7 +285,6 @@
             <select class="filter-select" id="vehicleCategoryFilter">
               <option value="ALL">All Categories</option>
               <option value="SCOOTER">Scooters</option>
-              <option value="BIKE">Motorcycles</option>
             </select>
             <select class="filter-select" id="vehicleStatusFilter">
               <option value="ALL">All Status</option>
@@ -409,13 +408,12 @@
           <div class="form-row">
             <div class="form-group" style="flex: 2;">
               <label for="vehName">Vehicle Name <span class="req-star">*</span></label>
-              <input type="text" id="vehName" placeholder="e.g. Royal Enfield Classic 350" required>
+              <input type="text" id="vehName" placeholder="e.g. Honda Activa 6G" required>
             </div>
             <div class="form-group">
               <label for="vehCategory">Category <span class="req-star">*</span></label>
               <select id="vehCategory" required>
                 <option value="SCOOTER">Scooter</option>
-                <option value="BIKE">Motorcycle</option>
               </select>
             </div>
           </div>
@@ -566,7 +564,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js?v=3.0"></script>
-  <script src="js/data-service.js?v=7.0"></script>
+  <script src="js/data-service.js?v=8.0"></script>
   <script src="js/kyc-store.js?v=1.0"></script>
 
   <!-- ============================ 4. SCRIPT LOGIC ============================ -->
@@ -584,10 +582,7 @@
       { id: 'yamaha-fascino', name: 'Yamaha Fascino', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fascino_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fascino_side_view.png', status: 'AVAILABLE', desc: 'Classic retro aesthetics combined with Yamaha refined 125cc performance.' },
       { id: 'yamaha-ray', name: 'Yamaha Ray', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_ray_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_ray_side_view.png', status: 'AVAILABLE', desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
       { id: 'honda-cliq', name: 'Honda Cliq', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_clic_main_view.png', imageBack: 'assets/rentel-bikes/honda_clic_side_view.png', status: 'AVAILABLE', desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
-      { id: 'honda-navi', name: 'Honda Navi', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/Honda_navi_main_view.png', imageBack: 'assets/rentel-bikes/honda_navi_side_view.png', status: 'AVAILABLE', desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' },
-      { id: 'hero-splendor', name: 'Hero Splendor', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/hero_splender_main_view.png', imageBack: 'assets/rentel-bikes/hero_spleander_side_view.png', status: 'AVAILABLE', desc: 'Legendary Indian commuter motorcycle offering unmatched fuel efficiency.' },
-      { id: 'yamaha-fz', name: 'Yamaha FZ', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Muscular street bike with superior road grip for cruising ECR and Auroville.' },
-      { id: 're-gt650', name: 'Royal Enfield GT 650', category: 'BIKE', rate: 1200, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
+      { id: 'honda-navi', name: 'Honda Navi', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/Honda_navi_main_view.png', imageBack: 'assets/rentel-bikes/honda_navi_side_view.png', status: 'AVAILABLE', desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' }
     ];
 
     // LocalStorage Keys
@@ -754,7 +749,8 @@
         if (v.image === 'assets/rentel-bikes/honda_cliq_main_view.png') {
           v.image = 'assets/rentel-bikes/honda_clic_main_view.png';
         }
-        if (v.category !== 'SCOOTER' && v.category !== 'BIKE') v.category = 'BIKE';
+        // The shop rents scooters only
+        if (v.category !== 'SCOOTER') v.category = 'SCOOTER';
         if (!v.imageBack) {
           var def = DEFAULT_FLEET.find(function (d) { return d.id === v.id; });
           if (def) v.imageBack = def.imageBack;
@@ -2170,6 +2166,12 @@
           started = true;
           console.log('[auth] Signed in as', user.email, '— loading cloud data');
           loadData();
+          // Scooters only — clear the retired motorcycles out of the database
+          if (DataService.removeRetiredVehicles) {
+            DataService.removeRetiredVehicles().then(function (n) {
+              if (n) showToast(n + " motorcycle listing" + (n > 1 ? "s" : "") + " removed — scooters only.");
+            });
+          }
         }
       });
 

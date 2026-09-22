@@ -244,10 +244,7 @@
     { id: 'yamaha-fascino', name: 'Yamaha Fascino', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fascino_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fascino_side_view.png', status: 'AVAILABLE', desc: 'Classic retro aesthetics combined with Yamaha refined 125cc performance.' },
     { id: 'yamaha-ray', name: 'Yamaha Ray', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_ray_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_ray_side_view.png', status: 'AVAILABLE', desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
     { id: 'honda-cliq', name: 'Honda Cliq', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_clic_main_view.png', imageBack: 'assets/rentel-bikes/honda_clic_side_view.png', status: 'AVAILABLE', desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
-    { id: 'honda-navi', name: 'Honda Navi', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/Honda_navi_main_view.png', imageBack: 'assets/rentel-bikes/honda_navi_side_view.png', status: 'AVAILABLE', desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' },
-    { id: 'hero-splendor', name: 'Hero Splendor', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/hero_splender_main_view.png', imageBack: 'assets/rentel-bikes/hero_spleander_side_view.png', status: 'AVAILABLE', desc: 'Legendary Indian commuter motorcycle offering unmatched fuel efficiency.' },
-    { id: 'yamaha-fz', name: 'Yamaha FZ', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Muscular street bike with superior road grip for cruising ECR and Auroville.' },
-    { id: 're-gt650', name: 'Royal Enfield GT 650', category: 'BIKE', rate: 1200, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
+    { id: 'honda-navi', name: 'Honda Navi', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/Honda_navi_main_view.png', imageBack: 'assets/rentel-bikes/honda_navi_side_view.png', status: 'AVAILABLE', desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' }
   ];
 
   // Ensure no undefined values reach Firestore
@@ -466,6 +463,40 @@
           lines.push('  that no ad blocker / firewall blocks firestore.googleapis.com.');
         }
         return { ok: false, lines: lines };
+      });
+    },
+
+    /**
+     * The shop rents scooters only. Remove the motorcycles that were part of
+     * the original seed list (Hero Splendor, Yamaha FZ, Royal Enfield GT 650)
+     * from Firestore and from the local cache. Safe to call every time — it
+     * only touches those three document ids.
+     * @returns {Promise<number>} how many were removed
+     */
+    removeRetiredVehicles: function () {
+      var RETIRED = ['hero-splendor', 'yamaha-fz', 're-gt650'];
+
+      var local = lsGet(KEY_FLEET, []) || [];
+      var kept = local.filter(function (v) { return RETIRED.indexOf(v.id) === -1; });
+      if (kept.length !== local.length) lsSet(KEY_FLEET, kept);
+
+      if (init() !== 'firebase') return Promise.resolve(local.length - kept.length);
+
+      return Promise.all(RETIRED.map(function (id) {
+        var ref = db.collection(COL_FLEET).doc(id);
+        return ref.get({ source: 'server' }).then(function (snap) {
+          if (!snap.exists) return 0;
+          deleteStorageFolder('vehicles/' + id);
+          return ref.delete().then(function () {
+            console.log('[fleet] removed motorcycle "' + id + '" (scooters only)');
+            return 1;
+          });
+        }).catch(function (err) {
+          console.info('[fleet] could not check "' + id + '":', (err && err.code) || err.message);
+          return 0;
+        });
+      })).then(function (results) {
+        return results.reduce(function (a, b) { return a + b; }, 0);
       });
     },
 

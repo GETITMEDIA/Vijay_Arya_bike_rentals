@@ -643,9 +643,6 @@
       'Yamaha Ray': 'Nimble and compact automatic scooter ideal for quick city errands.',
       'Honda Cliq': 'Sturdy, practical and light runabout scooter.',
       'Honda Navi': 'Fun mini-bike design with full automatic scooter convenience.',
-      'Hero Splendor': 'Legendary 100cc motorcycle with exceptional fuel efficiency.',
-      'Yamaha FZ': '150cc sporty motorcycle for enthusiastic road trips.',
-      'Royal Enfield GT 650': 'Twin-cylinder Cafe Racer motorcycle for unmatched highway cruiser feel.'
     };
 
     var currentQty = 1;
@@ -1363,9 +1360,6 @@
       'Yamaha Ray': { rate: 500, desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
       'Honda Cliq': { rate: 500, desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
       'Honda Navi': { rate: 500, desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' },
-      'Hero Splendor': { rate: 500, desc: 'Legendary Indian commuter motorcycle offering unmatched fuel efficiency.' },
-      'Yamaha FZ': { rate: 500, desc: 'Muscular street bike with superior road grip for cruising ECR and Auroville.' },
-      'Royal Enfield GT 650': { rate: 1200, desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
     };
 
     // Live fleet sync for booking modal & website catalog
@@ -1607,7 +1601,7 @@
           '</div>' +
           '<div class="summary-row"><span>Pickup Date:</span><strong>' + data.startDate + ' @ ' + data.startTime + '</strong></div>' +
           '<div class="summary-row"><span>Return Date:</span><strong>' + data.endDate + ' @ ' + data.endTime + '</strong></div>' +
-          '<div class="summary-row"><span>Rider Name:</span><strong>' + data.customerName + '</strong></div>' +
+          '<div class="summary-row"><span>Name:</span><strong>' + data.customerName + '</strong></div>' +
           '<div class="summary-row"><span>WhatsApp:</span><strong>+91 ' + data.customerPhone + '</strong></div>' +
           '<div class="summary-row"><span>Daily Rate:</span><strong>&#8377;' + data.dailyRate + ' / day &times; ' + data.quantity + '</strong></div>' +
           '<div class="summary-row"><span>Estimated Total Rent:</span><strong>&#8377;' + data.estimatedTotal + '</strong></div>' +

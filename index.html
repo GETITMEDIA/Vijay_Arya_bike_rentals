@@ -241,7 +241,7 @@
               </div>
               <div>
                 <strong class="light-stat-val">50K+</strong>
-                <span class="light-stat-lbl">HAPPY RIDERS</span>
+                <span class="light-stat-lbl">HAPPY TOURISTS</span>
               </div>
             </div>
 
@@ -499,7 +499,7 @@
           <article class="ride-card reveal" data-bike="Honda Navi" data-rate="500">
             <div class="ride-card-head">
               <span class="status-pill"><span class="status-dot"></span>AVAILABLE</span>
-              <span class="cat-tag">MINI BIKE</span>
+              <span class="cat-tag">SCOOTER</span>
             </div>
             <div class="ride-media">
               <img src="assets/rentel-bikes/Honda_navi_main_view.png" alt="Honda Navi" width="260" height="160"
@@ -516,54 +516,6 @@
               <div class="ride-actions">
                 <a href="bike-detail.html?id=honda-navi" class="btn-card-outline">View Details</a>
                 <button class="btn-card-dark js-book" type="button" data-bike="Honda Navi">Book Now</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="ride-card reveal" data-bike="Hero Splendor" data-rate="500">
-            <div class="ride-card-head">
-              <span class="status-pill"><span class="status-dot"></span>AVAILABLE</span>
-              <span class="cat-tag">MOTORCYCLE</span>
-            </div>
-            <div class="ride-media">
-              <img src="assets/rentel-bikes/hero_splender_main_view.png" alt="Hero Splendor" width="260" height="160"
-                loading="lazy" decoding="async">
-            </div>
-            <div class="ride-card-foot">
-              <div class="ride-meta">
-                <h3 class="ride-name">Hero Splendor</h3>
-                <div class="ride-price">
-                  <span class="price-label">ADVANCE</span>
-                  <strong class="price-val">&#8377;500</strong>
-                </div>
-              </div>
-              <div class="ride-actions">
-                <a href="bike-detail.html?id=hero-splendor" class="btn-card-outline">View Details</a>
-                <button class="btn-card-dark js-book" type="button" data-bike="Hero Splendor">Book Now</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="ride-card reveal" data-bike="Yamaha FZ" data-rate="500">
-            <div class="ride-card-head">
-              <span class="status-pill"><span class="status-dot"></span>AVAILABLE</span>
-              <span class="cat-tag">MOTORCYCLE</span>
-            </div>
-            <div class="ride-media">
-              <img src="assets/rentel-bikes/yamaha_fz_main_view.png" alt="Yamaha FZ" width="260" height="160"
-                loading="lazy" decoding="async">
-            </div>
-            <div class="ride-card-foot">
-              <div class="ride-meta">
-                <h3 class="ride-name">Yamaha FZ</h3>
-                <div class="ride-price">
-                  <span class="price-label">ADVANCE</span>
-                  <strong class="price-val">&#8377;500</strong>
-                </div>
-              </div>
-              <div class="ride-actions">
-                <a href="bike-detail.html?id=yamaha-fz" class="btn-card-outline">View Details</a>
-                <button class="btn-card-dark js-book" type="button" data-bike="Yamaha FZ">Book Now</button>
               </div>
             </div>
           </article>
@@ -597,7 +549,7 @@
               if (!grid) return;
 
               var note = grid.querySelector('.ride-note');
-              var catLabel = { SCOOTER: 'SCOOTER', BIKE: 'MOTORCYCLE' };
+              var catLabel = { SCOOTER: 'SCOOTER' };
               var statusLabel = { AVAILABLE: 'AVAILABLE', ON_RENT: 'ON RENT', MAINTENANCE: 'MAINTENANCE' };
 
               function esc(str) {
@@ -685,7 +637,7 @@
             <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Gallery Preview</p>
             <h2 id="galTitle">Two Wheels. One Beautiful City.</h2>
           </div>
-          <p class="section-sub">A quick look at our rental bikes and riders in Pondicherry.</p>
+          <p class="section-sub">A quick look at our rental scooters and the tourists who ride them in Pondicherry.</p>
         </div>
 
         <!-- 3D Infinite Spiral Gallery Component (React Bits Adaptation) -->
@@ -705,7 +657,7 @@
 
               <button class="infinite-spiral__item gal-item" type="button" data-gal="2" role="listitem">
                 <img class="infinite-spiral__image" src="assets/gallery/2024-01-01.jpg"
-                  alt="Happy riders receiving rental bike" loading="eager">
+                  alt="Happy tourists receiving their rental scooter" loading="eager">
               </button>
 
               <button class="infinite-spiral__item gal-item" type="button" data-gal="3" role="listitem">
@@ -716,7 +668,7 @@
 
               <button class="infinite-spiral__item gal-item" type="button" data-gal="4" role="listitem">
                 <img class="infinite-spiral__image" src="assets/gallery/2023-01-31.jpg"
-                  alt="Riders exploring Pondicherry streets" loading="eager">
+                  alt="Tourists exploring Pondicherry streets" loading="eager">
               </button>
 
               <button class="infinite-spiral__item gal-item" type="button" data-gal="5" role="listitem">
@@ -792,7 +744,7 @@
       <div class="wrap">
         <div class="section-head">
           <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Reviews</p>
-          <h2 id="testTitle">What Riders Say</h2>
+          <h2 id="testTitle">What Tourists Say</h2>
           <p class="section-sub">Trusted by thousands of travellers exploring Pondicherry.</p>
         </div>
 
@@ -974,7 +926,7 @@
 
           <!-- Left Vehicle Photo with Curved Mask -->
           <div class="cta-ref-media">
-            <img src="assets/images/cta_banner_bg.png" alt="Motorcycle ride in Pondicherry" loading="lazy"
+            <img src="assets/images/cta_banner_bg.png" alt="Scooter ride in Pondicherry" loading="lazy"
               decoding="async">
             <div class="cta-ref-badge">
               <span class="cta-ref-badge-sub">Good People</span>
@@ -1230,8 +1182,6 @@
           <option value="Yamaha Ray">Yamaha Ray</option>
           <option value="Honda Cliq">Honda Cliq</option>
           <option value="Honda Navi">Honda Navi</option>
-          <option value="Hero Splendor">Hero Splendor</option>
-          <option value="Yamaha FZ">Yamaha FZ</option>
         </select>
 
         <section class="drawer-section">
@@ -1512,14 +1462,14 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js?v=3.0"></script>
-  <script src="js/data-service.js?v=7.0"></script>
+  <script src="js/data-service.js?v=8.0"></script>
   <script src="js/kyc-store.js?v=2.0"></script>
   <!-- Bootstrap: connect the fleet grid to live Firestore once DataService is ready -->
   <script>
     if (window._connectLiveFleet) window._connectLiveFleet();
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="js/script.js?v=3.5" defer></script>
+  <script src="js/script.js?v=3.6" defer></script>
 </body>
 
 </html>
