@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=26.0">
+  <link rel="stylesheet" href="css/admin.css?v=27.0">
 </head>
 
 <body>
@@ -326,7 +326,7 @@
               <option value="ALL">All statuses</option>
               <option value="PAYMENT_PENDING">Payment Pending</option>
               <option value="ADVANCE_PAID">Advance Paid</option>
-              <option value="BIKE_COLLECTED">Bike Collected</option>
+              <option value="BIKE_COLLECTED">Scooter Collected</option>
               <option value="RETURNED_PAID">Returned &amp; Paid</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
@@ -1605,7 +1605,7 @@
       // GPay / UPI bookings start here until the WhatsApp screenshot is checked
       { value: 'PAYMENT_PENDING', label: 'Payment Pending', css: 'pending' },
       { value: 'ADVANCE_PAID',   label: 'Advance Paid',    css: 'confirmed' },
-      { value: 'BIKE_COLLECTED', label: 'Bike Collected',  css: 'ongoing' },
+      { value: 'BIKE_COLLECTED', label: 'Scooter Collected', css: 'ongoing' },
       { value: 'RETURNED_PAID',  label: 'Returned & Paid', css: 'completed' },
       { value: 'CANCELLED',      label: 'Cancelled',       css: 'cancelled' }
     ];
@@ -1691,7 +1691,7 @@
           }).join('') +
         '</select>';
 
-        var whatsBtn = b.customerPhone ? '<a href="https://wa.me/91' + b.customerPhone + '?text=' + encodeURIComponent('Hi ' + b.customerName + ', regarding your Vijay Arya Bike booking (' + b.bookingId + ')...') + '" target="_blank" class="table-action-icon-btn" title="Chat on WhatsApp">' + icon('chat') + '</a>' : '';
+        var whatsBtn = b.customerPhone ? '<a href="https://wa.me/91' + b.customerPhone + '?text=' + encodeURIComponent('Hi ' + b.customerName + ', regarding your Vijay Arya Bike Rentals booking (' + b.bookingId + ')...') + '" target="_blank" class="table-action-icon-btn" title="Chat on WhatsApp">' + icon('chat') + '</a>' : '';
 
         // KYC Badge
         var kycBadge = '';

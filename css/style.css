@@ -7307,3 +7307,14 @@ html, body { overflow-x: hidden; }
 }
 
 .utr-error[hidden] { display: none; }
+
+/* Opening hours — two clear lines (weekdays / weekend) */
+.hours-lines {
+  display: block;
+  line-height: 1.6;
+}
+
+.hours-lines b {
+  font-weight: 700;
+  opacity: .85;
+}

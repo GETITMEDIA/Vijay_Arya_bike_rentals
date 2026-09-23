@@ -642,7 +642,7 @@
       'Yamaha Fascino': 'Retro-modern lightweight scooter with refined engine performance.',
       'Yamaha Ray': 'Nimble and compact automatic scooter ideal for quick city errands.',
       'Honda Cliq': 'Sturdy, practical and light runabout scooter.',
-      'Honda Navi': 'Fun mini-bike design with full automatic scooter convenience.',
+      'Honda Navi': 'Compact, fun scooter with full automatic convenience.',
     };
 
     var currentQty = 1;
@@ -1359,7 +1359,7 @@
       'Yamaha Fascino': { rate: 500, desc: 'Classic retro aesthetics combined with Yamaha refined 125cc performance.' },
       'Yamaha Ray': { rate: 500, desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
       'Honda Cliq': { rate: 500, desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
-      'Honda Navi': { rate: 500, desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' },
+      'Honda Navi': { rate: 500, desc: 'Compact, fun scooter with a convenient automatic CVT transmission.' },
     };
 
     // Live fleet sync for booking modal & website catalog
