@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=27.0">
+  <link rel="stylesheet" href="css/admin.css?v=30.0">
 </head>
 
 <body>
@@ -483,6 +483,22 @@
 
           </div>
 
+
+          <!-- COLOUR VARIANTS — one physical scooter per colour -->
+          <div class="veh-colors-section">
+            <div class="veh-colors-head">
+              <div>
+                <h5>Colour options</h5>
+                <p>Each colour is a separate scooter. Customers pick the colour on the vehicle page.</p>
+              </div>
+              <button type="button" class="btn-secondary-admin btn-sm-admin" id="btnAddColor">
+                <svg class="ic"><use href="#ic-plus"></use></svg>
+                <span>Add colour</span>
+              </button>
+            </div>
+            <div class="veh-colors-list" id="vehColorsList"></div>
+            <p class="veh-colors-empty" id="vehColorsEmpty">No colour options &mdash; the vehicle uses the photos above.</p>
+          </div>
           <div class="form-group" style="margin-top: 16px;">
             <label for="vehDesc">Short Vehicle Description</label>
             <textarea id="vehDesc" rows="2" placeholder="Brief description of the vehicle, engine size, comfort, or ideal Pondicherry touring use..."></textarea>
@@ -564,7 +580,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js?v=3.0"></script>
-  <script src="js/data-service.js?v=8.0"></script>
+  <script src="js/data-service.js?v=9.0"></script>
   <script src="js/kyc-store.js?v=1.0"></script>
 
   <!-- ============================ 4. SCRIPT LOGIC ============================ -->
@@ -574,7 +590,7 @@
 
     // Default Seed Fleet Data
     var DEFAULT_FLEET = [
-      { id: 'vespa', name: 'Vespa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE', desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
+      { id: 'vespa', name: 'Vespa', category: 'SCOOTER', colors: [{ name: 'Peach Green', hex: '#A8D5BA', image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE' }, { name: 'Red', hex: '#D0202E', image: 'assets/rentel-bikes/vespa_red_main_view.png', imageBack: 'assets/rentel-bikes/vespa_red_side_view.png', status: 'AVAILABLE' }, { name: 'Black', hex: '#1C1917', image: 'assets/rentel-bikes/vespa_black_main_view.png', imageBack: 'assets/rentel-bikes/vespa_black_side_view.png', status: 'AVAILABLE' }, { name: 'Light Blue', hex: '#9CC6DA', image: 'assets/rentel-bikes/vespa_light_blue_main_view.png', imageBack: 'assets/rentel-bikes/vespa_light_blue_side_view.png', status: 'AVAILABLE' }], rate: 500, advance: 500, image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE', desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
       { id: 'honda-activa', name: 'Honda Activa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_activa_main_view.png', imageBack: 'assets/rentel-bikes/honda_activa_side_view.png', status: 'AVAILABLE', desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy rides.' },
       { id: 'tvs-jupiter', name: 'TVS Jupiter', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/tvs_jupiter_main_view.png', imageBack: 'assets/rentel-bikes/tvs_jupiter_side_view.png', status: 'AVAILABLE', desc: 'Comfortable ride with extra footboard space and plush suspension.' },
       { id: 'suzuki-access', name: 'Suzuki Access 125', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/suzuki_access_main_view.png', imageBack: 'assets/rentel-bikes/suzuki_access_side_view.png', status: 'AVAILABLE', desc: 'Powerful 125cc engine offering effortless pickup and comfortable seating.' },
@@ -1121,7 +1137,7 @@
         html += '<tr>' +
           '<td data-label="Booking"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span></td>' +
           '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">' + (b.customerPhone || '') + '</span></div></td>' +
-          '<td data-label="Vehicle"><strong>' + (b.bikeName || 'Vehicle') + '</strong></td>' +
+          '<td data-label="Vehicle"><div class="stack-cell"><strong>' + (b.bikeName || 'Vehicle') + '</strong>' + (b.color ? '<small class="cell-muted">' + b.color + '</small>' : '') + '</div></td>' +
           '<td data-label="Rental dates"><div class="stack-cell"><span class="cell-dates">' + fmtDay(b.startDate) + ' → ' + fmtDay(b.endDate) + '</span>' +
             '<small class="cell-muted">' + (b.startTime ? 'Pickup ' + fmtTime(b.startTime) : '') + '</small></div></td>' +
           '<td data-label="Advance"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong></td>' +
@@ -1175,6 +1191,7 @@
           '<div class="bike-card-body">' +
             '<h4 class="bike-card-title">' + v.name + '</h4>' +
             '<div class="bike-card-meta-row">' +
+              ((v.colors && v.colors.length) ? '<span class="bike-card-colors" title="' + v.colors.map(function (c) { return c.name; }).join(', ') + '">' + v.colors.map(function (c) { return '<i style="background:' + c.hex + '"></i>'; }).join('') + '<b>' + v.colors.length + ' colours</b></span>' : '') +
               '<span class="bike-card-cat">' + v.category + '</span>' +
               (hasDual ? '<span class="bike-card-dual-tag">2 Views</span>' : '') +
             '</div>' +
@@ -1477,6 +1494,108 @@
       processVehiclePhotoUpload(file, function (dataUrl) { setBackPhoto(dataUrl); });
     });
 
+    // ================================================================
+    // COLOUR OPTIONS — each colour is a separate scooter with its own
+    // photos and its own availability. Stored on the vehicle document as
+    // colors: [{ name, hex, image, imageBack, status }]
+    // ================================================================
+    var vehColors = [];                       // colours of the vehicle being edited
+    var colorsList = document.getElementById('vehColorsList');
+    var colorsEmpty = document.getElementById('vehColorsEmpty');
+
+    function renderColorRows() {
+      colorsList.innerHTML = '';
+      colorsEmpty.hidden = vehColors.length > 0;
+
+      vehColors.forEach(function (c, i) {
+        var row = document.createElement('div');
+        row.className = 'veh-color-row';
+        row.innerHTML =
+          '<input type="color" class="veh-color-hex" value="' + (c.hex || '#cccccc') + '" title="Colour">' +
+          '<input type="text" class="veh-color-name" value="' + (c.name || '').replace(/"/g, '&quot;') + '" placeholder="Colour name, e.g. Red">' +
+          '<select class="veh-color-status" title="Availability of this scooter">' +
+            '<option value="AVAILABLE"' + (c.status === 'AVAILABLE' || !c.status ? ' selected' : '') + '>Available</option>' +
+            '<option value="ON_RENT"' + (c.status === 'ON_RENT' ? ' selected' : '') + '>On Rent</option>' +
+            '<option value="MAINTENANCE"' + (c.status === 'MAINTENANCE' ? ' selected' : '') + '>Maintenance</option>' +
+          '</select>' +
+          '<div class="veh-color-photos">' +
+            '<button type="button" class="veh-color-photo' + (c.image ? ' has-img' : '') + '" data-role="front" title="Front photo">' +
+              (c.image ? '<img src="' + c.image + '" alt="">' : '<span>Front</span>') +
+            '</button>' +
+            '<button type="button" class="veh-color-photo' + (c.imageBack ? ' has-img' : '') + '" data-role="back" title="Back / side photo">' +
+              (c.imageBack ? '<img src="' + c.imageBack + '" alt="">' : '<span>Back</span>') +
+            '</button>' +
+          '</div>' +
+          '<button type="button" class="veh-color-del" title="Remove this colour">' + icon('trash') + '</button>';
+
+        // keep the model in step with the inputs
+        row.querySelector('.veh-color-hex').addEventListener('input', function () { vehColors[i].hex = this.value; });
+        row.querySelector('.veh-color-name').addEventListener('input', function () { vehColors[i].name = this.value; });
+        row.querySelector('.veh-color-status').addEventListener('change', function () { vehColors[i].status = this.value; });
+
+        row.querySelectorAll('.veh-color-photo').forEach(function (btn) {
+          btn.addEventListener('click', function () { pickColorPhoto(i, btn.getAttribute('data-role')); });
+        });
+
+        row.querySelector('.veh-color-del').addEventListener('click', function () {
+          vehColors.splice(i, 1);
+          renderColorRows();
+        });
+
+        colorsList.appendChild(row);
+      });
+    }
+
+    // One hidden file input serves every colour photo button
+    var colorFileInput = document.createElement('input');
+    colorFileInput.type = 'file';
+    colorFileInput.accept = 'image/*';
+    colorFileInput.style.display = 'none';
+    document.body.appendChild(colorFileInput);
+
+    var pendingColor = null;      // { index, role }
+
+    function pickColorPhoto(index, role) {
+      pendingColor = { index: index, role: role };
+      colorFileInput.value = '';
+      colorFileInput.click();
+    }
+
+    colorFileInput.addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file || !pendingColor) return;
+
+      processVehiclePhotoUpload(file, function (dataUrl) {
+        var c = vehColors[pendingColor.index];
+        if (!c) return;
+        if (pendingColor.role === 'front') c.image = dataUrl; else c.imageBack = dataUrl;
+        pendingColor = null;
+        renderColorRows();
+      });
+    });
+
+    document.getElementById('btnAddColor').addEventListener('click', function () {
+      vehColors.push({ name: '', hex: '#cccccc', image: '', imageBack: '', status: 'AVAILABLE' });
+      renderColorRows();
+      var last = colorsList.querySelector('.veh-color-row:last-child .veh-color-name');
+      if (last) last.focus();
+    });
+
+    // Colours that are filled in enough to be useful
+    function collectColors() {
+      return vehColors
+        .filter(function (c) { return (c.name || '').trim() && c.image; })
+        .map(function (c) {
+          return {
+            name: c.name.trim(),
+            hex: c.hex || '#cccccc',
+            image: c.image,
+            imageBack: c.imageBack || c.image,
+            status: c.status || 'AVAILABLE'
+          };
+        });
+    }
+
     document.getElementById('btnAddVehicle').addEventListener('click', function () {
       document.getElementById('vehicleModalTitle').textContent = 'Add New Vehicle';
       vehForm.reset();
@@ -1487,6 +1606,8 @@
       backFile.value = '';
       setFrontPhoto('');
       setBackPhoto('');
+      vehColors = [];
+      renderColorRows();
       vehModal.classList.add('is-open');
     });
 
@@ -1505,6 +1626,8 @@
       backFile.value = '';
       setFrontPhoto(item.image);
       setBackPhoto(item.imageBack || item.image);
+      vehColors = (item.colors || []).map(function (c) { return JSON.parse(JSON.stringify(c)); });
+      renderColorRows();
 
       vehModal.classList.add('is-open');
     };
@@ -1531,8 +1654,15 @@
         status: status,
         image: frontImg,
         imageBack: backImg,
-        desc: desc
+        desc: desc,
+        colors: collectColors()
       };
+
+      // When a vehicle has colour options, the card photo follows the first one
+      if (record.colors.length) {
+        record.image = record.colors[0].image;
+        record.imageBack = record.colors[0].imageBack;
+      }
 
       if (submitBtn) {
         submitBtn.innerHTML = '<span class="spinner-mini"></span><span>Saving vehicle...</span>';
@@ -1672,12 +1802,6 @@
         return;
       }
 
-      // The same UPI transaction ID on two bookings means one screenshot was
-      // reused — flag it so it is checked before anyone gets a bike.
-      var utrDupes = {};
-      bookings.forEach(function (x) {
-        if (x.upiRef) utrDupes[x.upiRef] = (utrDupes[x.upiRef] || 0) + 1;
-      });
 
       var html = '';
       filtered.forEach(function (b) {
@@ -1708,11 +1832,10 @@
         html += '<tr>' +
           '<td data-label="Booking"><div class="stack-cell"><span class="table-id-badge">' + (b.bookingId || 'N/A') + '</span>' +
             '<span class="payment-id-tag" title="Payment method">' + (b.paymentId || 'GPay / UPI') + '</span>' +
-            (b.upiRef ? '<span class="utr-tag' + (utrDupes[b.upiRef] > 1 ? ' is-dupe' : '') + '" title="UPI transaction ID">UTR ' + b.upiRef + (utrDupes[b.upiRef] > 1 ? ' · used twice!' : '') + '</span>' : '') +
             '<span class="cell-meta"><em>Booked</em>' + fmtDateTime(b.timestamp) + '</span></div></td>' +
           '<td data-label="Customer"><div class="customer-cell"><span class="customer-name">' + (b.customerName || 'Customer') + '</span><span class="customer-phone">+91 ' + (b.customerPhone || '') + '</span></div></td>' +
           '<td data-label="Vehicle"><div class="stack-cell"><strong>' + (b.bikeName || 'Vehicle') + '</strong>' +
-            '<small class="cell-muted">Qty ' + (b.quantity || 1) + '</small></div></td>' +
+            '<small class="cell-muted">' + (b.color ? b.color + ' · ' : '') + 'Qty ' + (b.quantity || 1) + '</small></div></td>' +
           '<td data-label="Rental period"><div class="stack-cell"><strong>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</strong>' +
             '<span class="cell-meta"><em>From</em>' + fmtDay(b.startDate) + (b.startTime ? ' · ' + fmtTime(b.startTime) : '') + '</span>' +
             '<span class="cell-meta"><em>To</em>' + fmtDay(b.endDate) + (b.endTime ? ' · ' + fmtTime(b.endTime) : '') + '</span></div></td>' +
@@ -2036,11 +2159,10 @@
         '<div style="background:#f8fafc;border:1.5px solid var(--admin-border);border-radius:12px;padding:16px;margin-bottom:16px;">' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Booking Reference:</span><strong style="color:var(--admin-primary);">' + (b.bookingId || 'N/A') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Payment:</span><span class="payment-id-tag">' + (b.paymentId ? 'Razorpay ' + b.paymentId : 'GPay / UPI → ' + (b.upiId || '7200011799@okbizaxis')) + '</span></div>' +
-          (b.upiRef ? '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>UPI Transaction ID (UTR):</span><strong class="utr-strong">' + b.upiRef + '</strong></div>' : '') +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Customer Name:</span><strong>' + (b.customerName || 'N/A') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>WhatsApp Phone:</span><strong>+91 ' + (b.customerPhone || '') + '</strong></div>' +
           (b.customerEmail ? '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Email Address:</span><span>' + b.customerEmail + '</span></div>' : '') +
-          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Vehicle Reserved:</span><strong>' + (b.bikeName || 'Vehicle') + ' (' + (b.quantity || 1) + ' qty)</strong></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Vehicle Reserved:</span><strong>' + (b.bikeName || 'Vehicle') + (b.color ? ' · ' + b.color : '') + ' (' + (b.quantity || 1) + ' qty)</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Booked On:</span><strong>' + fmtDateTime(b.timestamp) + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Pickup:</span><strong>' + fmtDay(b.startDate) + (b.startTime ? ' &middot; ' + fmtTime(b.startTime) : '') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Return:</span><strong>' + fmtDay(b.endDate) + (b.endTime ? ' &middot; ' + fmtTime(b.endTime) : '') + '</strong></div>' +
@@ -2093,7 +2215,7 @@
         return;
       }
 
-      var headers = ['Booking ID', 'Payment ID', 'Customer Name', 'Phone', 'Email', 'Vehicle', 'Quantity', 'Start Date', 'End Date', 'Days', 'Daily Rate', 'Total Estimated', 'Advance Paid', 'Balance Due', 'Status', 'Date Time'];
+      var headers = ['Booking ID', 'Payment ID', 'Customer Name', 'Phone', 'Email', 'Vehicle', 'Colour', 'Quantity', 'Start Date', 'End Date', 'Days', 'Daily Rate', 'Total Estimated', 'Advance Paid', 'Balance Due', 'Status', 'Date Time'];
       var rows = exportSet.map(function (b) {
         return [
           b.bookingId || '',
@@ -2101,7 +2223,7 @@
           '"' + (b.customerName || '').replace(/"/g, '""') + '"',
           b.customerPhone || '',
           b.customerEmail || '',
-          '"' + (b.bikeName || '').replace(/"/g, '""') + '"',
+          '"' + (b.bikeName || '').replace(/"/g, '""') + '"', '"' + (b.color || '').replace(/"/g, '""') + '"',
           b.quantity || 1,
           b.startDate || '',
           b.endDate || '',
@@ -2166,6 +2288,13 @@
           started = true;
           console.log('[auth] Signed in as', user.email, '— loading cloud data');
           loadData();
+          // Vehicles seeded before colour options existed get them now
+          if (DataService.backfillColors) {
+            DataService.backfillColors().then(function (n) {
+              if (n) showToast('Colour options added to ' + n + ' vehicle' + (n > 1 ? 's' : '') + '.');
+            });
+          }
+
           // Scooters only — clear the retired motorcycles out of the database
           if (DataService.removeRetiredVehicles) {
             DataService.removeRetiredVehicles().then(function (n) {

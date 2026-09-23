@@ -18,7 +18,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Josefin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=6.6">
+  <link rel="stylesheet" href="css/style.css?v=7.0">
   <script>document.documentElement.className += " js";</script>
 </head>
 
@@ -135,6 +135,12 @@
             <div class="detail-status-badge">
               <span class="detail-status-dot"></span>
               AVAILABLE
+            </div>
+
+            <!-- Colour choices — only for vehicles that have variants -->
+            <div class="detail-colors" id="detailColors" hidden>
+              <span class="detail-colors-label">Colour</span>
+              <div class="detail-colors-row" id="detailColorsRow"></div>
             </div>
 
             <div class="detail-main-img-box">
@@ -393,6 +399,13 @@
           <option value="Honda Navi">Honda Navi</option>
         </select>
 
+
+        <!-- Colour choice (appears only for vehicles that have colour options) -->
+        <section class="drawer-section bk-colors-section" id="bkColorsSection" hidden>
+          <h3 class="section-num-title">Choose colour</h3>
+          <div class="bk-colors-row" id="bkColorsRow"></div>
+          <input type="hidden" id="bkColor" name="color" value="">
+        </section>
         <section class="drawer-section">
           <h3 class="section-num-title">01 &middot; RENTAL WINDOW</h3>
           <div class="field-row">
@@ -546,15 +559,9 @@
             <h5>Paid? Confirm your booking</h5>
             <ol class="upi-steps">
               <li>Complete the payment in your UPI app.</li>
-              <li>Copy the <strong>12-digit UPI transaction ID</strong> from the payment success screen.</li>
-              <li>Paste it below, then send the screenshot to us on WhatsApp.</li>
+              <li>Take a <strong>screenshot</strong> of the payment success screen.</li>
+              <li>Tap the button below &mdash; WhatsApp opens with your booking details. <strong>Attach the screenshot</strong> and send it.</li>
             </ol>
-
-            <label class="utr-label" for="bkUtr">UPI Transaction ID <span>(UTR / UPI Ref No.)</span></label>
-            <input class="utr-input" id="bkUtr" type="text" inputmode="numeric" autocomplete="off"
-              maxlength="12" placeholder="e.g. 426512345678" aria-describedby="bkUtrHelp">
-            <p class="utr-help" id="bkUtrHelp">In Google Pay: open the payment &rarr; <b>UPI transaction ID</b>. In PhonePe / Paytm: <b>UTR</b> or <b>UPI Ref No.</b></p>
-            <p class="utr-error" id="bkUtrError" hidden></p>
 
             <button class="btn btn-whatsapp btn-block btn-lg" type="button" id="bkUpiPaidBtn">
               <span>I've Paid &mdash; Confirm Booking</span>
@@ -643,9 +650,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js?v=3.0"></script>
-  <script src="js/data-service.js?v=8.0"></script>
+  <script src="js/data-service.js?v=9.0"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="js/script.js?v=3.7"></script>
+  <script src="js/script.js?v=4.2"></script>
   <script>
     (function () {
       'use strict';
@@ -687,7 +694,14 @@
           title: 'Vespa S 125',
           category: 'SCOOTER · PREMIUM',
           subtitle: 'Iconic Italian design & smooth suburban cruising in Pondicherry.',
-          color: 'COLOUR · PEARL WHITE & METALLIC',
+          color: 'COLOUR · PEACH GREEN',
+          // Colour choices — picking one swaps the photos
+          colors: [
+            { name: 'Peach Green', hex: '#A8D5BA', images: ['assets/rentel-bikes/vespa_main_view.png', 'assets/rentel-bikes/vespa_side_view.png'] },
+            { name: 'Red', hex: '#D0202E', images: ['assets/rentel-bikes/vespa_red_main_view.png', 'assets/rentel-bikes/vespa_red_side_view.png'] },
+            { name: 'Black', hex: '#1C1917', images: ['assets/rentel-bikes/vespa_black_main_view.png', 'assets/rentel-bikes/vespa_black_side_view.png'] },
+            { name: 'Light Blue', hex: '#9CC6DA', images: ['assets/rentel-bikes/vespa_light_blue_main_view.png', 'assets/rentel-bikes/vespa_light_blue_side_view.png'] }
+          ],
           description: 'Rent the Vespa S 125 for an unmatched luxury ride through French Quarter streets, seaside promenades, and café strips. Elegant design with smooth acceleration.',
           advance: '₹500',
           images: [
@@ -968,49 +982,88 @@
           includedGrid.appendChild(item);
         });
 
-        // 5. Setup Images & Thumbnails
-        var currentImgIdx = 0;
+        // 5. Images, thumbnails and colour choices
         var mainImg = document.getElementById('detailMainImg');
         var thumbsList = document.getElementById('detailThumbsList');
-        thumbsList.innerHTML = '';
+        var colorsBox = document.getElementById('detailColors');
+        var colorsRow = document.getElementById('detailColorsRow');
+        var colorTag = document.getElementById('detailColorTag');
+
+        var currentImgIdx = 0;
+        var gallery = (data.images || []).slice();   // photos currently on show
 
         function setMainImg(idx) {
-          if (!data.images || data.images.length === 0) return;
-          if (idx < 0) idx = data.images.length - 1;
-          if (idx >= data.images.length) idx = 0;
+          if (!gallery.length) return;
+          if (idx < 0) idx = gallery.length - 1;
+          if (idx >= gallery.length) idx = 0;
           currentImgIdx = idx;
 
           mainImg.style.opacity = '0.4';
           mainImg.style.transform = 'scale(0.96)';
           setTimeout(function () {
-            mainImg.src = data.images[currentImgIdx];
+            mainImg.src = gallery[currentImgIdx];
             mainImg.style.opacity = '1';
             mainImg.style.transform = 'scale(1)';
           }, 120);
 
-          var allThumbs = thumbsList.querySelectorAll('.detail-thumb-item');
-          allThumbs.forEach(function (t, i) {
-            if (i === currentImgIdx) {
-              t.classList.add('is-active');
-            } else {
-              t.classList.remove('is-active');
-            }
+          thumbsList.querySelectorAll('.detail-thumb-item').forEach(function (t, i) {
+            t.classList.toggle('is-active', i === currentImgIdx);
           });
         }
 
-        if (data.images && data.images.length > 0) {
-          data.images.forEach(function (imgSrc, i) {
-            var thumb = document.createElement('div');
-            thumb.className = 'detail-thumb-item' + (i === 0 ? ' is-active' : '');
+        // Build the thumbnail strip for whichever photos are on show
+        function buildThumbs() {
+          thumbsList.innerHTML = '';
+          gallery.forEach(function (imgSrc, i) {
             var label = i === 0 ? 'Main View' : 'Side View';
+            var thumb = document.createElement('div');
+            thumb.className = 'detail-thumb-item' + (i === currentImgIdx ? ' is-active' : '');
             thumb.setAttribute('title', data.bikeName + ' - ' + label);
             thumb.innerHTML = '<img src="' + imgSrc + '" alt="' + data.bikeName + ' ' + label + '">';
-            thumb.addEventListener('click', function () {
-              setMainImg(i);
-            });
+            thumb.addEventListener('click', function () { setMainImg(i); });
             thumbsList.appendChild(thumb);
           });
-          mainImg.src = data.images[0];
+          if (gallery.length) mainImg.src = gallery[currentImgIdx];
+        }
+
+        buildThumbs();
+
+        // ---- Colour swatches: tapping one swaps every photo ----
+        colorsRow.innerHTML = '';
+        var colors = data.colors || [];
+
+        if (colors.length > 1) {
+          colorsBox.hidden = false;
+          var bookBtnInit = document.getElementById('detailBookBtn');
+          if (bookBtnInit) bookBtnInit.setAttribute('data-color', colors[0].name);
+
+          colors.forEach(function (c, i) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'detail-color-dot' + (i === 0 ? ' is-active' : '');
+            btn.style.setProperty('--dot', c.hex);
+            btn.title = c.name;
+            btn.setAttribute('aria-label', c.name);
+            btn.innerHTML = '<span class="detail-color-swatch"></span><span class="detail-color-name">' + c.name + '</span>';
+
+            btn.addEventListener('click', function () {
+              gallery = c.images.slice();
+              currentImgIdx = 0;
+              buildThumbs();
+              setMainImg(0);
+
+              if (colorTag) colorTag.textContent = 'COLOUR · ' + c.name.toUpperCase();
+              var bookBtnEl = document.getElementById('detailBookBtn');
+              if (bookBtnEl) bookBtnEl.setAttribute('data-color', c.name);
+              colorsRow.querySelectorAll('.detail-color-dot').forEach(function (b) {
+                b.classList.toggle('is-active', b === btn);
+              });
+            });
+
+            colorsRow.appendChild(btn);
+          });
+        } else {
+          colorsBox.hidden = true;
         }
 
         document.getElementById('thumbPrev').onclick = function () { setMainImg(currentImgIdx - 1); };
@@ -1033,7 +1086,12 @@
         if (v.imageBack && v.imageBack !== v.image) imgs.push(v.imageBack);
         if (imgs.length === 0) imgs.push('assets/logo/logo.png');
 
+        // Colours managed in the admin panel win; the built-in list is the fallback
+        var variants = (v.colors && v.colors.length ? v.colors : null) ||
+          (BIKES_DATA[v.id] && BIKES_DATA[v.id].colors) || null;
+
         return {
+          colors: variants,
           id: v.id,
           title: v.name,
           bikeName: v.name,

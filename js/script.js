@@ -693,7 +693,85 @@
         .filter(function (el) { return el.offsetParent !== null; });
     }
 
-    function open(bikeName) {
+    // ----------------------------------------------------------------
+    // Colour choice inside the booking form. Vehicles that come in more
+    // than one colour let the customer pick one, and the choice travels
+    // with the booking to the shop.
+    // ----------------------------------------------------------------
+    var bkColorsSection = document.getElementById('bkColorsSection');
+    var bkColorsRow = document.getElementById('bkColorsRow');
+    var bkColorInput = document.getElementById('bkColor');
+
+    // Built-in colour options, used when the stored vehicle has none yet
+    var DEFAULT_COLORS = {
+      'vespa': [
+        { name: 'Peach Green', hex: '#A8D5BA', status: 'AVAILABLE' },
+        { name: 'Red', hex: '#D0202E', status: 'AVAILABLE' },
+        { name: 'Black', hex: '#1C1917', status: 'AVAILABLE' },
+        { name: 'Light Blue', hex: '#9CC6DA', status: 'AVAILABLE' }
+      ]
+    };
+    function colorsForVehicle(name) {
+      var fleet = [];
+      try { fleet = JSON.parse(localStorage.getItem('vijay_arya_fleet') || '[]'); } catch (e) { fleet = []; }
+
+      var v = fleet.filter(function (x) {
+        return x && x.name && x.name.toLowerCase() === String(name || '').toLowerCase();
+      })[0];
+
+      if (v && v.colors && v.colors.length > 1) return v.colors;
+
+      // Nothing stored yet — fall back to the built-in list for this vehicle
+      var key = String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return DEFAULT_COLORS[key] || null;
+    }
+
+    function renderBookingColors(vehicleName, preselect) {
+      if (!bkColorsSection || !bkColorsRow) return;
+
+      var colors = colorsForVehicle(vehicleName);
+      bkColorsRow.innerHTML = '';
+
+      if (!colors) {
+        bkColorsSection.hidden = true;
+        if (bkColorInput) bkColorInput.value = '';
+        return;
+      }
+
+      bkColorsSection.hidden = false;
+
+      // Sold-out colours cannot be booked
+      var selectable = colors.filter(function (c) { return (c.status || 'AVAILABLE') === 'AVAILABLE'; });
+      var chosen = preselect && colors.some(function (c) { return c.name === preselect; })
+        ? preselect
+        : (selectable[0] || colors[0]).name;
+
+      colors.forEach(function (c) {
+        var free = (c.status || 'AVAILABLE') === 'AVAILABLE';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'bk-color' + (c.name === chosen ? ' is-active' : '') + (free ? '' : ' is-out');
+        btn.disabled = !free;
+        btn.title = free ? c.name : c.name + ' — currently on rent';
+        btn.innerHTML =
+          '<span class="bk-color-dot" style="background:' + (c.hex || '#ccc') + '"></span>' +
+          '<span class="bk-color-name">' + c.name + (free ? '' : ' <em>(on rent)</em>') + '</span>';
+
+        btn.addEventListener('click', function () {
+          if (!free) return;
+          bkColorInput.value = c.name;
+          bkColorsRow.querySelectorAll('.bk-color').forEach(function (b) {
+            b.classList.toggle('is-active', b === btn);
+          });
+        });
+
+        bkColorsRow.appendChild(btn);
+      });
+
+      if (bkColorInput) bkColorInput.value = chosen;
+    }
+
+    function open(bikeName, preColor) {
       lastFocus = document.activeElement;
       var selectedBike = bikeName || 'Vespa';
 
@@ -711,6 +789,8 @@
       if (titleEl) titleEl.textContent = selectedBike;
       if (descEl) descEl.textContent = BIKE_DESCRIPTIONS[selectedBike] || 'Reliable two-wheeler rental in Pondicherry with ₹500 advance.';
       if (qtyLabelEl) qtyLabelEl.textContent = 'How many ' + selectedBike + '?';
+
+      renderBookingColors(selectedBike, preColor);
 
       currentQty = 1;
       if (qtyValEl) qtyValEl.textContent = '1';
@@ -774,13 +854,14 @@
       var phone = f.phone ? f.phone.value.trim() : '';
       var email = f.email ? f.email.value.trim() : '';
 
+      var chosenColour = (document.getElementById('bkColor') || {}).value || '';
       var idAttached = (kycIdFile && kycIdFile.files.length) || (kycIdCam && kycIdCam.files.length);
       var dlAttached = (kycDlFile && kycDlFile.files.length) || (kycDlCam && kycDlCam.files.length);
 
       if (summary) {
         summary.innerHTML =
           '<dl>' +
-          '<dt>Vehicle</dt><dd>' + esc(bike) + ' (Qty: ' + currentQty + ')</dd>' +
+          '<dt>Vehicle</dt><dd>' + esc(bike) + (chosenColour ? ' · ' + esc(chosenColour) : '') + ' (Qty: ' + currentQty + ')</dd>' +
           '<dt>Pickup</dt><dd>' + esc(prettyDate(sDate)) + ' at ' + esc(sTime) + '</dd>' +
           '<dt>Return</dt><dd>' + esc(prettyDate(eDate)) + ' at ' + esc(eTime) + '</dd>' +
           '<dt>Name</dt><dd>' + esc(name) + '</dd>' +
@@ -836,7 +917,7 @@
         }
         return;
       }
-      open(bike);
+      open(bike, trigger.dataset.color || '');
     });
 
     step1.addEventListener('submit', function (e) {
@@ -1427,7 +1508,7 @@
     }
 
     // Open booking modal
-    function openModal(bikeName) {
+    function openModal(bikeName, preColor) {
       if (bikeName && FLEET_CATALOG[bikeName]) {
         currentBikeName = bikeName;
       } else if (bikeName) {
@@ -1437,6 +1518,7 @@
       }
 
       if (bkBike) bkBike.value = currentBikeName;
+      if (typeof renderBookingColors === 'function') renderBookingColors(currentBikeName, preColor);
       if (bookTitle) bookTitle.textContent = currentBikeName;
       if (bookDesc) {
         var info = FLEET_CATALOG[currentBikeName];
@@ -1488,7 +1570,7 @@
           var card = btn.closest('[data-bike]');
           if (card) bike = card.getAttribute('data-bike');
         }
-        openModal(bike);
+        openModal(bike, btn.getAttribute('data-color') || '');
       }
     });
 
@@ -1549,6 +1631,17 @@
           return;
         }
 
+        // At least one KYC document must be attached before booking
+        var hasAadhaar = uploadedAadhaar || (kycIdFile && kycIdFile.files.length) || (kycIdCam && kycIdCam.files.length);
+        var hasLicence = uploadedDl || (kycDlFile && kycDlFile.files.length) || (kycDlCam && kycDlCam.files.length);
+
+        if (!hasAadhaar && !hasLicence) {
+          showError('Please attach your Aadhaar / ID or Driving Licence photo to continue.');
+          var kycBox = document.getElementById('kycIdStatus');
+          if (kycBox && kycBox.scrollIntoView) kycBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
         // Calculate rental days
         var timeDiff = endObj.getTime() - startObj.getTime();
         var days = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
@@ -1559,8 +1652,11 @@
         var totalEstimate = dailyRate * days * currentQuantity;
         var advancePayable = 500 * currentQuantity;
 
+        var chosenColor = (document.getElementById('bkColor') || {}).value || '';
+
         activeBookingData = {
           bikeName: currentBikeName,
+          color: chosenColor,
           quantity: currentQuantity,
           startDate: sDate,
           endDate: eDate,
@@ -1736,34 +1832,11 @@
           return;
         }
 
-        // The UPI transaction ID lets the shop match this booking to a real
-        // payment in their GPay history in seconds — required, 12 digits.
-        var utrInput = document.getElementById('bkUtr');
-        var utrError = document.getElementById('bkUtrError');
-        var utr = utrInput ? utrInput.value.replace(/\s+/g, '') : '';
-
-        function utrFail(msg) {
-          if (utrError) { utrError.textContent = msg; utrError.hidden = false; }
-          if (utrInput) { utrInput.classList.add('is-invalid'); utrInput.focus(); }
-        }
-
-        if (!utr) {
-          utrFail('Please enter the 12-digit UPI transaction ID from your payment.');
-          return;
-        }
-        if (!/^\d{12}$/.test(utr)) {
-          utrFail('The UPI transaction ID has exactly 12 digits — please check and try again.');
-          return;
-        }
-        if (utrError) utrError.hidden = true;
-        if (utrInput) utrInput.classList.remove('is-invalid');
-
         // Guard against double taps creating two bookings
         if (bkUpiPaidBtn.disabled) return;
         bkUpiPaidBtn.disabled = true;
 
-        handlePaymentSuccess({ method: 'upi', upiRef: utr }, activeBookingData);
-        if (utrInput) utrInput.value = '';
+        handlePaymentSuccess({ method: 'upi' }, activeBookingData);
 
         setTimeout(function () { bkUpiPaidBtn.disabled = false; }, 1500);
       });
@@ -1840,6 +1913,7 @@
         bookingId: bookingId,
         paymentId: paymentId,
         bikeName: bookingData.bikeName,
+        color: bookingData.color || '',
         quantity: bookingData.quantity,
         startDate: bookingData.startDate,
         endDate: bookingData.endDate,
@@ -1858,7 +1932,6 @@
         kycDl: bookingData.kycDl || null,
         paymentMethod: isUpi ? 'Google Pay / UPI (screenshot on WhatsApp)' : 'Razorpay Online (Verified)',
         upiId: isUpi ? SHOP_UPI_ID : '',
-        upiRef: isUpi ? String((rzpResponse && rzpResponse.upiRef) || '') : '',   // 12-digit UTR the customer entered
         // Booking stage:
         //   PAYMENT_PENDING → ADVANCE_PAID → BIKE_COLLECTED → RETURNED_PAID (or CANCELLED)
         // UPI bookings wait in PAYMENT_PENDING until the shop checks the screenshot.
@@ -1932,8 +2005,7 @@
       }
 
       var paymentRow = isUpi
-        ? '<div class="receipt-item-row highlight-pending"><span>Payment Status:</span><strong>⏳ To be verified by the shop</strong></div>' +
-          '<div class="receipt-item-row"><span>UPI Transaction ID:</span><strong>' + finalRecord.upiRef + '</strong></div>'
+        ? '<div class="receipt-item-row highlight-pending"><span>Payment Status:</span><strong>⏳ To be verified by the shop</strong></div>'
         : '<div class="receipt-item-row highlight-paid"><span>Payment Status:</span><strong>&check; PAID via Razorpay (' + finalRecord.paymentId + ')</strong></div>';
 
       // Render Step 3 Receipt
@@ -1941,7 +2013,7 @@
         bkReceiptDetails.innerHTML =
           '<div class="receipt-item-row"><span>Booking Reference:</span><strong style="color:var(--red);">' + finalRecord.bookingId + '</strong></div>' +
           paymentRow +
-          '<div class="receipt-item-row"><span>Vehicle:</span><strong>' + finalRecord.bikeName + (finalRecord.quantity > 1 ? ' (' + finalRecord.quantity + ' Vehicles)' : '') + '</strong></div>' +
+          '<div class="receipt-item-row"><span>Vehicle:</span><strong>' + finalRecord.bikeName + (finalRecord.color ? ' · ' + finalRecord.color : '') + (finalRecord.quantity > 1 ? ' (' + finalRecord.quantity + ' Vehicles)' : '') + '</strong></div>' +
           '<div class="receipt-item-row"><span>Rental Duration:</span><strong>' + finalRecord.days + ' ' + (finalRecord.days === 1 ? 'Day' : 'Days') + ' (' + finalRecord.startDate + ' to ' + finalRecord.endDate + ')</strong></div>' +
           '<div class="receipt-item-row"><span>Pickup Timing:</span><strong>' + finalRecord.startTime + ' &ndash; 9:00 PM</strong></div>' +
           '<div class="receipt-item-row"><span>Customer:</span><strong>' + finalRecord.customerName + ' (' + finalRecord.customerPhone + ')</strong></div>' +
@@ -1961,7 +2033,6 @@
             '👤 *Name:* ' + finalRecord.customerName + '\n' +
             '📞 *Phone:* +91 ' + finalRecord.customerPhone + '\n' +
             '💰 *Advance paid:* ₹' + finalRecord.advancePaid + ' to ' + SHOP_UPI_ID + '\n' +
-            '🔢 *UPI Transaction ID:* ' + finalRecord.upiRef + '\n' +
             '💵 *Balance at shop:* ₹' + finalRecord.balanceDue + '\n\n' +
             'Please confirm my booking. I will bring my original ID & Driving Licence at pickup.'
           : '🎉 *VIJAY ARYA BIKE RENTALS - BOOKING CONFIRMATION*\n\n' +
@@ -2045,12 +2116,12 @@
           row('Booked on', escHtml(r.formattedDate || '')) +
           row('Customer', escHtml(r.customerName) + ' &middot; +91 ' + escHtml(r.customerPhone), true) +
           (r.customerEmail ? row('Email', escHtml(r.customerEmail)) : '') +
-          row('Vehicle', escHtml(r.bikeName) + (r.quantity > 1 ? ' &times; ' + r.quantity : ''), true) +
+          row('Vehicle', escHtml(r.bikeName) + (r.color ? ' &middot; ' + escHtml(r.color) : '') + (r.quantity > 1 ? ' &times; ' + r.quantity : ''), true) +
           row('Rental dates', escHtml(r.startDate) + ' to ' + escHtml(r.endDate) +
             ' (' + r.days + ' day' + (r.days === 1 ? '' : 's') + ')') +
           row('Pickup time', escHtml(r.startTime || '')) +
           row('Payment', isUpi
-            ? 'Google Pay / UPI to ' + escHtml(r.upiId || SHOP_UPI_ID) + (r.upiRef ? '<br>UTR <b>' + escHtml(r.upiRef) + '</b>' : '')
+            ? 'Google Pay / UPI to ' + escHtml(r.upiId || SHOP_UPI_ID)
             : 'Razorpay &middot; ' + escHtml(r.paymentId)) +
           row('Estimated rent', '&#8377;' + r.estimatedTotal) +
           row(isUpi ? 'Advance (to be verified)' : 'Advance paid', '&#8377;' + r.advancePaid, true) +

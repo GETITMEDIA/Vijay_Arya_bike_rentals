@@ -7318,3 +7318,169 @@ html, body { overflow-x: hidden; }
   font-weight: 700;
   opacity: .85;
 }
+
+/* ==========================================================================
+   Brand name in the header — bigger on desktop, tidy on phones
+   ========================================================================== */
+.brand-name,
+.brand-title {
+  font-size: 24px;
+  letter-spacing: .1em;
+  line-height: 1.15;
+}
+
+@media (max-width: 1100px) {
+  .brand-name, .brand-title { font-size: 21px; }
+}
+
+/* Tablet: shrink rather than overflow */
+@media (max-width: 991px) {
+  .brand-name, .brand-title { font-size: 18px; letter-spacing: .07em; }
+}
+
+/* Phones: two neat lines beside the logo, never clipped */
+@media (max-width: 640px) {
+  .brand { gap: 10px; min-width: 0; }
+  .brand-text { min-width: 0; }
+
+  .brand-name, .brand-title {
+    font-size: 14px;
+    letter-spacing: .05em;
+    white-space: normal;
+    max-width: 8.5em;          /* breaks after "VIJAY ARYA" */
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 400px) {
+  .brand-mark { height: 46px; }
+  .brand-name, .brand-title { font-size: 12.5px; max-width: 8em; }
+}
+
+/* ==========================================================================
+   Vehicle detail — colour choices, pinned to the top-right of the photo
+   ========================================================================== */
+.detail-media-card { position: relative; }
+
+.detail-colors {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 8px;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(6px);
+  border: 1px solid #EAE6DF;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+}
+
+.detail-colors[hidden] { display: none; }
+
+.detail-colors-label {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #A8A29E;
+}
+
+.detail-colors-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-color-dot {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .18s ease, transform .18s ease;
+}
+
+.detail-color-dot:hover { transform: scale(1.08); }
+.detail-color-dot.is-active { border-color: #EF3138; }
+
+.detail-color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--dot, #ccc);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
+}
+
+/* The name is for screen readers and tooltips only */
+.detail-color-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .detail-colors { top: 10px; right: 10px; padding: 8px 6px; gap: 6px; }
+  .detail-color-dot { width: 26px; height: 26px; }
+  .detail-color-swatch { width: 17px; height: 17px; }
+}
+
+/* Colour choice inside the booking form */
+.bk-colors-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bk-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 7px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #44403C;
+  background: #FFFFFF;
+  border: 1.5px solid #E7E5E4;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.bk-color:hover { border-color: #A8A29E; }
+
+.bk-color.is-active {
+  border-color: #EF3138;
+  box-shadow: 0 0 0 3px rgba(239, 49, 56, .14);
+  color: #1C1917;
+}
+
+.bk-color.is-out {
+  opacity: .45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.bk-color.is-out em { font-style: normal; text-decoration: none; font-size: 11px; }
+
+.bk-color-dot {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
+}
+
+.bk-colors-section[hidden] { display: none; }

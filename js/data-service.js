@@ -236,7 +236,7 @@
 
   // Common seed fleet for initial population
   var DEFAULT_SEED_FLEET = [
-    { id: 'vespa', name: 'Vespa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE', desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
+    { id: 'vespa', name: 'Vespa', category: 'SCOOTER', colors: [{ name: 'Peach Green', hex: '#A8D5BA', image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE' }, { name: 'Red', hex: '#D0202E', image: 'assets/rentel-bikes/vespa_red_main_view.png', imageBack: 'assets/rentel-bikes/vespa_red_side_view.png', status: 'AVAILABLE' }, { name: 'Black', hex: '#1C1917', image: 'assets/rentel-bikes/vespa_black_main_view.png', imageBack: 'assets/rentel-bikes/vespa_black_side_view.png', status: 'AVAILABLE' }, { name: 'Light Blue', hex: '#9CC6DA', image: 'assets/rentel-bikes/vespa_light_blue_main_view.png', imageBack: 'assets/rentel-bikes/vespa_light_blue_side_view.png', status: 'AVAILABLE' }], rate: 500, advance: 500, image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE', desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
     { id: 'honda-activa', name: 'Honda Activa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_activa_main_view.png', imageBack: 'assets/rentel-bikes/honda_activa_side_view.png', status: 'AVAILABLE', desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy rides.' },
     { id: 'tvs-jupiter', name: 'TVS Jupiter', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/tvs_jupiter_main_view.png', imageBack: 'assets/rentel-bikes/tvs_jupiter_side_view.png', status: 'AVAILABLE', desc: 'Comfortable ride with extra footboard space and plush suspension.' },
     { id: 'suzuki-access', name: 'Suzuki Access 125', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/suzuki_access_main_view.png', imageBack: 'assets/rentel-bikes/suzuki_access_side_view.png', status: 'AVAILABLE', desc: 'Powerful 125cc engine offering effortless pickup and comfortable seating.' },
@@ -500,6 +500,41 @@
       });
     },
 
+
+    /**
+     * Vehicles seeded before colour options existed have no `colors` field.
+     * Copy the built-in list onto those documents, once.
+     * @returns {Promise<number>} how many vehicles were updated
+     */
+    backfillColors: function () {
+      if (init() !== 'firebase') return Promise.resolve(0);
+
+      var withColors = DEFAULT_SEED_FLEET.filter(function (d) { return d.colors && d.colors.length; });
+
+      return Promise.all(withColors.map(function (d) {
+        var ref = db.collection(COL_FLEET).doc(d.id);
+
+        return ref.get({ source: 'server' }).then(function (snap) {
+          if (!snap.exists) return 0;
+
+          var data = snap.data() || {};
+          if (data.colors && data.colors.length) return 0;        // already has colours
+
+          return ref.update({
+            colors: d.colors.map(function (c) { return cleanDoc(c); }),
+            updatedAt: Date.now()
+          }).then(function () {
+            console.log('[fleet] colour options added to "' + d.id + '"');
+            return 1;
+          });
+        }).catch(function (err) {
+          console.info('[fleet] colour backfill skipped for "' + d.id + '":', (err && err.code) || err.message);
+          return 0;
+        });
+      })).then(function (results) {
+        return results.reduce(function (a, b) { return a + b; }, 0);
+      });
+    },
     /** How many vehicle documents exist right now. @returns {Promise<number>} */
     countFleetDocs: function () {
       if (init() !== 'firebase') return Promise.resolve(-1);

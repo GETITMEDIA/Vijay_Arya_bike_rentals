@@ -3809,3 +3809,136 @@ img, svg, video, canvas { max-width: 100%; }
   .cell-meta { justify-content: flex-end; white-space: normal; }
   .cell-meta em { min-width: 0; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   27. COLOUR OPTIONS (one scooter per colour)  (v28)
+   ═══════════════════════════════════════════════════════════════════ */
+.veh-colors-section {
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--n-50);
+  border: 1px solid var(--n-200);
+  border-radius: 12px;
+}
+
+.veh-colors-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.veh-colors-head h5 { font-size: 14px; font-weight: 700; color: var(--n-900); }
+.veh-colors-head p { font-size: 11.5px; color: var(--n-500); margin-top: 2px; }
+
+.veh-colors-list { display: flex; flex-direction: column; gap: 8px; }
+
+.veh-colors-empty {
+  font-size: 12px;
+  color: var(--n-400);
+  text-align: center;
+  padding: 6px 0;
+}
+
+.veh-colors-empty[hidden] { display: none; }
+
+.veh-color-row {
+  display: grid;
+  grid-template-columns: 38px 1fr 130px auto 36px;
+  gap: 8px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--n-200);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.veh-color-hex {
+  width: 38px;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid var(--n-200);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.veh-color-name,
+.veh-color-status {
+  height: 38px;
+  padding: 0 10px;
+  font: inherit;
+  font-size: 13px;
+  border: 1px solid var(--n-200);
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+}
+
+.veh-color-name:focus,
+.veh-color-status:focus { border-color: var(--brand); }
+
+.veh-color-photos { display: flex; gap: 6px; }
+
+.veh-color-photo {
+  width: 46px;
+  height: 38px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--n-400);
+  background: var(--n-50);
+  border: 1.5px dashed var(--n-300);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.veh-color-photo.has-img { border-style: solid; border-color: var(--n-200); background: #fff; }
+.veh-color-photo img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
+.veh-color-photo:hover { border-color: var(--brand); color: var(--brand); }
+
+.veh-color-del {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--n-200);
+  border-radius: 8px;
+  color: #DC2626;
+  cursor: pointer;
+}
+
+.veh-color-del:hover { background: #FEE2E2; border-color: #FCA5A5; }
+
+/* Colour dots on the fleet card */
+.bike-card-colors {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--n-500);
+}
+
+.bike-card-colors i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
+}
+
+.bike-card-colors b { margin-left: 3px; font-weight: 700; }
+
+@media (max-width: 640px) {
+  .veh-color-row { grid-template-columns: 38px 1fr; grid-auto-rows: auto; }
+  .veh-color-status { grid-column: 1 / -1; width: 100%; }
+  .veh-color-photos { grid-column: 1 / -1; }
+  .veh-color-del { grid-column: 1 / -1; width: 100%; }
+}
