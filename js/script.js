@@ -2037,7 +2037,7 @@
 
         '<div class="head"><img src="' + logo + '" alt="">' +
           '<div><h1>Vijay Arya Bike Rentals</h1>' +
-          '<p>No: 31A, Thennanjalai Road, Puducherry &middot; +91 96003 34488 &middot; Since 1973</p></div></div>' +
+          '<p>No: 31A, Thennanjalai Road, Puducherry &middot; +91 9600 33 44 88 &middot; Since 1973</p></div></div>' +
 
         '<div class="title"><h2>Booking Receipt &nbsp;<span class="id">' + escHtml(r.bookingId) + '</span></h2>' + status + '</div>' +
 
@@ -2059,7 +2059,7 @@
 
         '<div class="note">' +
           (isUpi
-            ? '<b>Next step:</b> send your payment screenshot on WhatsApp to +91 96003 34488 with this booking ID. ' +
+            ? '<b>Next step:</b> send your payment screenshot on WhatsApp to +91 9600 33 44 88 with this booking ID. ' +
               'Your booking is confirmed once the payment is verified.<br>'
             : '') +
           'Please bring your <b>original ID and Driving Licence</b> at pickup. Helmet included. No security deposit.' +
