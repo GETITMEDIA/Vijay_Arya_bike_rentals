@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=30.0">
+  <link rel="stylesheet" href="css/admin.css?v=31.0">
 </head>
 
 <body>
@@ -1840,7 +1840,7 @@
             '<span class="cell-meta"><em>From</em>' + fmtDay(b.startDate) + (b.startTime ? ' · ' + fmtTime(b.startTime) : '') + '</span>' +
             '<span class="cell-meta"><em>To</em>' + fmtDay(b.endDate) + (b.endTime ? ' · ' + fmtTime(b.endTime) : '') + '</span></div></td>' +
           '<td data-label="Advance"><div class="stack-cell"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong>' +
-            '<small class="cell-muted">Due ₹' + (b.balanceDue || 0) + '</small></div></td>' +
+            '<small class="cell-muted">Balance at shop</small></div></td>' +
           '<td data-label="KYC">' + kycBadge + '</td>' +
           '<td data-label="Status">' + statusSelect + '</td>' +
           '<td class="col-actions" data-label="Actions"><div class="table-actions">' +
@@ -2167,9 +2167,9 @@
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Pickup:</span><strong>' + fmtDay(b.startDate) + (b.startTime ? ' &middot; ' + fmtTime(b.startTime) : '') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Return:</span><strong>' + fmtDay(b.endDate) + (b.endTime ? ' &middot; ' + fmtTime(b.endTime) : '') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Duration:</span><span>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</span></div>' +
-          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Estimated Total:</span><strong>₹' + (b.estimatedTotal || 500) + '</strong></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Rent:</span><strong>As per shop rate (' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + ')</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:var(--success);border-top:1px dashed var(--admin-border);padding-top:8px;"><span>Advance:</span><strong>₹' + (b.advancePaid || 500) + (normalizeStatus(b.status) === 'PAYMENT_PENDING' ? ' — awaiting screenshot check' : ' (received)') + '</strong></div>' +
-          '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--admin-text-muted);"><span>Balance Due at Shop:</span><strong>₹' + (b.balanceDue || 0) + '</strong></div>' +
+          '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--admin-text-muted);"><span>Balance at pickup:</span><strong>Rent minus ₹' + (b.advancePaid || 500) + ' advance</strong></div>' +
         '</div>' +
         kycDocsHtml;
 

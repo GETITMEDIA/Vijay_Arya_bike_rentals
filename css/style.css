@@ -7484,3 +7484,23 @@ html, body { overflow-x: hidden; }
 }
 
 .bk-colors-section[hidden] { display: none; }
+
+/* KYC documents — at least one is required */
+.req-mark {
+  color: #EF3138;
+  font-weight: 800;
+  margin-left: 2px;
+}
+
+.kyc-grid.kyc-needs-doc {
+  outline: 2px solid #EF3138;
+  outline-offset: 6px;
+  border-radius: 14px;
+  animation: kycNudge .45s ease;
+}
+
+@keyframes kycNudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

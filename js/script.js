@@ -834,6 +834,12 @@
       }
       if (f.startDate && !f.startDate.value) return fail('Please choose a start date.', f.startDate);
       if (f.endDate && !f.endDate.value) return fail('Please choose an end date.', f.endDate);
+
+      var hasId = (kycIdFile && kycIdFile.files.length) || (kycIdCam && kycIdCam.files.length);
+      var hasDl = (kycDlFile && kycDlFile.files.length) || (kycDlCam && kycDlCam.files.length);
+      if (!hasId && !hasDl) {
+        return fail('Please attach at least one document — Aadhaar / photo ID or Driving Licence.');
+      }
       return true;
     }
 
@@ -1631,14 +1637,15 @@
           return;
         }
 
-        // At least one KYC document must be attached before booking
-        var hasAadhaar = uploadedAadhaar || (kycIdFile && kycIdFile.files.length) || (kycIdCam && kycIdCam.files.length);
-        var hasLicence = uploadedDl || (kycDlFile && kycDlFile.files.length) || (kycDlCam && kycDlCam.files.length);
-
-        if (!hasAadhaar && !hasLicence) {
-          showError('Please attach your Aadhaar / ID or Driving Licence photo to continue.');
-          var kycBox = document.getElementById('kycIdStatus');
-          if (kycBox && kycBox.scrollIntoView) kycBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // At least one KYC document — the shop needs an ID before handover
+        if (!uploadedAadhaar && !uploadedDl) {
+          showError('Please attach at least one document — Aadhaar / photo ID or Driving Licence.');
+          var kycBox = document.querySelector('.kyc-grid');
+          if (kycBox) {
+            kycBox.classList.add('kyc-needs-doc');
+            kycBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(function () { kycBox.classList.remove('kyc-needs-doc'); }, 2500);
+          }
           return;
         }
 
@@ -1700,9 +1707,9 @@
           '<div class="summary-row"><span>Name:</span><strong>' + data.customerName + '</strong></div>' +
           '<div class="summary-row"><span>WhatsApp:</span><strong>+91 ' + data.customerPhone + '</strong></div>' +
           '<div class="summary-row"><span>Daily Rate:</span><strong>&#8377;' + data.dailyRate + ' / day &times; ' + data.quantity + '</strong></div>' +
-          '<div class="summary-row"><span>Estimated Total Rent:</span><strong>&#8377;' + data.estimatedTotal + '</strong></div>' +
+          '<div class="summary-row"><span>Rent for ' + data.days + ' day' + (data.days > 1 ? 's' : '') + ':</span><strong>As per shop rate</strong></div>' +
           '<div class="summary-row total-row"><span>Advance to Pay Now:</span><strong style="color:var(--red);font-size:16px;">&#8377;' + data.advancePaid + '</strong></div>' +
-          '<div class="summary-row" style="font-size:11.5px;color:#6b7280;"><span>Balance at shop pickup:</span><span>&#8377;' + data.balanceDue + '</span></div>';
+          '<div class="summary-row" style="font-size:11.5px;color:#6b7280;"><span>Balance at pickup:</span><span>Rent minus &#8377;' + data.advancePaid + ' advance</span></div>';
       }
 
       if (bkRzpAmount) {
@@ -2018,7 +2025,7 @@
           '<div class="receipt-item-row"><span>Pickup Timing:</span><strong>' + finalRecord.startTime + ' &ndash; 9:00 PM</strong></div>' +
           '<div class="receipt-item-row"><span>Customer:</span><strong>' + finalRecord.customerName + ' (' + finalRecord.customerPhone + ')</strong></div>' +
           '<div class="receipt-item-row"><span>' + (isUpi ? 'Advance (to verify):' : 'Advance Paid:') + '</span><strong style="color:#059669;">&#8377;' + finalRecord.advancePaid + '</strong></div>' +
-          '<div class="receipt-item-row"><span>Balance at Pickup:</span><strong>&#8377;' + finalRecord.balanceDue + '</strong></div>';
+          '<div class="receipt-item-row"><span>Balance at Pickup:</span><strong>Rent minus &#8377;' + finalRecord.advancePaid + ' advance</strong></div>';
       }
 
       // Populate WhatsApp confirmation URL
@@ -2027,23 +2034,23 @@
           ? '📸 *PAYMENT SCREENSHOT — VIJAY ARYA BIKE RENTALS*\n\n' +
             'Hi, I have paid the advance by Google Pay / UPI. My payment screenshot is attached.\n\n' +
             '🆔 *Booking ID:* ' + finalRecord.bookingId + '\n' +
-            '🏍️ *Vehicle:* ' + finalRecord.bikeName + ' (' + finalRecord.quantity + ' qty)\n' +
+            '🏍️ *Vehicle:* ' + finalRecord.bikeName + (finalRecord.color ? ' — ' + finalRecord.color : '') + ' (' + finalRecord.quantity + ' qty)\n' +
             '📅 *Dates:* ' + finalRecord.startDate + ' to ' + finalRecord.endDate + ' (' + finalRecord.days + ' days)\n' +
             '⏰ *Pickup:* ' + finalRecord.startTime + '\n' +
             '👤 *Name:* ' + finalRecord.customerName + '\n' +
             '📞 *Phone:* +91 ' + finalRecord.customerPhone + '\n' +
             '💰 *Advance paid:* ₹' + finalRecord.advancePaid + ' to ' + SHOP_UPI_ID + '\n' +
-            '💵 *Balance at shop:* ₹' + finalRecord.balanceDue + '\n\n' +
+            '💵 *Balance at pickup:* Rent minus ₹' + finalRecord.advancePaid + ' advance\n\n' +
             'Please confirm my booking. I will bring my original ID & Driving Licence at pickup.'
           : '🎉 *VIJAY ARYA BIKE RENTALS - BOOKING CONFIRMATION*\n\n' +
             '🆔 *Booking ID:* ' + finalRecord.bookingId + '\n' +
             '💳 *Razorpay Payment ID:* ' + finalRecord.paymentId + '\n' +
-            '🏍️ *Vehicle:* ' + finalRecord.bikeName + ' (' + finalRecord.quantity + ' qty)\n' +
+            '🏍️ *Vehicle:* ' + finalRecord.bikeName + (finalRecord.color ? ' — ' + finalRecord.color : '') + ' (' + finalRecord.quantity + ' qty)\n' +
             '📅 *Rental Dates:* ' + finalRecord.startDate + ' to ' + finalRecord.endDate + ' (' + finalRecord.days + ' days)\n' +
             '⏰ *Pickup Time:* ' + finalRecord.startTime + '\n' +
             '👤 *Customer:* ' + finalRecord.customerName + ' (+91 ' + finalRecord.customerPhone + ')\n' +
             '💰 *Advance Paid:* ₹' + finalRecord.advancePaid + ' (PAID via Razorpay)\n' +
-            '💵 *Balance at Shop:* ₹' + finalRecord.balanceDue + '\n\n' +
+            '💵 *Balance at pickup:* Rent minus ₹' + finalRecord.advancePaid + ' advance\n\n' +
             'Please reserve my vehicle. I will carry my original Driving Licence and ID at pickup.';
         bkSuccessWhats.href = 'https://wa.me/' + SHOP_WHATSAPP + '?text=' + encodeURIComponent(whatsMsg);
       }
@@ -2123,9 +2130,9 @@
           row('Payment', isUpi
             ? 'Google Pay / UPI to ' + escHtml(r.upiId || SHOP_UPI_ID)
             : 'Razorpay &middot; ' + escHtml(r.paymentId)) +
-          row('Estimated rent', '&#8377;' + r.estimatedTotal) +
+          row('Rent', 'As per shop rate for ' + r.days + ' day' + (r.days > 1 ? 's' : '')) +
           row(isUpi ? 'Advance (to be verified)' : 'Advance paid', '&#8377;' + r.advancePaid, true) +
-          '<tr class="total"><td>Balance at pickup</td><td class="b">&#8377;' + r.balanceDue + '</td></tr>' +
+          '<tr class="total"><td>Balance at pickup</td><td class="b">Rent minus &#8377;' + r.advancePaid + ' advance</td></tr>' +
         '</table>' +
 
         '<div class="note">' +
