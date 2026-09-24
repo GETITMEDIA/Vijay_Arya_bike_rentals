@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="pageTitle">Vehicle Details | Vijay Arya Bike Rentals Pondicherry</title>
   <meta name="description" id="pageMetaDesc"
-    content="Rent well-maintained scooters and bikes in Pondicherry with Vijay Arya Bike Rentals. Trusted since 1973.">
+    content="Rent well-maintained scooters in Pondicherry with Vijay Arya Bike Rentals. Trusted since 1973.">
   <meta name="theme-color" content="#EF3138">
 
   <!-- Favicon: the Vijay Arya logo -->
@@ -16,9 +16,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Jost:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=3.1">
+  <link rel="stylesheet" href="css/style.css?v=8.4">
   <script>document.documentElement.className += " js";</script>
 </head>
 
@@ -32,7 +32,7 @@
       <a class="brand" href="index.html" aria-label="Vijay Arya Bike Rentals, home">
         <img src="assets/logo/logo.png" alt="Vijay Arya Bike Rentals logo" width="142" height="111" class="brand-mark">
         <span class="brand-text">
-          <span class="brand-name">Vijay Arya Bike Rentals</span>
+          <span class="brand-title">VIJAY ARYA BIKE RENTALS</span>
         </span>
       </a>
 
@@ -96,11 +96,11 @@
 
     <div class="nav-mobile-foot">
       <button class="btn btn-red btn-block js-book" type="button">
-        <span>Book Your Ride</span>
+        <span>Book Your Scooter</span>
         <span class="btn-arrow">&rarr;</span>
       </button>
       <div class="nav-mobile-quick-actions">
-        <a class="btn btn-ghost nav-quick-btn" href="tel:+919600334488">
+        <a class="btn btn-ghost nav-quick-btn" href="tel:+917200011799">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
           <span>Call Now</span>
         </a>
@@ -110,7 +110,7 @@
         </a>
       </div>
       <div class="nav-drawer-info-strip">
-        <span>&#128205; Thennanjalai Rd &middot; Open till 9 PM</span>
+        <span>&#128205; Thennanjalai Rd &middot; Open daily till 9 PM</span>
       </div>
     </div>
   </nav>
@@ -119,6 +119,12 @@
   <main id="main" tabindex="-1" class="detail-main-wrapper">
     <div class="wrap">
 
+      <!-- Loading Overlay — visible until data is ready -->
+      <div class="detail-loader" id="detailLoader">
+        <div class="detail-loader-spinner"></div>
+        <p class="detail-loader-text">Loading vehicle details...</p>
+      </div>
+
       <!-- Top Back Link -->
       <div class="detail-top-nav">
         <a href="index.html#fleet" class="detail-back-link">
@@ -126,8 +132,8 @@
         </a>
       </div>
 
-      <!-- Detail Two Column Grid -->
-      <div class="detail-grid">
+      <!-- Detail Two Column Grid (hidden until data is ready) -->
+      <div class="detail-grid" id="detailGrid" style="opacity:0;transition:opacity .45s ease;">
 
         <!-- LEFT COLUMN: Image Showcase & Gallery -->
         <div class="detail-media-container">
@@ -135,6 +141,12 @@
             <div class="detail-status-badge">
               <span class="detail-status-dot"></span>
               AVAILABLE
+            </div>
+
+            <!-- Colour choices — only for vehicles that have variants -->
+            <div class="detail-colors" id="detailColors" hidden>
+              <span class="detail-colors-label">Colour</span>
+              <div class="detail-colors-row" id="detailColorsRow"></div>
             </div>
 
             <div class="detail-main-img-box">
@@ -159,11 +171,11 @@
           <div class="detail-head-group">
             <span class="detail-cat-tag" id="detailCatTag">SCOOTER &middot; PREMIUM</span>
             <h1 class="detail-title" id="detailTitle">Honda Dio 125</h1>
-            <p class="detail-subtitle" id="detailSubtitle">Sporty, lightweight scooter built for effortless city rides.
+            <p class="detail-subtitle" id="detailSubtitle">Sporty, lightweight scooter built for effortless city trips.
             </p>
             <span class="detail-color-tag" id="detailColorTag">COLOUR &middot; STANDARD</span>
             <p class="detail-description" id="detailDescription">
-              Rent the Honda Dio 125 in Pondicherry for a stylish, fuel-efficient, and comfortable ride. Perfect for
+              Rent the Honda Dio 125 in Pondicherry for a stylish, fuel-efficient, and comfortable trip. Perfect for
               city commuting, sightseeing, beaches, cafés, and daily travel.
             </p>
           </div>
@@ -191,7 +203,7 @@
               <div class="detail-price-row">
                 <strong class="detail-curr-price" id="detailPrice">&#8377;500</strong>
               </div>
-              <p class="detail-price-sub">Fixed advance for all vehicles &middot; No security deposit</p>
+              <p class="detail-price-sub">Fixed advance for all vehicles</p>
             </div>
             <button class="detail-book-btn js-book" type="button" id="detailBookBtn" data-bike="Honda Dio">Book Now</button>
           </div>
@@ -205,15 +217,11 @@
             <div class="detail-policy-list">
               <div class="detail-policy-item">
                 <span class="detail-check-ic">&check;</span>
-                <span>Operating Hours: 9:00 AM &ndash; 9:00 PM</span>
+                <span class="hours-lines"><b>Mon &ndash; Fri:</b> 9:00 AM &ndash; 9:00 PM<br><b>Sat &amp; Sun:</b> 7:00 AM &ndash; 9:00 PM</span>
               </div>
               <div class="detail-policy-item">
                 <span class="detail-check-ic">&check;</span>
                 <span>Rental Charge: Per Day</span>
-              </div>
-              <div class="detail-policy-item">
-                <span class="detail-check-ic">&check;</span>
-                <span>No Security Deposit</span>
               </div>
               <div class="detail-policy-item">
                 <span class="detail-check-ic">&check;</span>
@@ -238,7 +246,7 @@
               </div>
               <div class="detail-policy-item">
                 <span class="detail-check-ic">&check;</span>
-                <span>Triple riding is strictly prohibited.</span>
+                <span>Carrying three people is strictly prohibited.</span>
               </div>
             </div>
           </div>
@@ -250,7 +258,7 @@
               PICKUP INFORMATION
             </div>
             <p class="detail-info-card-text">
-              Pickup available from Vijay Arya Bike Rental, Pondicherry. Please carry a valid driving licence and ID
+              Pickup available from Vijay Arya Bike Rental, Pondicherry. Please carry a valid Driving Licence and ID
               proof at the time of pickup.
             </p>
           </div>
@@ -286,13 +294,13 @@
           </div>
         </div>
         <p class="footer-desc">
-          Pondicherry's trusted bike & scooter rental service since 1973. Reliable fleet, transparent pricing, and 24/7 customer assistance for your coastal rides.
+          India's first and oldest scooter rental service, since 1973. Reliable fleet, transparent pricing and honest local advice for your coastal trips.
         </p>
         <div class="footer-socials">
           <a href="https://wa.me/919600334488" target="_blank" rel="noopener" aria-label="WhatsApp" class="footer-social-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.419h-.006a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.99c-.002 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
           </a>
-          <a href="tel:+919600334488" aria-label="Call Us" class="footer-social-btn">
+          <a href="tel:+917200011799" aria-label="Call Us" class="footer-social-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
           </a>
 
@@ -320,8 +328,9 @@
           <li>
             <svg class="footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
             <div class="footer-contact-item">
-              <a href="tel:+919600334488">+91 96003 34488</a>
-              <a href="tel:+917200011799">+91 72000 11799</a>
+              <a href="tel:+917200011799">+91 72000 11 799</a>
+              <a href="tel:+918889994011">+91 888 999 40 11</a>
+              <a href="https://wa.me/919600334488" target="_blank" rel="noopener">+91 9600 33 44 88</a>
             </div>
           </li>
           <li>
@@ -335,7 +344,7 @@
 
           <li>
             <svg class="footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            <span>Open 9:00 AM &ndash; 9:00 PM (All Days)</span>
+            <span class="hours-lines"><b>Mon &ndash; Fri:</b> 9:00 AM &ndash; 9:00 PM<br><b>Sat &amp; Sun:</b> 7:00 AM &ndash; 9:00 PM</span>
           </li>
         </ul>
       </div>
@@ -389,12 +398,15 @@
           <option value="Yamaha Fascino">Yamaha Fascino</option>
           <option value="Yamaha Ray">Yamaha Ray</option>
           <option value="Honda Cliq">Honda Cliq</option>
-          <option value="Honda Navi">Honda Navi</option>
-          <option value="Hero Splendor">Hero Splendor</option>
-          <option value="Yamaha FZ">Yamaha FZ</option>
-          <option value="Royal Enfield GT 650">Royal Enfield GT 650</option>
         </select>
 
+
+        <!-- Colour choice (appears only for vehicles that have colour options) -->
+        <section class="drawer-section bk-colors-section" id="bkColorsSection" hidden>
+          <h3 class="section-num-title">Choose colour</h3>
+          <div class="bk-colors-row" id="bkColorsRow"></div>
+          <input type="hidden" id="bkColor" name="color" value="">
+        </section>
         <section class="drawer-section">
           <h3 class="section-num-title">01 &middot; RENTAL WINDOW</h3>
           <div class="field-row">
@@ -456,8 +468,8 @@
         </section>
 
         <section class="drawer-section">
-          <h3 class="section-num-title">04 &middot; KYC DOCUMENTS</h3>
-          <p class="kyc-sub">Required for vehicle handover at shop during pickup</p>
+          <h3 class="section-num-title">04 &middot; KYC DOCUMENTS <span class="req-mark">*</span></h3>
+          <p class="kyc-sub">Attach <strong>at least one</strong> &mdash; Aadhaar / photo ID or Driving Licence. Needed to hand over the scooter.</p>
           <div class="kyc-grid">
             <div class="kyc-card">
               <span class="kyc-label">AADHAAR / ID IMAGE</span>
@@ -488,8 +500,7 @@
 
         <div class="drawer-footer">
           <button class="btn btn-red btn-block btn-lg" type="submit" id="bkSubmitBtn">Continue</button>
-          <p class="drawer-fineprint">Carry original photo ID (Aadhaar, Driving Licence or Passport). No security
-            deposit required.</p>
+          <p class="drawer-fineprint">Carry original photo ID (Aadhaar, Driving Licence or Passport) at pickup.</p>
         </div>
       </form>
 
@@ -497,61 +508,90 @@
       <div class="booking-step" id="bookStep2">
         <div class="booking-summary" id="bkSummary"></div>
 
-        <!-- RAZORPAY INSTANT PAYMENT -->
-        <div class="pay-rzp-card">
-          <div class="pay-rzp-header">
-            <div class="pay-rzp-title-wrap">
-              <span class="pay-badge-secure">🔒 SECURE 256-BIT ENCRYPTION</span>
-              <h4 class="pay-rzp-title">Pay Advance via Razorpay</h4>
-              <p class="pay-rzp-sub">Instant confirmation via UPI (GPay, PhonePe, Paytm), Cards &amp; NetBanking</p>
+        <!-- ================= PAY ADVANCE WITH GOOGLE PAY / ANY UPI APP ================= -->
+        <div class="upi-pay-card">
+          <div class="upi-pay-head">
+            <div>
+              <span class="upi-pay-kicker">Step 2 of 3 &middot; Pay advance</span>
+              <h4 class="upi-pay-title">Pay with Google Pay</h4>
+              <p class="upi-pay-sub">Or any UPI app &mdash; PhonePe, Paytm, BHIM</p>
             </div>
-            <div class="pay-rzp-badge-tag">
-              <span>Razorpay</span>
+            <div class="upi-pay-amount">
+              <span>Advance</span>
+              <strong id="bkUpiAmount">&#8377;500</strong>
             </div>
           </div>
 
-          <div class="pay-rzp-amount-box">
-            <span class="pay-rzp-lbl">Advance Payable Now</span>
-            <strong class="pay-rzp-price" id="bkRzpAmount">&#8377;500</strong>
-          </div>
+          <!-- One tap: the phone lists every installed UPI app (GPay, PhonePe, Paytm…) -->
+          <a class="btn btn-red btn-block btn-lg upi-open-btn" id="bkUpi" href="#">
+            <span class="upi-btn-g" aria-hidden="true">&#8377;</span>
+            <span id="bkUpiBtnText">Pay &#8377;500 &mdash; GPay / UPI</span>
+            <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+          </a>
 
-          <button class="btn btn-red btn-block btn-lg pay-rzp-btn" type="button" id="bkRazorpayBtn">
-            <span>Pay &#8377;500 via Razorpay</span>
-            <span class="btn-arrow">&rarr;</span>
-          </button>
-        </div>
+          <p class="upi-open-hint" id="bkUpiHint">Opens the app with &#8377;500 and our UPI ID already filled in.</p>
 
-        <div class="pay-divider">
-          <span>OR PAY VIA MANUAL UPI / QR</span>
-        </div>
+          <div class="upi-or"><span>or scan the QR code</span></div>
 
-        <div class="pay-grid">
-          <figure class="pay-qr">
-            <img src="assets/logo/WhatsApp%20Image%202026-09-09%20at%202.18.27%20PM.jpeg"
-              alt="Google Pay QR code for Vijay Arya Bike Rentals, UPI ID 7200011799@okbizaxis" width="848"
-              height="1205" loading="lazy" decoding="async">
-          </figure>
+          <!-- Big QR, UPI ID underneath -->
+          <div class="upi-qr-block">
+            <figure class="upi-qr">
+              <!-- Live QR: encodes the amount, so the app opens with it already filled in -->
+              <div class="upi-qr-live" id="bkUpiQr" role="img" aria-label="UPI QR code to pay the advance"></div>
+              <!-- Fallback: the printed Google Pay QR (amount typed manually) -->
+              <img class="upi-qr-static" id="bkUpiQrStatic" src="assets/logo/WhatsApp%20Image%202026-09-09%20at%202.18.27%20PM.jpeg"
+                alt="Google Pay QR code for Vijay Arya Bike Rentals, UPI ID 7200011799@okbizaxis" width="848"
+                height="1205" loading="lazy" decoding="async">
+              <figcaption class="upi-qr-cap" id="bkUpiQrCap">Scan with GPay, PhonePe or Paytm &mdash; &#8377;500 fills in automatically</figcaption>
+            </figure>
 
-          <div class="pay-copy">
-            <p class="pay-amount"><span>UPI Advance</span><strong>&#8377;500</strong></p>
-            <p class="pay-note">Scan QR code or use UPI ID below:</p>
-
-            <div class="pay-upi">
+            <div class="pay-upi upi-id-row">
               <span class="pay-upi-label">UPI ID</span>
               <code id="bkUpiId">7200011799@okbizaxis</code>
               <button class="pay-copy-btn" id="bkCopy" type="button">Copy</button>
             </div>
+            <p class="pay-note pay-note-small">Pay exactly <strong id="bkUpiAmountInline">&#8377;500</strong>
+              to <strong>Vijay Arya Bike Rentals</strong>.</p>
+          </div>
 
-            <a class="btn btn-outline btn-block" id="bkUpi" href="#">Open in UPI App</a>
+          <!-- After paying -->
+          <div class="upi-after">
+            <h5>Paid? Confirm your booking</h5>
+            <ol class="upi-steps">
+              <li>Complete the payment in your UPI app.</li>
+              <li>Take a <strong>screenshot</strong> of the payment success screen.</li>
+              <li>Tap the button below &mdash; WhatsApp opens with your booking details. <strong>Attach the screenshot</strong> and send it.</li>
+            </ol>
+
+            <button class="btn btn-whatsapp btn-block btn-lg" type="button" id="bkUpiPaidBtn">
+              <span>I've Paid &mdash; Confirm Booking</span>
+              <span class="btn-arrow">&rarr;</span>
+            </button>
           </div>
         </div>
 
+        <!-- Razorpay (kept as a backup — switch on with RAZORPAY_ENABLED in js/script.js) -->
+        <div class="pay-rzp-card" id="bkRzpCard" hidden>
+          <div class="pay-rzp-header">
+            <div class="pay-rzp-title-wrap">
+              <h4 class="pay-rzp-title">Pay Advance via Razorpay</h4>
+              <p class="pay-rzp-sub">Cards, NetBanking &amp; UPI</p>
+            </div>
+          </div>
+          <div class="pay-rzp-amount-box">
+            <span class="pay-rzp-lbl">Advance Payable Now</span>
+            <strong class="pay-rzp-price" id="bkRzpAmount">&#8377;500</strong>
+          </div>
+          <button class="btn btn-outline btn-block pay-rzp-btn" type="button" id="bkRazorpayBtn">
+            <span>Pay &#8377;500 via Razorpay</span>
+          </button>
+        </div>
+
         <div class="pay-send">
-          <h4 style="margin: 0 0 8px; font-family: var(--serif); font-size: 18px;">Send booking on WhatsApp</h4>
-          <p style="font-size: 13.5px; color: #57534E; margin: 0 0 16px;">We confirm your booking instantly. Availability changes daily.</p>
-          <div class="booking-actions" style="display: grid; gap: 10px;">
-            <a class="btn btn-red btn-block" id="bkWhats" href="#" target="_blank" rel="noopener">Send Details on WhatsApp</a>
-            <a class="btn btn-outline btn-block" href="tel:+919600334488">Call 9600 33 44 88</a>
+          <p class="pay-send-note">Questions before paying? We reply fast on WhatsApp.</p>
+          <div class="booking-actions pay-send-actions">
+            <a class="btn btn-outline btn-block" id="bkWhats" href="#" target="_blank" rel="noopener">Ask on WhatsApp</a>
+            <a class="btn btn-outline btn-block" href="tel:+917200011799">Call 72000 11 799</a>
           </div>
         </div>
 
@@ -564,8 +604,21 @@
         <div class="receipt-card">
           <div class="receipt-success-badge">
             <div class="receipt-check-icon">&check;</div>
-            <h3 class="receipt-title">Booking Confirmed!</h3>
-            <p class="receipt-sub">Advance payment received. Your ride is reserved!</p>
+            <h3 class="receipt-title" id="bkReceiptTitle">Booking Received!</h3>
+            <p class="receipt-sub" id="bkReceiptSub">One last step to confirm your booking.</p>
+          </div>
+
+          <!-- Screenshot request (UPI / GPay payments) -->
+          <div class="screenshot-alert" id="bkScreenshotAlert">
+            <div class="screenshot-alert-icon" aria-hidden="true">📸</div>
+            <div>
+              <strong>Send your payment screenshot on WhatsApp</strong>
+              <p>
+                Please send the GPay / UPI payment screenshot to
+                <a href="https://wa.me/919600334488" target="_blank" rel="noopener"><b>+91 9600 33 44 88</b></a>.
+                We confirm your booking as soon as we verify the payment.
+              </p>
+            </div>
           </div>
 
           <div class="receipt-details-box" id="bkReceiptDetails">
@@ -574,14 +627,14 @@
 
           <div class="receipt-actions">
             <a class="btn btn-whatsapp btn-block btn-lg" id="bkSuccessWhats" href="#" target="_blank" rel="noopener">
-              <span>Send Receipt on WhatsApp</span>
+              <span id="bkSuccessWhatsText">Send Payment Screenshot on WhatsApp</span>
               <span class="btn-arrow">&rarr;</span>
             </a>
             <button class="btn btn-outline btn-block" id="bkPrintReceipt" type="button">
-              <span>🖨️ Print / Download Receipt</span>
+              <span>⬇ Download Receipt (PDF)</span>
             </button>
             <button class="btn btn-ghost btn-block" id="bkNewBooking" type="button" style="margin-top: 6px;">
-              &larr; Book Another Ride
+              &larr; Book Another Scooter
             </button>
           </div>
         </div>
@@ -597,8 +650,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <script src="js/firebase-config.js?v=3.0"></script>
-  <script src="js/data-service.js?v=7.0"></script>
-  <script src="js/script.js?v=2.0"></script>
+  <script src="js/data-service.js?v=9.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/script.js?v=4.7"></script>
   <script>
     (function () {
       'use strict';
@@ -609,9 +663,9 @@
           bikeName: 'Honda Dio',
           title: 'Honda Dio 125',
           category: 'SCOOTER · PREMIUM',
-          subtitle: 'Sporty, lightweight scooter built for effortless city rides.',
+          subtitle: 'Sporty, lightweight scooter built for effortless city trips.',
           color: 'COLOUR · STANDARD',
-          description: 'Rent the Honda Dio 125 in Pondicherry for a stylish, fuel-efficient, and comfortable ride. Perfect for city commuting, sightseeing, beaches, cafés, and daily travel.',
+          description: 'Rent the Honda Dio 125 in Pondicherry for a stylish, fuel-efficient, and comfortable trip. Perfect for city commuting, sightseeing, beaches, cafés, and daily travel.',
           advance: '₹500',
           images: [
             'assets/rentel-bikes/dio_main_view.png',
@@ -623,7 +677,7 @@
             'Petrol engine',
             'Electric start',
             'Mileage: 48–52 kmpl',
-            'Comfortable seating for 2 riders'
+            'Comfortable seating for 2 people'
           ],
           included: [
             'Sporty modern design',
@@ -640,8 +694,15 @@
           title: 'Vespa S 125',
           category: 'SCOOTER · PREMIUM',
           subtitle: 'Iconic Italian design & smooth suburban cruising in Pondicherry.',
-          color: 'COLOUR · PEARL WHITE & METALLIC',
-          description: 'Rent the Vespa S 125 for an unmatched luxury ride through French Quarter streets, seaside promenades, and café strips. Elegant design with smooth acceleration.',
+          color: 'COLOUR · PEACH GREEN',
+          // Colour choices — picking one swaps the photos
+          colors: [
+            { name: 'Peach Green', hex: '#A8D5BA', images: ['assets/rentel-bikes/vespa_main_view.png', 'assets/rentel-bikes/vespa_side_view.png'] },
+            { name: 'Red', hex: '#D0202E', images: ['assets/rentel-bikes/vespa_red_main_view.png', 'assets/rentel-bikes/vespa_red_side_view.png'] },
+            { name: 'Black', hex: '#1C1917', images: ['assets/rentel-bikes/vespa_black_main_view.png', 'assets/rentel-bikes/vespa_black_side_view.png'] },
+            { name: 'Light Blue', hex: '#9CC6DA', images: ['assets/rentel-bikes/vespa_light_blue_main_view.png', 'assets/rentel-bikes/vespa_light_blue_side_view.png'] }
+          ],
+          description: 'Rent the Vespa S 125 for an unmatched luxury trip through French Quarter streets, seaside promenades, and café strips. Elegant design with smooth acceleration.',
           advance: '₹500',
           images: [
             'assets/rentel-bikes/vespa_main_view.png',
@@ -653,7 +714,7 @@
             'Petrol engine',
             'Electric & Kick start',
             'Mileage: 45–50 kmpl',
-            'Comfortable seating for 2 riders'
+            'Comfortable seating for 2 people'
           ],
           included: [
             'Iconic retro styling',
@@ -683,7 +744,7 @@
             'Petrol engine',
             'Electric start',
             'Mileage: 50–55 kmpl',
-            'Comfortable seating for 2 riders'
+            'Comfortable seating for 2 people'
           ],
           included: [
             'Telescopic front suspension',
@@ -731,7 +792,7 @@
           category: 'SCOOTER · EXECUTIVE',
           subtitle: 'Powerful 125cc pickup with classic retro chrome styling.',
           color: 'COLOUR · MATTE PLATINUM BRONZE',
-          description: 'Rent the Suzuki Access 125 for superior pickup and power. Comes with LED headlamp, long seat, and smooth ride quality for all-day touring.',
+          description: 'Rent the Suzuki Access 125 for superior pickup and power. Comes with LED headlamp, long seat, and smooth comfort for all-day touring.',
           advance: '₹500',
           images: [
             'assets/rentel-bikes/suzuki_access_main_view.png',
@@ -821,7 +882,7 @@
           category: 'SCOOTER · PRACTICAL',
           subtitle: 'Compact, lightweight scooter designed for easy urban navigation.',
           color: 'COLOUR · MOROCCAN BLUE',
-          description: 'Rent the Honda Cliq for practical, easy riding with low seat height and wide footrest. Perfect for quick errands and effortless city travel.',
+          description: 'Rent the Honda Cliq for practical, easy handling with low seat height and wide footrest. Perfect for quick errands and effortless city travel.',
           advance: '₹500',
           images: [
             'assets/rentel-bikes/honda_clic_main_view.png',
@@ -833,7 +894,7 @@
             'Petrol engine',
             'Electric start',
             'Mileage: 55–60 kmpl',
-            'Low seat height for easy rider access'
+            'Low seat height, easy to get on and off'
           ],
           included: [
             'Block pattern tires',
@@ -844,96 +905,6 @@
             'Regularly serviced'
           ]
         },
-        'honda-navi': {
-          id: 'honda-navi',
-          bikeName: 'Honda Navi',
-          title: 'Honda Navi 110',
-          category: 'MINI BIKE · FUN',
-          subtitle: 'Fun crossover bike blending scooter ease with motorcycle thrill.',
-          color: 'COLOUR · PATRIOT RED',
-          description: 'Rent the Honda Navi for a unique, adventurous ride. Lightweight crossover design with automatic gearless drive and motorcycle riding feel.',
-          advance: '₹500',
-          images: [
-            'assets/rentel-bikes/Honda_navi_main_view.png',
-            'assets/rentel-bikes/honda_navi_side_view.png'
-          ],
-          specs: [
-            '109.19 cc engine',
-            'Automatic transmission',
-            'Petrol engine',
-            'Electric start',
-            'Mileage: 50–55 kmpl',
-            'Comfortable seating for 2 riders'
-          ],
-          included: [
-            'Fun motorcycle ergonomics',
-            'Automatic gearless transmission',
-            'High ground clearance',
-            'Custom lockable storage box',
-            'Lightweight handling',
-            'Regularly serviced'
-          ]
-        },
-        'hero-splendor': {
-          id: 'hero-splendor',
-          bikeName: 'Hero Splendor',
-          title: 'Hero Splendor Plus',
-          category: 'MOTORCYCLE · UTILITY',
-          subtitle: 'India\'s most iconic fuel-efficient commuter motorcycle.',
-          color: 'COLOUR · BLACK & SILVER',
-          description: 'Rent the Hero Splendor Plus for maximum mileage and gear bike performance. Extremely smooth, reliable, and comfortable for long village & coastal tours.',
-          advance: '₹500',
-          images: [
-            'assets/rentel-bikes/hero_splender_main_view.png',
-            'assets/rentel-bikes/hero_spleander_side_view.png'
-          ],
-          specs: [
-            '97.2 cc xSens FI engine',
-            '4-speed manual gear transmission',
-            'Petrol engine',
-            'Electric start',
-            'Mileage: 65–70 kmpl',
-            'Long flat comfort seat'
-          ],
-          included: [
-            'Unmatched fuel mileage',
-            'i3S idle stop-start system',
-            'Tubeless tires',
-            'Rear luggage carrier',
-            'Ultra-reliable engine',
-            'Regularly serviced'
-          ]
-        },
-        'yamaha-fz': {
-          id: 'yamaha-fz',
-          bikeName: 'Yamaha FZ',
-          title: 'Yamaha FZ FI 150',
-          category: 'MOTORCYCLE · SPORT',
-          subtitle: 'Muscular streetfighter bike built for highway & city cruising.',
-          color: 'COLOUR · METALLIC BLACK & BLUE',
-          description: 'Rent the Yamaha FZ FI for a powerful 150cc motorcycle ride. Features wide radial tires, mono-cross suspension, and ABS for superior braking control.',
-          advance: '₹500',
-          images: [
-            'assets/rentel-bikes/yamaha_fz_main_view.png',
-            'assets/rentel-bikes/yamaha_fz_side_view.png'
-          ],
-          specs: [
-            '149 cc Blue Core FI engine',
-            '5-speed manual gear transmission',
-            'Petrol engine',
-            'Electric start',
-            'Mileage: 45–50 kmpl',
-            'Step-up comfortable dual seat'
-          ],
-          included: [
-            'Single-channel ABS safety',
-            'Muscular tank & LED headlight',
-            'Monocross rear suspension',
-            'Wide radial rear tire',
-            'Digital LCD instrument cluster',
-            'Regularly serviced'
-          ]
-        }
       };
 
       // 1. Get query parameter 'id' or default to 'vespa'
@@ -981,49 +952,88 @@
           includedGrid.appendChild(item);
         });
 
-        // 5. Setup Images & Thumbnails
-        var currentImgIdx = 0;
+        // 5. Images, thumbnails and colour choices
         var mainImg = document.getElementById('detailMainImg');
         var thumbsList = document.getElementById('detailThumbsList');
-        thumbsList.innerHTML = '';
+        var colorsBox = document.getElementById('detailColors');
+        var colorsRow = document.getElementById('detailColorsRow');
+        var colorTag = document.getElementById('detailColorTag');
+
+        var currentImgIdx = 0;
+        var gallery = (data.images || []).slice();   // photos currently on show
 
         function setMainImg(idx) {
-          if (!data.images || data.images.length === 0) return;
-          if (idx < 0) idx = data.images.length - 1;
-          if (idx >= data.images.length) idx = 0;
+          if (!gallery.length) return;
+          if (idx < 0) idx = gallery.length - 1;
+          if (idx >= gallery.length) idx = 0;
           currentImgIdx = idx;
 
           mainImg.style.opacity = '0.4';
           mainImg.style.transform = 'scale(0.96)';
           setTimeout(function () {
-            mainImg.src = data.images[currentImgIdx];
+            mainImg.src = gallery[currentImgIdx];
             mainImg.style.opacity = '1';
             mainImg.style.transform = 'scale(1)';
           }, 120);
 
-          var allThumbs = thumbsList.querySelectorAll('.detail-thumb-item');
-          allThumbs.forEach(function (t, i) {
-            if (i === currentImgIdx) {
-              t.classList.add('is-active');
-            } else {
-              t.classList.remove('is-active');
-            }
+          thumbsList.querySelectorAll('.detail-thumb-item').forEach(function (t, i) {
+            t.classList.toggle('is-active', i === currentImgIdx);
           });
         }
 
-        if (data.images && data.images.length > 0) {
-          data.images.forEach(function (imgSrc, i) {
-            var thumb = document.createElement('div');
-            thumb.className = 'detail-thumb-item' + (i === 0 ? ' is-active' : '');
+        // Build the thumbnail strip for whichever photos are on show
+        function buildThumbs() {
+          thumbsList.innerHTML = '';
+          gallery.forEach(function (imgSrc, i) {
             var label = i === 0 ? 'Main View' : 'Side View';
+            var thumb = document.createElement('div');
+            thumb.className = 'detail-thumb-item' + (i === currentImgIdx ? ' is-active' : '');
             thumb.setAttribute('title', data.bikeName + ' - ' + label);
             thumb.innerHTML = '<img src="' + imgSrc + '" alt="' + data.bikeName + ' ' + label + '">';
-            thumb.addEventListener('click', function () {
-              setMainImg(i);
-            });
+            thumb.addEventListener('click', function () { setMainImg(i); });
             thumbsList.appendChild(thumb);
           });
-          mainImg.src = data.images[0];
+          if (gallery.length) mainImg.src = gallery[currentImgIdx];
+        }
+
+        buildThumbs();
+
+        // ---- Colour swatches: tapping one swaps every photo ----
+        colorsRow.innerHTML = '';
+        var colors = data.colors || [];
+
+        if (colors.length > 1) {
+          colorsBox.hidden = false;
+          var bookBtnInit = document.getElementById('detailBookBtn');
+          if (bookBtnInit) bookBtnInit.setAttribute('data-color', colors[0].name);
+
+          colors.forEach(function (c, i) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'detail-color-dot' + (i === 0 ? ' is-active' : '');
+            btn.style.setProperty('--dot', c.hex);
+            btn.title = c.name;
+            btn.setAttribute('aria-label', c.name);
+            btn.innerHTML = '<span class="detail-color-swatch"></span><span class="detail-color-name">' + c.name + '</span>';
+
+            btn.addEventListener('click', function () {
+              gallery = c.images.slice();
+              currentImgIdx = 0;
+              buildThumbs();
+              setMainImg(0);
+
+              if (colorTag) colorTag.textContent = 'COLOUR · ' + c.name.toUpperCase();
+              var bookBtnEl = document.getElementById('detailBookBtn');
+              if (bookBtnEl) bookBtnEl.setAttribute('data-color', c.name);
+              colorsRow.querySelectorAll('.detail-color-dot').forEach(function (b) {
+                b.classList.toggle('is-active', b === btn);
+              });
+            });
+
+            colorsRow.appendChild(btn);
+          });
+        } else {
+          colorsBox.hidden = true;
         }
 
         document.getElementById('thumbPrev').onclick = function () { setMainImg(currentImgIdx - 1); };
@@ -1040,13 +1050,18 @@
         var v = fleetList.filter(function (x) { return x.id === bikeId || x.name.toLowerCase() === bikeId.toLowerCase(); })[0];
         if (!v) return null;
 
-        var catName = v.category === 'BIKE' ? 'MOTORCYCLE' : (v.category || 'VEHICLE');
+        var catName = 'SCOOTER';
         var imgs = [];
         if (v.image) imgs.push(v.image);
         if (v.imageBack && v.imageBack !== v.image) imgs.push(v.imageBack);
         if (imgs.length === 0) imgs.push('assets/logo/logo.png');
 
+        // Colours managed in the admin panel win; the built-in list is the fallback
+        var variants = (v.colors && v.colors.length ? v.colors : null) ||
+          (BIKES_DATA[v.id] && BIKES_DATA[v.id].colors) || null;
+
         return {
+          colors: variants,
           id: v.id,
           title: v.name,
           bikeName: v.name,
@@ -1059,35 +1074,76 @@
           specs: [
             'Helmet included with rental',
             'Original photo ID required',
-            'No security deposit needed',
             'Regularly serviced & inspected',
             'Smooth transmission & handling'
           ],
           included: [
             'Complimentary sanitised helmet',
-            '24/7 Roadside assistance support',
+            'Roadside assistance support',
             'Valid RC and insurance documents',
             'Flexible daily & weekly extensions'
           ]
         };
       }
 
-      // Initial render from static or local
+      // ── Smooth load: resolve data first, render once, then reveal ──
+      var loader = document.getElementById('detailLoader');
+      var grid   = document.getElementById('detailGrid');
+      var hasRendered = false;
+      var renderedJSON = '';
+
+      function revealContent() {
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(function () { loader.style.display = 'none'; }, 400);
+        }
+        if (grid) grid.style.opacity = '1';
+      }
+
+      function safeRender(d) {
+        if (!d) return;
+        var json = JSON.stringify(d);
+        if (json === renderedJSON) return;     // skip if same data
+        renderedJSON = json;
+        renderPageWithData(d);
+        if (!hasRendered) {
+          hasRendered = true;
+          revealContent();
+        }
+      }
+
+      // 1. Try local / static data first (instant, no flash)
       if (!data) {
         var localFleet = [];
         try { localFleet = JSON.parse(localStorage.getItem('vijay_arya_fleet') || '[]'); } catch (e) {}
         data = resolveFromFleet(localFleet);
       }
-      renderPageWithData(data || BIKES_DATA['vespa']);
+      if (data) {
+        safeRender(data);
+      }
 
-      // Live Firestore sync — the page follows whatever the admin changes
+      // 2. Live Firestore sync — renders only if the data actually changed
       function liveFetch() {
-        if (!window.DataService) return;
+        if (!window.DataService) {
+          // No DataService: if nothing rendered yet, fall back to static BIKES_DATA
+          if (!hasRendered) safeRender(BIKES_DATA[bikeId] || BIKES_DATA['vespa']);
+          return;
+        }
 
         window.DataService.watchFleet(function (fleet) {
           var liveData = resolveFromFleet(fleet);
-          if (liveData) renderPageWithData(liveData);
+          if (liveData) {
+            safeRender(liveData);
+          } else if (!hasRendered) {
+            // Fleet came back but this vehicle isn't in it — use static data
+            safeRender(BIKES_DATA[bikeId] || BIKES_DATA['vespa']);
+          }
         });
+
+        // Safety: if nothing renders within 3s (e.g. slow network), reveal static data
+        setTimeout(function () {
+          if (!hasRendered) safeRender(BIKES_DATA[bikeId] || BIKES_DATA['vespa']);
+        }, 3000);
       }
 
       if (document.readyState === 'loading') {
@@ -1100,12 +1156,12 @@
   </script>
 
   <!-- Floating WhatsApp Action Button -->
-  <a href="https://wa.me/919600334488?text=Hi%20Vijay%20Arya%20Bike%20Rentals,%20I%20want%20to%20rent%20a%20bike"
+  <a href="https://wa.me/919600334488?text=Hi%20Vijay%20Arya%20Bike%20Rentals,%20I%20want%20to%20rent%20a%20scooter"
     target="_blank" rel="noopener" class="floating-whatsapp-btn"
     aria-label="Chat on WhatsApp with Vijay Arya Bike Rentals">
-    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.438 5.174L2 22l4.982-1.309A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" fill="#FFFFFF"/>
-      <path d="M16.643 14.072c-.255-.128-1.508-.744-1.742-.829-.234-.085-.404-.128-.574.128-.17.255-.659.829-.808.999-.149.17-.298.191-.553.064-.255-.128-1.077-.397-2.052-1.267-.759-.677-1.272-1.513-1.421-1.768-.149-.255-.016-.393.111-.52.115-.115.255-.298.383-.447.128-.149.17-.255.255-.425.085-.17.043-.319-.021-.447-.064-.128-.574-1.382-.787-1.893-.207-.497-.419-.429-.574-.437l-.49-.009c-.17 0-.447.064-.68.319-.234.255-.893.872-.893 2.127 0 1.255.914 2.467 1.042 2.637.128.17 1.8 2.748 4.36 3.855.609.263 1.085.42 1.456.538.611.194 1.167.167 1.606.102.49-.073 1.508-.617 1.721-1.212.213-.595.213-1.106.149-1.212-.064-.106-.234-.17-.489-.298z" fill="#25D366"/>
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <path fill="#FFFFFF" fill-rule="evenodd" clip-rule="evenodd"
+        d="M16.004 0C7.17 0 0 7.17 0 16.004c0 2.822.736 5.576 2.134 7.997L.092 31.91l8.118-2.006a15.938 15.938 0 0 0 7.794 2.01h.007c8.832 0 16.002-7.17 16.002-16.004 0-4.275-1.665-8.294-4.69-11.319C24.3 1.666 20.278 0 16.004 0zm0 29.288h-.006a13.23 13.23 0 0 1-6.744-1.848l-.484-.287-5.012 1.239 1.336-4.887-.315-.502a13.243 13.243 0 0 1-2.032-7.001c0-7.324 5.959-13.284 13.287-13.284 3.548 0 6.883 1.383 9.392 3.892a13.213 13.213 0 0 1 3.89 9.394c-.003 7.325-5.963 13.284-13.286 13.284zm7.288-9.954c-.4-.2-2.365-1.167-2.732-1.3-.367-.134-.634-.2-.9.2-.267.4-1.034 1.3-1.268 1.567-.234.267-.467.3-.867.1-.4-.2-1.69-.623-3.219-1.986-1.19-1.061-1.993-2.372-2.227-2.772-.234-.4-.025-.616.175-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.969-.325-.78-.655-.674-.9-.686l-.767-.014c-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.336s1.433 3.869 1.633 4.136c.2.267 2.822 4.31 6.836 6.042.955.412 1.7.659 2.28.844.958.305 1.83.262 2.52.159.769-.115 2.365-.967 2.7-1.9.333-.934.333-1.734.233-1.9-.1-.166-.367-.266-.767-.466z"/>
     </svg>
   </a>
 </body>

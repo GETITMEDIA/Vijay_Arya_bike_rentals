@@ -1,4 +1,30 @@
 /* ==========================================================================
+   Tw Cen MT — the brand typeface, served from assets/fonts/
+   ========================================================================== */
+@font-face {
+  font-family: "Tw Cen MT Web";
+  src: url("../assets/fonts/TwCenMT-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Tw Cen MT Web";
+  src: url("../assets/fonts/TwCenMT-Bold.ttf") format("truetype");
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Tw Cen MT Web";
+  src: url("../assets/fonts/TwCenMT-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+/* ==========================================================================
    Vijay Arya Bike Rentals — Admin Dashboard v2.0
    Premium Redesign: Dark sidebar, gradient cards, glass modals, micro-animations
    ========================================================================== */
@@ -59,8 +85,8 @@
   --sh-brand: 0 4px 14px rgba(239,49,56,.25);
 
   /* Fonts */
-  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --serif: "Playfair Display", Georgia, serif;
+  --sans: "Tw Cen MT Web", "Tw Cen MT", "Century Gothic", Jost, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --serif: "Tw Cen MT Web", "Tw Cen MT", "Century Gothic", Jost, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
 
   /* ── Legacy aliases (used by inline styles in admin.html) ── */
@@ -3668,3 +3694,277 @@ img, svg, video, canvas { max-width: 100%; }
 
 .load-more-wrap[hidden] { display: none; }
 .load-more-wrap .btn-secondary-admin { min-width: 220px; justify-content: center; }
+
+/* Payment Pending stage (GPay / UPI, screenshot not yet checked) */
+.badge-pending { background: #FEF3C7 !important; color: #92400E !important; }
+.status-select.status-pending { background-color: #FFF7ED; color: #C2410C; border-color: #FED7AA; }
+
+.stat-pending-note {
+  margin-top: 6px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #C2410C;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.stat-pending-note[hidden] { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   25. KYC DOCUMENT VIEWER FIXES  (v25)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Stacking: the document lightbox and confirm dialog open ON TOP of the
+   receipt modal (they share .admin-modal, and DOM order put them behind). */
+.doc-lightbox-modal { z-index: 10050 !important; }
+.confirm-modal      { z-index: 10060 !important; }
+
+/* Card stays still — no jump, no red frame, no zoom on hover */
+.kyc-doc-card,
+.kyc-doc-card:hover {
+  transform: none !important;
+  border-color: var(--n-200) !important;
+  box-shadow: none;
+  cursor: default;
+  padding: 0;
+  gap: 0;
+  background: #FFFFFF;
+}
+
+.kyc-doc-card:hover .kyc-doc-thumb { transform: none !important; }
+
+/* Show the WHOLE document — an ID must never be cropped */
+.kyc-doc-thumb-box {
+  height: 170px;
+  border-radius: 12px 12px 0 0;
+  background: #F4F4F5;
+  cursor: zoom-in;
+}
+
+.kyc-doc-thumb {
+  object-fit: contain !important;
+  padding: 6px;
+}
+
+/* "Enlarge" hint only while the pointer is on the picture itself */
+.kyc-doc-card:hover .kyc-zoom-overlay { opacity: 0; }
+.kyc-doc-thumb-box:hover .kyc-zoom-overlay { opacity: 1; }
+
+.kyc-zoom-overlay {
+  background: rgba(15, 23, 42, .45);
+  flex-direction: column;
+}
+
+/* Lightbox: the image fits the screen, nothing overflows */
+.modal-dialog-lightbox {
+  display: flex;
+  flex-direction: column;
+  max-height: 92vh;
+  overflow: hidden;
+}
+
+.lightbox-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+}
+
+.lightbox-body img {
+  max-width: 100%;
+  max-height: calc(92vh - 150px);
+  width: auto;
+  height: auto;
+}
+
+.lightbox-head .modal-close-btn {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, .08);
+}
+
+.lightbox-head .modal-close-btn:hover { background: rgba(255, 255, 255, .18); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   26. READABLE DATES & UTR IN THE BOOKINGS TABLE  (v26)
+   ═══════════════════════════════════════════════════════════════════ */
+.cell-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--n-700);
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.cell-meta em {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--n-400);
+  min-width: 42px;
+}
+
+/* UPI transaction ID the customer entered */
+.utr-tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #065F46;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  padding: 2px 7px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.utr-tag.is-dupe {
+  color: #991B1B;
+  background: #FEE2E2;
+  border-color: #FCA5A5;
+}
+
+.utr-strong { font-family: var(--mono); letter-spacing: .04em; }
+
+@media (max-width: 767px) {
+  .cell-meta { justify-content: flex-end; white-space: normal; }
+  .cell-meta em { min-width: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   27. COLOUR OPTIONS (one scooter per colour)  (v28)
+   ═══════════════════════════════════════════════════════════════════ */
+.veh-colors-section {
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--n-50);
+  border: 1px solid var(--n-200);
+  border-radius: 12px;
+}
+
+.veh-colors-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.veh-colors-head h5 { font-size: 14px; font-weight: 700; color: var(--n-900); }
+.veh-colors-head p { font-size: 11.5px; color: var(--n-500); margin-top: 2px; }
+
+.veh-colors-list { display: flex; flex-direction: column; gap: 8px; }
+
+.veh-colors-empty {
+  font-size: 12px;
+  color: var(--n-400);
+  text-align: center;
+  padding: 6px 0;
+}
+
+.veh-colors-empty[hidden] { display: none; }
+
+.veh-color-row {
+  display: grid;
+  grid-template-columns: 38px 1fr 130px auto 36px;
+  gap: 8px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--n-200);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.veh-color-hex {
+  width: 38px;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid var(--n-200);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.veh-color-name,
+.veh-color-status {
+  height: 38px;
+  padding: 0 10px;
+  font: inherit;
+  font-size: 13px;
+  border: 1px solid var(--n-200);
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+}
+
+.veh-color-name:focus,
+.veh-color-status:focus { border-color: var(--brand); }
+
+.veh-color-photos { display: flex; gap: 6px; }
+
+.veh-color-photo {
+  width: 46px;
+  height: 38px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--n-400);
+  background: var(--n-50);
+  border: 1.5px dashed var(--n-300);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.veh-color-photo.has-img { border-style: solid; border-color: var(--n-200); background: #fff; }
+.veh-color-photo img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
+.veh-color-photo:hover { border-color: var(--brand); color: var(--brand); }
+
+.veh-color-del {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--n-200);
+  border-radius: 8px;
+  color: #DC2626;
+  cursor: pointer;
+}
+
+.veh-color-del:hover { background: #FEE2E2; border-color: #FCA5A5; }
+
+/* Colour dots on the fleet card */
+.bike-card-colors {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--n-500);
+}
+
+.bike-card-colors i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
+}
+
+.bike-card-colors b { margin-left: 3px; font-weight: 700; }
+
+@media (max-width: 640px) {
+  .veh-color-row { grid-template-columns: 38px 1fr; grid-auto-rows: auto; }
+  .veh-color-status { grid-column: 1 / -1; width: 100%; }
+  .veh-color-photos { grid-column: 1 / -1; }
+  .veh-color-del { grid-column: 1 / -1; width: 100%; }
+}

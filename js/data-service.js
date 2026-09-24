@@ -202,8 +202,13 @@
     if (dataUrl.indexOf('data:') !== 0) return Promise.resolve(dataUrl); // already a URL
 
     try {
+      var mime = 'image/jpeg';
+      var match = dataUrl.match(/^data:([^;]+);base64,/);
+      if (match && match[1]) mime = match[1];
+
       var ref = storage.ref().child(path);
-      var task = ref.putString(dataUrl, 'data_url').then(function () {
+      var metadata = { contentType: mime };
+      var task = ref.putString(dataUrl, 'data_url', metadata).then(function () {
         return ref.getDownloadURL();
       });
 
@@ -236,18 +241,14 @@
 
   // Common seed fleet for initial population
   var DEFAULT_SEED_FLEET = [
-    { id: 'vespa', name: 'Vespa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE', desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
-    { id: 'honda-activa', name: 'Honda Activa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_activa_main_view.png', imageBack: 'assets/rentel-bikes/honda_activa_side_view.png', status: 'AVAILABLE', desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy rides.' },
-    { id: 'tvs-jupiter', name: 'TVS Jupiter', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/tvs_jupiter_main_view.png', imageBack: 'assets/rentel-bikes/tvs_jupiter_side_view.png', status: 'AVAILABLE', desc: 'Comfortable ride with extra footboard space and plush suspension.' },
+    { id: 'vespa', name: 'Vespa', category: 'SCOOTER', colors: [{ name: 'Peach Green', hex: '#A8D5BA', image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE' }, { name: 'Red', hex: '#D0202E', image: 'assets/rentel-bikes/vespa_red_main_view.png', imageBack: 'assets/rentel-bikes/vespa_red_side_view.png', status: 'AVAILABLE' }, { name: 'Black', hex: '#1C1917', image: 'assets/rentel-bikes/vespa_black_main_view.png', imageBack: 'assets/rentel-bikes/vespa_black_side_view.png', status: 'AVAILABLE' }, { name: 'Light Blue', hex: '#9CC6DA', image: 'assets/rentel-bikes/vespa_light_blue_main_view.png', imageBack: 'assets/rentel-bikes/vespa_light_blue_side_view.png', status: 'AVAILABLE' }], rate: 500, advance: 500, image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE', desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
+    { id: 'honda-activa', name: 'Honda Activa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_activa_main_view.png', imageBack: 'assets/rentel-bikes/honda_activa_side_view.png', status: 'AVAILABLE', desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy trips.' },
+    { id: 'tvs-jupiter', name: 'TVS Jupiter', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/tvs_jupiter_main_view.png', imageBack: 'assets/rentel-bikes/tvs_jupiter_side_view.png', status: 'AVAILABLE', desc: 'Comfortable seating with extra footboard space and plush suspension.' },
     { id: 'suzuki-access', name: 'Suzuki Access 125', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/suzuki_access_main_view.png', imageBack: 'assets/rentel-bikes/suzuki_access_side_view.png', status: 'AVAILABLE', desc: 'Powerful 125cc engine offering effortless pickup and comfortable seating.' },
     { id: 'honda-dio', name: 'Honda Dio', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/dio_main_view.png', imageBack: 'assets/rentel-bikes/dio_side_view.png', status: 'AVAILABLE', desc: 'Sporty design and lightweight handling, ideal for city sightseeing and cafes.' },
     { id: 'yamaha-fascino', name: 'Yamaha Fascino', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fascino_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fascino_side_view.png', status: 'AVAILABLE', desc: 'Classic retro aesthetics combined with Yamaha refined 125cc performance.' },
     { id: 'yamaha-ray', name: 'Yamaha Ray', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_ray_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_ray_side_view.png', status: 'AVAILABLE', desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
     { id: 'honda-cliq', name: 'Honda Cliq', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_clic_main_view.png', imageBack: 'assets/rentel-bikes/honda_clic_side_view.png', status: 'AVAILABLE', desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
-    { id: 'honda-navi', name: 'Honda Navi', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/Honda_navi_main_view.png', imageBack: 'assets/rentel-bikes/honda_navi_side_view.png', status: 'AVAILABLE', desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' },
-    { id: 'hero-splendor', name: 'Hero Splendor', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/hero_splender_main_view.png', imageBack: 'assets/rentel-bikes/hero_spleander_side_view.png', status: 'AVAILABLE', desc: 'Legendary Indian commuter motorcycle offering unmatched fuel efficiency.' },
-    { id: 'yamaha-fz', name: 'Yamaha FZ', category: 'BIKE', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Muscular street bike with superior road grip for cruising ECR and Auroville.' },
-    { id: 're-gt650', name: 'Royal Enfield GT 650', category: 'BIKE', rate: 1200, advance: 500, image: 'assets/rentel-bikes/yamaha_fz_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fz_side_view.png', status: 'AVAILABLE', desc: 'Twin-cylinder cafe racer powerhouse for the ultimate coastal highway experience.' }
   ];
 
   // Ensure no undefined values reach Firestore
@@ -469,6 +470,75 @@
       });
     },
 
+    /**
+     * The shop rents scooters only. Remove the motorcycles that were part of
+     * the original seed list (Hero Splendor, Yamaha FZ, Royal Enfield GT 650)
+     * from Firestore and from the local cache. Safe to call every time — it
+     * only touches those three document ids.
+     * @returns {Promise<number>} how many were removed
+     */
+    removeRetiredVehicles: function () {
+      var RETIRED = ['hero-splendor', 'yamaha-fz', 're-gt650', 'honda-navi'];
+
+      var local = lsGet(KEY_FLEET, []) || [];
+      var kept = local.filter(function (v) { return RETIRED.indexOf(v.id) === -1; });
+      if (kept.length !== local.length) lsSet(KEY_FLEET, kept);
+
+      if (init() !== 'firebase') return Promise.resolve(local.length - kept.length);
+
+      return Promise.all(RETIRED.map(function (id) {
+        var ref = db.collection(COL_FLEET).doc(id);
+        return ref.get({ source: 'server' }).then(function (snap) {
+          if (!snap.exists) return 0;
+          deleteStorageFolder('vehicles/' + id);
+          return ref.delete().then(function () {
+            console.log('[fleet] removed motorcycle "' + id + '" (scooters only)');
+            return 1;
+          });
+        }).catch(function (err) {
+          console.info('[fleet] could not check "' + id + '":', (err && err.code) || err.message);
+          return 0;
+        });
+      })).then(function (results) {
+        return results.reduce(function (a, b) { return a + b; }, 0);
+      });
+    },
+
+
+    /**
+     * Vehicles seeded before colour options existed have no `colors` field.
+     * Copy the built-in list onto those documents, once.
+     * @returns {Promise<number>} how many vehicles were updated
+     */
+    backfillColors: function () {
+      if (init() !== 'firebase') return Promise.resolve(0);
+
+      var withColors = DEFAULT_SEED_FLEET.filter(function (d) { return d.colors && d.colors.length; });
+
+      return Promise.all(withColors.map(function (d) {
+        var ref = db.collection(COL_FLEET).doc(d.id);
+
+        return ref.get({ source: 'server' }).then(function (snap) {
+          if (!snap.exists) return 0;
+
+          var data = snap.data() || {};
+          if (data.colors && data.colors.length) return 0;        // already has colours
+
+          return ref.update({
+            colors: d.colors.map(function (c) { return cleanDoc(c); }),
+            updatedAt: Date.now()
+          }).then(function () {
+            console.log('[fleet] colour options added to "' + d.id + '"');
+            return 1;
+          });
+        }).catch(function (err) {
+          console.info('[fleet] colour backfill skipped for "' + d.id + '":', (err && err.code) || err.message);
+          return 0;
+        });
+      })).then(function (results) {
+        return results.reduce(function (a, b) { return a + b; }, 0);
+      });
+    },
     /** How many vehicle documents exist right now. @returns {Promise<number>} */
     countFleetDocs: function () {
       if (init() !== 'firebase') return Promise.resolve(-1);
@@ -495,11 +565,6 @@
       if (!v.createdAt) v.createdAt = Date.now();
       v.updatedAt = Date.now();
 
-      // Snapshot of the stored version BEFORE the local mirror overwrites it —
-      // this is what the changed-field diff is computed against.
-      var previousDoc = (lsGet(KEY_FLEET, []) || []).filter(function (x) { return x.id === id; })[0];
-      if (previousDoc) previousDoc = JSON.parse(JSON.stringify(previousDoc));
-
       // Immediate local sync
       var fleet = lsGet(KEY_FLEET, DEFAULT_SEED_FLEET.slice());
       var idx = fleet.findIndex(function (x) { return x.id === id; });
@@ -510,74 +575,49 @@
         return Promise.resolve({ id: id, cloud: false, error: 'Offline demo mode' });
       }
 
-      // 1. Photos — each capped at 5s, falls back to the inline image
-      return Promise.all([
-        uploadDataUrl('vehicles/' + id + '/front.jpg', v.image),
-        uploadDataUrl('vehicles/' + id + '/back.jpg', v.imageBack)
-      ]).then(function (urls) {
-        if (urls[0]) v.image = urls[0];
-        if (urls[1]) v.imageBack = urls[1];
+      // 1. Upload main photos and all color variant photos
+      var uploadTasks = [
+        uploadDataUrl('vehicles/' + id + '/front.jpg', v.image).then(function (url) { if (url) v.image = url; }),
+        uploadDataUrl('vehicles/' + id + '/back.jpg', v.imageBack).then(function (url) { if (url) v.imageBack = url; })
+      ];
 
-        // Update local with final uploaded URLs
+      if (Array.isArray(v.colors)) {
+        v.colors.forEach(function (c, cIdx) {
+          var safeName = (c.name || 'col_' + cIdx).toLowerCase().replace(/[^a-z0-9]/g, '_');
+          if (c.image && c.image.indexOf('data:') === 0) {
+            uploadTasks.push(
+              uploadDataUrl('vehicles/' + id + '/colors/' + safeName + '_front.jpg', c.image).then(function (url) {
+                if (url) c.image = url;
+              })
+            );
+          }
+          if (c.imageBack && c.imageBack.indexOf('data:') === 0) {
+            uploadTasks.push(
+              uploadDataUrl('vehicles/' + id + '/colors/' + safeName + '_back.jpg', c.imageBack).then(function (url) {
+                if (url) c.imageBack = url;
+              })
+            );
+          }
+        });
+      }
+
+      return Promise.all(uploadTasks).then(function () {
+        // Update local storage with final resolved URLs
         var cur = lsGet(KEY_FLEET, []);
         var cIdx = cur.findIndex(function (x) { return x.id === id; });
         if (cIdx > -1) cur[cIdx] = v; else cur.unshift(v);
         lsSet(KEY_FLEET, cur);
 
-        // 2. Build the Firestore document.
-        //    A Firestore document may not exceed 1 MiB. If a Storage upload
-        //    failed we still hold a base64 image — sending that would make the
-        //    whole write fail, so it is dropped from the cloud copy (the photo
-        //    stays available locally and is retried on the next save).
         var docData = cleanDoc(v);
-        var droppedPhotos = [];
-
-        ['image', 'imageBack'].forEach(function (key) {
-          var val = docData[key];
-          if (typeof val === 'string' && val.indexOf('data:') === 0 && val.length > 300000) {
-            docData[key] = '';
-            droppedPhotos.push(key === 'image' ? 'front' : 'back');
-          }
-        });
-
-        if (droppedPhotos.length) {
-          console.warn('[vehicle] Photo(s) too large for Firestore (' + droppedPhotos.join(', ') +
-            ') — saved without them. Enable Firebase Storage so photos upload properly.');
-        }
-
-        // Editing an existing vehicle? Send only the fields that actually
-        // changed, so untouched data (and its photo URLs) is not rewritten.
         var docRef = db.collection(COL_FLEET).doc(id);
-        var write;
 
-        if (vehicle.id && previousDoc && previousDoc.createdAt) {
-          var diff = {};
-          Object.keys(docData).forEach(function (k) {
-            if (k === 'updatedAt') { diff[k] = docData[k]; return; }
-            if (JSON.stringify(docData[k]) !== JSON.stringify(previousDoc[k])) diff[k] = docData[k];
-          });
-
-          if (Object.keys(diff).length <= 1) {
-            console.log('[vehicle] nothing changed for ' + id + ' — no write sent');
-            return { id: id, cloud: true, error: null, photosDropped: droppedPhotos };
-          }
-
-          console.log('[vehicle] updating ' + Object.keys(diff).length + ' field(s):',
-            Object.keys(diff).join(', '));
-          write = docRef.set(diff, { merge: true });
-        } else {
-          write = docRef.set(docData, { merge: true });
-        }
-
-        return withTimeout(write, WRITE_TIMEOUT, new Error('Firestore write timed out after 5s'))
+        return withTimeout(docRef.set(docData, { merge: true }), WRITE_TIMEOUT, new Error('Firestore write timed out after 5s'))
           .then(function () {
-            console.log('✓ Vehicle "' + v.name + '" written to Firestore/' + COL_FLEET + '/' + id +
-              (droppedPhotos.length ? ' (without ' + droppedPhotos.join(' & ') + ' photo)' : ''));
+            console.log('✓ Vehicle "' + v.name + '" saved to Firestore/' + COL_FLEET + '/' + id);
             return {
               id: id,
               cloud: true,
-              error: null,
-              photosDropped: droppedPhotos
+              error: null
             };
           })
           .catch(function (err) {
