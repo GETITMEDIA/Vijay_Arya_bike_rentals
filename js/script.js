@@ -2133,7 +2133,7 @@
             ? '<b>Next step:</b> send your payment screenshot on WhatsApp to +91 9600 33 44 88 with this booking ID. ' +
               'Your booking is confirmed once the payment is verified.<br>'
             : '') +
-          'Please bring your <b>original ID and Driving Licence</b> at pickup. Helmet included. No security deposit.' +
+          'Please bring your <b>original ID and Driving Licence</b> at pickup. Helmet included.' +
         '</div>' +
 
         '<div class="bar"><button onclick="window.print()">Print / Save as PDF</button></div>' +

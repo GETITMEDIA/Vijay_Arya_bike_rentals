@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=33.0">
+  <link rel="stylesheet" href="css/admin.css?v=33.1">
 </head>
 
 <body>
@@ -1807,7 +1807,7 @@
 
       var html = '';
       filtered.forEach(function (b) {
-        // Booking lifecycle: advance paid → bike handed over → returned & balance paid
+        // Booking lifecycle: advance paid → scooter handed over → returned & rental settled
         var cur = normalizeStatus(b.status);
         var statusSelect = '<select class="status-select status-' + stageOf(cur).css + '" ' +
           'title="Booking stage" onchange="updateBookingStatus(\'' + b.bookingId + '\', this.value)">' +
@@ -1842,7 +1842,7 @@
             '<span class="cell-meta"><em>From</em>' + fmtDay(b.startDate) + (b.startTime ? ' · ' + fmtTime(b.startTime) : '') + '</span>' +
             '<span class="cell-meta"><em>To</em>' + fmtDay(b.endDate) + (b.endTime ? ' · ' + fmtTime(b.endTime) : '') + '</span></div></td>' +
           '<td data-label="Advance"><div class="stack-cell"><strong class="cell-amount">₹' + (b.advancePaid || 500) + '</strong>' +
-            '<small class="cell-muted">Balance at shop</small></div></td>' +
+            '<small class="cell-muted">Advance paid</small></div></td>' +
           '<td data-label="KYC">' + kycBadge + '</td>' +
           '<td data-label="Status">' + statusSelect + '</td>' +
           '<td class="col-actions" data-label="Actions"><div class="table-actions">' +
@@ -1932,8 +1932,7 @@
       item.statusLabel = stage.label;          // plain text, for reading in Firestore
       item.statusUpdatedAt = new Date().toISOString();
 
-      // Once the bike is returned the balance is settled at the shop
-      if (stage.value === 'RETURNED_PAID') item.balanceDue = 0;
+      // The rental is settled at the shop when the scooter comes back
 
       DataService.updateBooking(bookingId, {
         status: item.status,
@@ -2215,7 +2214,7 @@
         return;
       }
 
-      var headers = ['Booking ID', 'Payment ID', 'Customer Name', 'Phone', 'Email', 'Vehicle', 'Colour', 'Quantity', 'Start Date', 'End Date', 'Days', 'Daily Rate', 'Total Estimated', 'Advance Paid', 'Balance Due', 'Status', 'Date Time'];
+      var headers = ['Booking ID', 'Payment ID', 'Customer Name', 'Phone', 'Email', 'Vehicle', 'Colour', 'Quantity', 'Start Date', 'End Date', 'Days', 'Advance Paid', 'Status', 'Date Time'];
       var rows = exportSet.map(function (b) {
         return [
           b.bookingId || '',
@@ -2228,10 +2227,7 @@
           b.startDate || '',
           b.endDate || '',
           b.days || 1,
-          b.dailyRate || 500,
-          b.estimatedTotal || 500,
           b.advancePaid || 500,
-          b.balanceDue || 0,
           '"' + stageOf(b.status).label + '"',
           '"' + (b.formattedDate || '') + '"'
         ].join(',');
