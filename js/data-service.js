@@ -242,14 +242,13 @@
   // Common seed fleet for initial population
   var DEFAULT_SEED_FLEET = [
     { id: 'vespa', name: 'Vespa', category: 'SCOOTER', colors: [{ name: 'Peach Green', hex: '#A8D5BA', image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE' }, { name: 'Red', hex: '#D0202E', image: 'assets/rentel-bikes/vespa_red_main_view.png', imageBack: 'assets/rentel-bikes/vespa_red_side_view.png', status: 'AVAILABLE' }, { name: 'Black', hex: '#1C1917', image: 'assets/rentel-bikes/vespa_black_main_view.png', imageBack: 'assets/rentel-bikes/vespa_black_side_view.png', status: 'AVAILABLE' }, { name: 'Light Blue', hex: '#9CC6DA', image: 'assets/rentel-bikes/vespa_light_blue_main_view.png', imageBack: 'assets/rentel-bikes/vespa_light_blue_side_view.png', status: 'AVAILABLE' }], rate: 500, advance: 500, image: 'assets/rentel-bikes/vespa_main_view.png', imageBack: 'assets/rentel-bikes/vespa_side_view.png', status: 'AVAILABLE', desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
-    { id: 'honda-activa', name: 'Honda Activa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_activa_main_view.png', imageBack: 'assets/rentel-bikes/honda_activa_side_view.png', status: 'AVAILABLE', desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy rides.' },
-    { id: 'tvs-jupiter', name: 'TVS Jupiter', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/tvs_jupiter_main_view.png', imageBack: 'assets/rentel-bikes/tvs_jupiter_side_view.png', status: 'AVAILABLE', desc: 'Comfortable ride with extra footboard space and plush suspension.' },
+    { id: 'honda-activa', name: 'Honda Activa', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_activa_main_view.png', imageBack: 'assets/rentel-bikes/honda_activa_side_view.png', status: 'AVAILABLE', desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy trips.' },
+    { id: 'tvs-jupiter', name: 'TVS Jupiter', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/tvs_jupiter_main_view.png', imageBack: 'assets/rentel-bikes/tvs_jupiter_side_view.png', status: 'AVAILABLE', desc: 'Comfortable seating with extra footboard space and plush suspension.' },
     { id: 'suzuki-access', name: 'Suzuki Access 125', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/suzuki_access_main_view.png', imageBack: 'assets/rentel-bikes/suzuki_access_side_view.png', status: 'AVAILABLE', desc: 'Powerful 125cc engine offering effortless pickup and comfortable seating.' },
     { id: 'honda-dio', name: 'Honda Dio', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/dio_main_view.png', imageBack: 'assets/rentel-bikes/dio_side_view.png', status: 'AVAILABLE', desc: 'Sporty design and lightweight handling, ideal for city sightseeing and cafes.' },
     { id: 'yamaha-fascino', name: 'Yamaha Fascino', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_fascino_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_fascino_side_view.png', status: 'AVAILABLE', desc: 'Classic retro aesthetics combined with Yamaha refined 125cc performance.' },
     { id: 'yamaha-ray', name: 'Yamaha Ray', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/yamaha_ray_main_view.png', imageBack: 'assets/rentel-bikes/yamaha_ray_side_view.png', status: 'AVAILABLE', desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
     { id: 'honda-cliq', name: 'Honda Cliq', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/honda_clic_main_view.png', imageBack: 'assets/rentel-bikes/honda_clic_side_view.png', status: 'AVAILABLE', desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
-    { id: 'honda-navi', name: 'Honda Navi', category: 'SCOOTER', rate: 500, advance: 500, image: 'assets/rentel-bikes/Honda_navi_main_view.png', imageBack: 'assets/rentel-bikes/honda_navi_side_view.png', status: 'AVAILABLE', desc: 'Fun-sized mini-bike experience with convenient automatic CVT transmission.' }
   ];
 
   // Ensure no undefined values reach Firestore
@@ -479,7 +478,7 @@
      * @returns {Promise<number>} how many were removed
      */
     removeRetiredVehicles: function () {
-      var RETIRED = ['hero-splendor', 'yamaha-fz', 're-gt650'];
+      var RETIRED = ['hero-splendor', 'yamaha-fz', 're-gt650', 'honda-navi'];
 
       var local = lsGet(KEY_FLEET, []) || [];
       var kept = local.filter(function (v) { return RETIRED.indexOf(v.id) === -1; });

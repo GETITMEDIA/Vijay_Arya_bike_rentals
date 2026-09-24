@@ -635,21 +635,20 @@
 
     var BIKE_DESCRIPTIONS = {
       'Vespa': 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.',
-      'Honda Activa': 'India\'s most trusted automatic scooter for smooth city rides.',
-      'TVS Jupiter': 'High mileage, comfortable seating scooter perfect for long daily rides.',
+      'Honda Activa': 'India\'s most trusted automatic scooter for smooth city trips.',
+      'TVS Jupiter': 'High mileage, comfortable seating scooter perfect for long daily trips.',
       'Suzuki Access 125': 'Powerful 125cc scooter with excellent pickup and spacious footboard.',
       'Honda Dio': 'Sporty design and agile handling for easy navigating through narrow streets.',
       'Yamaha Fascino': 'Retro-modern lightweight scooter with refined engine performance.',
       'Yamaha Ray': 'Nimble and compact automatic scooter ideal for quick city errands.',
       'Honda Cliq': 'Sturdy, practical and light runabout scooter.',
-      'Honda Navi': 'Compact, fun scooter with full automatic convenience.',
     };
 
     var currentQty = 1;
     var ADVANCE   = 500;
     var UPI_ID    = upiIdEl ? upiIdEl.textContent.trim() : '7200011799@okbizaxis';
     var PAYEE     = 'Vijay Arya Bike Rentals';
-    var WHATSAPP  = '917200011799';
+    var WHATSAPP  = '919600334488';
     var lastFocus = null;
 
     // Date defaults Initialization
@@ -886,7 +885,7 @@
       }
 
       var msg =
-        'Hello Vijay Arya Bike Rentals, I would like to reserve a ride.\n\n' +
+        'Hello Vijay Arya Bike Rentals, I would like to reserve a scooter.\n\n' +
         '📌 *RENTAL DETAILS*\n' +
         '• Vehicle: ' + bike + ' (Qty: ' + currentQty + ')\n' +
         '• Pickup: ' + prettyDate(sDate) + ' at ' + sTime + '\n' +
@@ -1439,14 +1438,13 @@
     // Catalog details
     var FLEET_CATALOG = {
       'Vespa': { rate: 500, desc: 'Stylish Italian-inspired automatic scooter for comfortable cruising through White Town.' },
-      'Honda Activa': { rate: 500, desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy rides.' },
-      'TVS Jupiter': { rate: 500, desc: 'Comfortable ride with extra footboard space and plush suspension.' },
+      'Honda Activa': { rate: 500, desc: 'Reliable, smooth, and highly fuel-efficient 110cc scooter for daily Pondy trips.' },
+      'TVS Jupiter': { rate: 500, desc: 'Comfortable seating with extra footboard space and plush suspension.' },
       'Suzuki Access 125': { rate: 500, desc: 'Powerful 125cc engine offering effortless pickup and comfortable seating.' },
       'Honda Dio': { rate: 500, desc: 'Sporty design and lightweight handling, ideal for city sightseeing and cafes.' },
       'Yamaha Fascino': { rate: 500, desc: 'Classic retro aesthetics combined with Yamaha refined 125cc performance.' },
       'Yamaha Ray': { rate: 500, desc: 'Aggressive street styling scooter with sharp maneuvering and easy handling.' },
       'Honda Cliq': { rate: 500, desc: 'Rugged, utilitarian automatic two-wheeler with block-pattern tyres.' },
-      'Honda Navi': { rate: 500, desc: 'Compact, fun scooter with a convenient automatic CVT transmission.' },
     };
 
     // Live fleet sync for booking modal & website catalog
@@ -2003,7 +2001,7 @@
       if (subEl) {
         subEl.textContent = isUpi
           ? 'One last step — send us your payment screenshot.'
-          : 'Advance payment received. Your ride is reserved!';
+          : 'Advance payment received. Your scooter is reserved!';
       }
       if (shotAlert) shotAlert.hidden = !isUpi;
       if (whatsText) {
@@ -2139,7 +2137,7 @@
         '</div>' +
 
         '<div class="bar"><button onclick="window.print()">Print / Save as PDF</button></div>' +
-        '<p class="foot">Thank you for riding with Vijay Arya Bike Rentals.</p>' +
+        '<p class="foot">Thank you for choosing Vijay Arya Bike Rentals.</p>' +
         '</div></body></html>';
     }
 
@@ -2183,7 +2181,7 @@
       });
     }
 
-    // Book another ride reset
+    // Book another scooter reset
     if (bkNewBooking) {
       bkNewBooking.addEventListener('click', function () {
         if (step1) step1.reset();
