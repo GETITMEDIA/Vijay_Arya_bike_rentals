@@ -4205,6 +4205,38 @@ body.bk-open { overflow: hidden; }
 
 .detail-main-wrapper {
   padding-bottom: 90px;
+  position: relative;
+}
+
+/* Loading spinner shown while vehicle data loads */
+.detail-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 60vh;
+  opacity: 1;
+  transition: opacity .4s ease;
+}
+.detail-loader-spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3.5px solid #E5E2DC;
+  border-top-color: #EF3138;
+  animation: detailSpin .75s linear infinite;
+}
+@keyframes detailSpin {
+  to { transform: rotate(360deg); }
+}
+.detail-loader-text {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .6px;
+  color: #78716C;
+  text-transform: uppercase;
 }
 
 .detail-grid {

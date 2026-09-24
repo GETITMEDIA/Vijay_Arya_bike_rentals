@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/admin.css?v=31.0">
+  <link rel="stylesheet" href="css/admin.css?v=32.0">
 </head>
 
 <body>
@@ -1439,7 +1439,7 @@
       reader.onload = function (ev) {
         var img = new Image();
         img.onload = function () {
-          var maxW = 900;
+          var maxW = 800;
           var w = img.width, h = img.height;
           if (w > maxW || h > maxW) {
             if (w > h) { h = Math.round((h * maxW) / w); w = maxW; }
@@ -1449,19 +1449,16 @@
           canvas.width = w; canvas.height = h;
           var ctx = canvas.getContext('2d');
 
-          // White backdrop — JPEG has no transparency
+          // White backdrop
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
 
-          // JPEG, not PNG: PNG ignores the quality argument and a 900px photo
-          // comes out several MB, which is over the Firestore document limit.
-          var out = canvas.toDataURL('image/jpeg', 0.8);
+          var quality = 0.75;
+          var out = canvas.toDataURL('image/jpeg', quality);
 
-          // Still heavy? step the quality down until it is comfortably small
-          var quality = 0.8;
-          while (out.length > 700000 && quality > 0.4) {
-            quality -= 0.15;
+          while (out.length > 180000 && quality > 0.4) {
+            quality -= 0.1;
             out = canvas.toDataURL('image/jpeg', quality);
           }
 
@@ -1688,25 +1685,31 @@
 
         restoreSubmitBtn();
 
+        var localStored = [];
+        try { localStored = JSON.parse(localStorage.getItem(KEY_FLEET) || '[]'); } catch (e) {}
+
         if (editId) {
           var existing = fleet.find(function (x) { return x.id === editId; });
-          if (existing) Object.keys(record).forEach(function (k) { existing[k] = record[k]; });
-        } else if (!fleet.some(function (x) { return x.id === record.id; })) {
-          fleet.unshift(record);
+          var updated = localStored.find(function (x) { return x.id === editId; }) || record;
+          if (existing) Object.keys(updated).forEach(function (k) { existing[k] = updated[k]; });
+        } else {
+          var created = localStored.find(function (x) { return x.id === record.id; }) || record;
+          var exIdx = fleet.findIndex(function (x) { return x.id === created.id; });
+          if (exIdx > -1) {
+            fleet[exIdx] = created;
+          } else {
+            fleet.unshift(created);
+          }
         }
         saveFleet();
         vehModal.classList.remove('is-open');
 
         if (result && result.cloud) {
-          if (result.photosDropped && result.photosDropped.length) {
-            showToast('Vehicle saved — photo not uploaded (enable Firebase Storage)');
-          } else {
-            showToast('✓ Vehicle saved to Cloud Database!');
-          }
+          showToast('✓ Vehicle saved to Cloud Database!');
         } else {
-          var reason = (result && result.error) || 'no response from Firestore';
-          console.warn('Vehicle kept locally only:', reason);
-          showToast('Saved locally — ' + reason);
+          var reason = (result && result.error) || 'saved to local storage';
+          console.warn('Vehicle sync status:', reason);
+          showToast('Saved — ' + reason);
         }
       }
 
@@ -2167,9 +2170,7 @@
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Pickup:</span><strong>' + fmtDay(b.startDate) + (b.startTime ? ' &middot; ' + fmtTime(b.startTime) : '') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Return:</span><strong>' + fmtDay(b.endDate) + (b.endTime ? ' &middot; ' + fmtTime(b.endTime) : '') + '</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Duration:</span><span>' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + '</span></div>' +
-          '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span>Rent:</span><strong>As per shop rate (' + (b.days || 1) + ' day' + ((b.days || 1) > 1 ? 's' : '') + ')</strong></div>' +
           '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:var(--success);border-top:1px dashed var(--admin-border);padding-top:8px;"><span>Advance:</span><strong>₹' + (b.advancePaid || 500) + (normalizeStatus(b.status) === 'PAYMENT_PENDING' ? ' — awaiting screenshot check' : ' (received)') + '</strong></div>' +
-          '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--admin-text-muted);"><span>Balance at pickup:</span><strong>Rent minus ₹' + (b.advancePaid || 500) + ' advance</strong></div>' +
         '</div>' +
         kycDocsHtml;
 
@@ -2278,6 +2279,7 @@
     // Initialize
     renderTopbar();
     checkAuth();
+    loadLocalData();
 
     // Firestore rules require a signed-in admin for writes, so wait for the
     // auth state before loading (and possibly seeding) cloud data.

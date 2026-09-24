@@ -1707,9 +1707,8 @@
           '<div class="summary-row"><span>Name:</span><strong>' + data.customerName + '</strong></div>' +
           '<div class="summary-row"><span>WhatsApp:</span><strong>+91 ' + data.customerPhone + '</strong></div>' +
           '<div class="summary-row"><span>Daily Rate:</span><strong>&#8377;' + data.dailyRate + ' / day &times; ' + data.quantity + '</strong></div>' +
-          '<div class="summary-row"><span>Rent for ' + data.days + ' day' + (data.days > 1 ? 's' : '') + ':</span><strong>As per shop rate</strong></div>' +
           '<div class="summary-row total-row"><span>Advance to Pay Now:</span><strong style="color:var(--red);font-size:16px;">&#8377;' + data.advancePaid + '</strong></div>' +
-          '<div class="summary-row" style="font-size:11.5px;color:#6b7280;"><span>Balance at pickup:</span><span>Rent minus &#8377;' + data.advancePaid + ' advance</span></div>';
+'';
       }
 
       if (bkRzpAmount) {
@@ -2025,7 +2024,7 @@
           '<div class="receipt-item-row"><span>Pickup Timing:</span><strong>' + finalRecord.startTime + ' &ndash; 9:00 PM</strong></div>' +
           '<div class="receipt-item-row"><span>Customer:</span><strong>' + finalRecord.customerName + ' (' + finalRecord.customerPhone + ')</strong></div>' +
           '<div class="receipt-item-row"><span>' + (isUpi ? 'Advance (to verify):' : 'Advance Paid:') + '</span><strong style="color:#059669;">&#8377;' + finalRecord.advancePaid + '</strong></div>' +
-          '<div class="receipt-item-row"><span>Balance at Pickup:</span><strong>Rent minus &#8377;' + finalRecord.advancePaid + ' advance</strong></div>';
+'';
       }
 
       // Populate WhatsApp confirmation URL
@@ -2039,8 +2038,7 @@
             '⏰ *Pickup:* ' + finalRecord.startTime + '\n' +
             '👤 *Name:* ' + finalRecord.customerName + '\n' +
             '📞 *Phone:* +91 ' + finalRecord.customerPhone + '\n' +
-            '💰 *Advance paid:* ₹' + finalRecord.advancePaid + ' to ' + SHOP_UPI_ID + '\n' +
-            '💵 *Balance at pickup:* Rent minus ₹' + finalRecord.advancePaid + ' advance\n\n' +
+            '💰 *Advance paid:* ₹' + finalRecord.advancePaid + ' to ' + SHOP_UPI_ID + '\n\n' +
             'Please confirm my booking. I will bring my original ID & Driving Licence at pickup.'
           : '🎉 *VIJAY ARYA BIKE RENTALS - BOOKING CONFIRMATION*\n\n' +
             '🆔 *Booking ID:* ' + finalRecord.bookingId + '\n' +
@@ -2049,8 +2047,7 @@
             '📅 *Rental Dates:* ' + finalRecord.startDate + ' to ' + finalRecord.endDate + ' (' + finalRecord.days + ' days)\n' +
             '⏰ *Pickup Time:* ' + finalRecord.startTime + '\n' +
             '👤 *Customer:* ' + finalRecord.customerName + ' (+91 ' + finalRecord.customerPhone + ')\n' +
-            '💰 *Advance Paid:* ₹' + finalRecord.advancePaid + ' (PAID via Razorpay)\n' +
-            '💵 *Balance at pickup:* Rent minus ₹' + finalRecord.advancePaid + ' advance\n\n' +
+            '💰 *Advance Paid:* ₹' + finalRecord.advancePaid + ' (PAID via Razorpay)\n\n' +
             'Please reserve my vehicle. I will carry my original Driving Licence and ID at pickup.';
         bkSuccessWhats.href = 'https://wa.me/' + SHOP_WHATSAPP + '?text=' + encodeURIComponent(whatsMsg);
       }
@@ -2130,9 +2127,7 @@
           row('Payment', isUpi
             ? 'Google Pay / UPI to ' + escHtml(r.upiId || SHOP_UPI_ID)
             : 'Razorpay &middot; ' + escHtml(r.paymentId)) +
-          row('Rent', 'As per shop rate for ' + r.days + ' day' + (r.days > 1 ? 's' : '')) +
           row(isUpi ? 'Advance (to be verified)' : 'Advance paid', '&#8377;' + r.advancePaid, true) +
-          '<tr class="total"><td>Balance at pickup</td><td class="b">Rent minus &#8377;' + r.advancePaid + ' advance</td></tr>' +
         '</table>' +
 
         '<div class="note">' +

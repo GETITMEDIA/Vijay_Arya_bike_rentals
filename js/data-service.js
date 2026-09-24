@@ -202,8 +202,13 @@
     if (dataUrl.indexOf('data:') !== 0) return Promise.resolve(dataUrl); // already a URL
 
     try {
+      var mime = 'image/jpeg';
+      var match = dataUrl.match(/^data:([^;]+);base64,/);
+      if (match && match[1]) mime = match[1];
+
       var ref = storage.ref().child(path);
-      var task = ref.putString(dataUrl, 'data_url').then(function () {
+      var metadata = { contentType: mime };
+      var task = ref.putString(dataUrl, 'data_url', metadata).then(function () {
         return ref.getDownloadURL();
       });
 
@@ -561,11 +566,6 @@
       if (!v.createdAt) v.createdAt = Date.now();
       v.updatedAt = Date.now();
 
-      // Snapshot of the stored version BEFORE the local mirror overwrites it —
-      // this is what the changed-field diff is computed against.
-      var previousDoc = (lsGet(KEY_FLEET, []) || []).filter(function (x) { return x.id === id; })[0];
-      if (previousDoc) previousDoc = JSON.parse(JSON.stringify(previousDoc));
-
       // Immediate local sync
       var fleet = lsGet(KEY_FLEET, DEFAULT_SEED_FLEET.slice());
       var idx = fleet.findIndex(function (x) { return x.id === id; });
@@ -576,74 +576,49 @@
         return Promise.resolve({ id: id, cloud: false, error: 'Offline demo mode' });
       }
 
-      // 1. Photos — each capped at 5s, falls back to the inline image
-      return Promise.all([
-        uploadDataUrl('vehicles/' + id + '/front.jpg', v.image),
-        uploadDataUrl('vehicles/' + id + '/back.jpg', v.imageBack)
-      ]).then(function (urls) {
-        if (urls[0]) v.image = urls[0];
-        if (urls[1]) v.imageBack = urls[1];
+      // 1. Upload main photos and all color variant photos
+      var uploadTasks = [
+        uploadDataUrl('vehicles/' + id + '/front.jpg', v.image).then(function (url) { if (url) v.image = url; }),
+        uploadDataUrl('vehicles/' + id + '/back.jpg', v.imageBack).then(function (url) { if (url) v.imageBack = url; })
+      ];
 
-        // Update local with final uploaded URLs
+      if (Array.isArray(v.colors)) {
+        v.colors.forEach(function (c, cIdx) {
+          var safeName = (c.name || 'col_' + cIdx).toLowerCase().replace(/[^a-z0-9]/g, '_');
+          if (c.image && c.image.indexOf('data:') === 0) {
+            uploadTasks.push(
+              uploadDataUrl('vehicles/' + id + '/colors/' + safeName + '_front.jpg', c.image).then(function (url) {
+                if (url) c.image = url;
+              })
+            );
+          }
+          if (c.imageBack && c.imageBack.indexOf('data:') === 0) {
+            uploadTasks.push(
+              uploadDataUrl('vehicles/' + id + '/colors/' + safeName + '_back.jpg', c.imageBack).then(function (url) {
+                if (url) c.imageBack = url;
+              })
+            );
+          }
+        });
+      }
+
+      return Promise.all(uploadTasks).then(function () {
+        // Update local storage with final resolved URLs
         var cur = lsGet(KEY_FLEET, []);
         var cIdx = cur.findIndex(function (x) { return x.id === id; });
         if (cIdx > -1) cur[cIdx] = v; else cur.unshift(v);
         lsSet(KEY_FLEET, cur);
 
-        // 2. Build the Firestore document.
-        //    A Firestore document may not exceed 1 MiB. If a Storage upload
-        //    failed we still hold a base64 image — sending that would make the
-        //    whole write fail, so it is dropped from the cloud copy (the photo
-        //    stays available locally and is retried on the next save).
         var docData = cleanDoc(v);
-        var droppedPhotos = [];
-
-        ['image', 'imageBack'].forEach(function (key) {
-          var val = docData[key];
-          if (typeof val === 'string' && val.indexOf('data:') === 0 && val.length > 300000) {
-            docData[key] = '';
-            droppedPhotos.push(key === 'image' ? 'front' : 'back');
-          }
-        });
-
-        if (droppedPhotos.length) {
-          console.warn('[vehicle] Photo(s) too large for Firestore (' + droppedPhotos.join(', ') +
-            ') — saved without them. Enable Firebase Storage so photos upload properly.');
-        }
-
-        // Editing an existing vehicle? Send only the fields that actually
-        // changed, so untouched data (and its photo URLs) is not rewritten.
         var docRef = db.collection(COL_FLEET).doc(id);
-        var write;
 
-        if (vehicle.id && previousDoc && previousDoc.createdAt) {
-          var diff = {};
-          Object.keys(docData).forEach(function (k) {
-            if (k === 'updatedAt') { diff[k] = docData[k]; return; }
-            if (JSON.stringify(docData[k]) !== JSON.stringify(previousDoc[k])) diff[k] = docData[k];
-          });
-
-          if (Object.keys(diff).length <= 1) {
-            console.log('[vehicle] nothing changed for ' + id + ' — no write sent');
-            return { id: id, cloud: true, error: null, photosDropped: droppedPhotos };
-          }
-
-          console.log('[vehicle] updating ' + Object.keys(diff).length + ' field(s):',
-            Object.keys(diff).join(', '));
-          write = docRef.set(diff, { merge: true });
-        } else {
-          write = docRef.set(docData, { merge: true });
-        }
-
-        return withTimeout(write, WRITE_TIMEOUT, new Error('Firestore write timed out after 5s'))
+        return withTimeout(docRef.set(docData, { merge: true }), WRITE_TIMEOUT, new Error('Firestore write timed out after 5s'))
           .then(function () {
-            console.log('✓ Vehicle "' + v.name + '" written to Firestore/' + COL_FLEET + '/' + id +
-              (droppedPhotos.length ? ' (without ' + droppedPhotos.join(' & ') + ' photo)' : ''));
+            console.log('✓ Vehicle "' + v.name + '" saved to Firestore/' + COL_FLEET + '/' + id);
             return {
               id: id,
               cloud: true,
-              error: null,
-              photosDropped: droppedPhotos
+              error: null
             };
           })
           .catch(function (err) {

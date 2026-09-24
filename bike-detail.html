@@ -119,6 +119,12 @@
   <main id="main" tabindex="-1" class="detail-main-wrapper">
     <div class="wrap">
 
+      <!-- Loading Overlay — visible until data is ready -->
+      <div class="detail-loader" id="detailLoader">
+        <div class="detail-loader-spinner"></div>
+        <p class="detail-loader-text">Loading vehicle details...</p>
+      </div>
+
       <!-- Top Back Link -->
       <div class="detail-top-nav">
         <a href="index.html#fleet" class="detail-back-link">
@@ -126,8 +132,8 @@
         </a>
       </div>
 
-      <!-- Detail Two Column Grid -->
-      <div class="detail-grid">
+      <!-- Detail Two Column Grid (hidden until data is ready) -->
+      <div class="detail-grid" id="detailGrid" style="opacity:0;transition:opacity .45s ease;">
 
         <!-- LEFT COLUMN: Image Showcase & Gallery -->
         <div class="detail-media-container">
@@ -652,7 +658,7 @@
   <script src="js/firebase-config.js?v=3.0"></script>
   <script src="js/data-service.js?v=9.0"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="js/script.js?v=4.4"></script>
+  <script src="js/script.js?v=4.5"></script>
   <script>
     (function () {
       'use strict';
@@ -1117,22 +1123,64 @@
         };
       }
 
-      // Initial render from static or local
+      // ── Smooth load: resolve data first, render once, then reveal ──
+      var loader = document.getElementById('detailLoader');
+      var grid   = document.getElementById('detailGrid');
+      var hasRendered = false;
+      var renderedJSON = '';
+
+      function revealContent() {
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(function () { loader.style.display = 'none'; }, 400);
+        }
+        if (grid) grid.style.opacity = '1';
+      }
+
+      function safeRender(d) {
+        if (!d) return;
+        var json = JSON.stringify(d);
+        if (json === renderedJSON) return;     // skip if same data
+        renderedJSON = json;
+        renderPageWithData(d);
+        if (!hasRendered) {
+          hasRendered = true;
+          revealContent();
+        }
+      }
+
+      // 1. Try local / static data first (instant, no flash)
       if (!data) {
         var localFleet = [];
         try { localFleet = JSON.parse(localStorage.getItem('vijay_arya_fleet') || '[]'); } catch (e) {}
         data = resolveFromFleet(localFleet);
       }
-      renderPageWithData(data || BIKES_DATA['vespa']);
+      if (data) {
+        safeRender(data);
+      }
 
-      // Live Firestore sync — the page follows whatever the admin changes
+      // 2. Live Firestore sync — renders only if the data actually changed
       function liveFetch() {
-        if (!window.DataService) return;
+        if (!window.DataService) {
+          // No DataService: if nothing rendered yet, fall back to static BIKES_DATA
+          if (!hasRendered) safeRender(BIKES_DATA[bikeId] || BIKES_DATA['vespa']);
+          return;
+        }
 
         window.DataService.watchFleet(function (fleet) {
           var liveData = resolveFromFleet(fleet);
-          if (liveData) renderPageWithData(liveData);
+          if (liveData) {
+            safeRender(liveData);
+          } else if (!hasRendered) {
+            // Fleet came back but this vehicle isn't in it — use static data
+            safeRender(BIKES_DATA[bikeId] || BIKES_DATA['vespa']);
+          }
         });
+
+        // Safety: if nothing renders within 3s (e.g. slow network), reveal static data
+        setTimeout(function () {
+          if (!hasRendered) safeRender(BIKES_DATA[bikeId] || BIKES_DATA['vespa']);
+        }, 3000);
       }
 
       if (document.readyState === 'loading') {
