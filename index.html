@@ -32,7 +32,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=9.0">
+  <link rel="stylesheet" href="css/style.css?v=11.5">
   <script>document.documentElement.className += " js";</script>
 
   <script type="application/ld+json">
@@ -175,97 +175,132 @@
 
   <main id="main" tabindex="-1">
 
-    <!-- ============================ HERO ============================ -->
-    <section class="hero-light-banner" aria-labelledby="heroTitle">
-      <div class="hero-light-backdrop">
-        <img src="assets/banners/hero_pondicherry_vespa.png" alt="Red Vespa scooter parked on Puducherry street"
-          class="hero-light-bg-img active" fetchpriority="high" decoding="async">
-        <img src="assets/banners/hero-pondicherry-coast.png" alt="Pondicherry Coast" class="hero-light-bg-img"
-          fetchpriority="low" decoding="async">
-        <img src="assets/banners/hero_1.png" alt="Scooter rental banner 1" class="hero-light-bg-img" fetchpriority="low"
-          decoding="async">
-        <img src="assets/banners/hero_2.png" alt="Scooter rental banner 2" class="hero-light-bg-img" fetchpriority="low"
-          decoding="async">
-        <div class="hero-light-fade-overlay" aria-hidden="true"></div>
+    <!-- ============================ HERO SLIDER ============================ -->
+    <section class="hero-slider-section" aria-labelledby="heroTitle">
+      <h1 id="heroTitle" class="sr-only">Vijay Arya Bike Rentals | Scooter & Bike Rental in Pondicherry Since 1973</h1>
+
+      <div class="hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="Vijay Arya Bike Rentals Highlights">
+        <div class="hero-slides-track">
+          <!-- Slide 1: Explore Pondicherry (Scooters on Right -> Content on Left) -->
+          <div class="hero-slide active" data-slide-index="0" role="group" aria-roledescription="slide" aria-label="1 of 2: Explore Pondicherry">
+            <img src="assets/banners/Vijay-arya-Bike-rentals-hero.png"
+              alt="Explore Pondicherry - Vijay Arya Bike Rentals"
+              class="hero-banner-img"
+              fetchpriority="high"
+              decoding="async"
+              width="1848"
+              height="851">
+            
+            <div class="hero-slide-content slide-content-left">
+              <div class="hero-slide-badge">
+                <span class="badge-dot"></span>
+                <span>Since 1973 &middot; Pondicherry</span>
+              </div>
+              <h2 class="hero-slide-title">
+                Explore <span class="text-red">Pondicherry</span>
+              </h2>
+              <p class="hero-slide-desc">
+                Well-maintained scooters, free helmets and a simple &#8377;500 advance &mdash; trusted by travellers in Pondicherry since 1973.
+              </p>
+              <div class="hero-slide-actions">
+                <a href="#fleet" class="btn btn-sm btn-red">
+                  <span>Explore Fleet</span>
+                  <span class="btn-arrow">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2: Book a Scooter on Rent in Pondicherry (Scooters on Left -> Content on Right) -->
+          <div class="hero-slide" data-slide-index="1" role="group" aria-roledescription="slide" aria-label="2 of 2: Book a Scooter on Rent In Pondicherry">
+            <img src="assets/banners/Vijay-arya-Bike-rentals-hero2.png"
+              alt="Book a Scooter on Rent In Pondicherry - Vijay Arya Bike Rentals"
+              class="hero-banner-img"
+              fetchpriority="low"
+              decoding="async"
+              width="1848"
+              height="851">
+
+            <div class="hero-slide-content slide-content-right">
+              <div class="hero-slide-badge">
+                <span class="badge-dot"></span>
+                <span>Advance &#8377;500 Only</span>
+              </div>
+              <h2 class="hero-slide-title">
+                Book a Scooter on <br><span class="text-red">Rent in Pondicherry</span>
+              </h2>
+              <p class="hero-slide-desc">
+                Choose from Vespas, Dios, Activas & more. Sanitized scooters, helmets & easy pickup!
+              </p>
+              <div class="hero-slide-actions">
+                <a href="#fleet" class="btn btn-sm btn-red">
+                  <span>Book Now</span>
+                  <span class="btn-arrow">&rarr;</span>
+                </a>
+                <a href="tel:+917200011799" class="btn btn-sm btn-ghost hero-call-btn">
+                  <span>Call Us</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slider Arrow Navigation -->
+        <button class="hero-slider-nav hero-nav-prev" id="heroPrevBtn" type="button" aria-label="Previous Slide">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="hero-slider-nav hero-nav-next" id="heroNextBtn" type="button" aria-label="Next Slide">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <!-- Slider Pagination Dots -->
+        <div class="hero-slider-dots" id="heroSliderDots" role="tablist" aria-label="Choose Slide">
+          <button class="hero-dot active" type="button" role="tab" aria-selected="true" aria-label="Go to slide 1" data-slide-to="0"></button>
+          <button class="hero-dot" type="button" role="tab" aria-selected="false" aria-label="Go to slide 2" data-slide-to="1"></button>
+        </div>
       </div>
 
-      <div class="wrap hero-light-container">
-        <div class="hero-light-content">
-
-          <!-- Main Headline -->
-          <h1 id="heroTitle" class="hero-light-headline">
-            More Journeys<br>
-            <em>Brighter</em> Memories
-          </h1>
-
-          <!-- Description Paragraph -->
-          <p class="hero-light-sub">
-            India's first and oldest scooter rental shop, since 1973. Explore Pondicherry on your terms with
-            well-maintained scooters, instant online booking and a hassle-free rental experience.
-          </p>
-
-          <!-- Action Buttons -->
-          <div class="hero-light-actions">
-            <a class="btn-light-red" href="#fleet">
-              Book Your Scooter <span class="btn-arrow">&rarr;</span>
-            </a>
-            <a class="btn-light-outline" href="#fleet">
-              Explore Fleet
-            </a>
+      <!-- Trust Bar Strip Beneath Banner -->
+      <div class="hero-trust-bar">
+        <div class="wrap hero-trust-wrap">
+          <div class="hero-trust-item">
+            <span class="trust-ic-circle" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </span>
+            <div class="trust-text">
+              <strong class="trust-val">Since 1973</strong>
+              <span class="trust-lbl">Established 25 March 1973</span>
+            </div>
           </div>
-
-          <!-- 3 Horizontal Stat Badges with Red Icon Circles -->
-          <div class="hero-light-stats">
-            <div class="light-stat-item">
-              <div class="stat-ic-circle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
-              </div>
-              <div>
-                <strong class="light-stat-val">50+</strong>
-                <span class="light-stat-lbl">YEARS OF TRUST</span>
-              </div>
+          <div class="hero-trust-item">
+            <span class="trust-ic-circle" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
+            </span>
+            <div class="trust-text">
+              <strong class="trust-val">Free Helmets</strong>
+              <span class="trust-lbl">For you and your pillion</span>
             </div>
-
-            <div class="light-stat-item">
-              <div class="stat-ic-circle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
-              </div>
-              <div>
-                <strong class="light-stat-val">50K+</strong>
-                <span class="light-stat-lbl">HAPPY TOURISTS</span>
-              </div>
-            </div>
-
-            <div class="light-stat-item">
-              <div class="stat-ic-circle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path
-                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-                </svg>
-              </div>
-              <div>
-                <strong class="light-stat-val">100%</strong>
-                <span class="light-stat-lbl">WELL MAINTAINED</span>
-              </div>
-            </div>
-
           </div>
-
-          <!-- Cursive Tagline Positioned Beside Vespa Scooter -->
-          <div class="hero-vespa-tagline-wrap">
-            <div class="hero-cursive-tagline">
-              <span class="cursive-txt">Since 1973</span>
-              <span class="cursive-txt cursive-sub">Pondicherry <span class="red-line-art"></span></span>
+          <div class="hero-trust-item">
+            <span class="trust-ic-circle" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <div class="trust-text">
+              <strong class="trust-val">RTO-Authorised</strong>
+              <span class="trust-lbl">Black-number-plate scooters only</span>
+            </div>
+          </div>
+          <div class="hero-trust-item">
+            <span class="trust-ic-circle" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+            </span>
+            <div class="trust-text">
+              <strong class="trust-val">&#8377;500 Advance</strong>
+              <span class="trust-lbl">Book online in minutes</span>
             </div>
           </div>
         </div>
@@ -590,6 +625,72 @@
       </div>
     </section>
 
+    <!-- ============================ STORY SCROLL (sticky visual) ============================ -->
+    <section class="section story-scroll" id="story" aria-labelledby="storyScrollTitle">
+      <div class="wrap">
+        <div class="section-head section-head-split">
+          <div>
+            <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>Why Vijay Arya</p>
+            <h2 id="storyScrollTitle">Book a Scooter on Rent in Pondicherry</h2>
+          </div>
+          <p class="section-sub">Over five decades of renting scooters to travellers &mdash; here is what makes renting with us simple, affordable and safe.</p>
+        </div>
+
+        <div class="story-scroll-grid">
+          <div class="story-steps">
+          <article class="story-step is-active" data-story-step="0">
+            <span class="story-step-num">01</span>
+            <h3>Vijay Arya Bike Rentals</h3>
+            <p>Vijay Arya Bike Rentals has been the go-to source for scooter rentals in Pondicherry since 1973. Our reputation speaks for itself, with delighted guests who return year after year and strongly recommend us on Google. We offer a well-maintained fleet of scooters that are perfect for exploring the city at your own pace. Our warm and friendly staff are always on hand to help you choose the perfect scooter for your needs.</p>
+          </article>
+
+          <article class="story-step" data-story-step="1">
+            <span class="story-step-num">02</span>
+            <h3>Experience Pondicherry with Our Scooters</h3>
+            <p>At Vijay Arya Bike Rentals, we pride ourselves on offering a wide range of scooters for rent at affordable prices. Rent for a day, a week or longer &mdash; whatever your plan, we have a scooter to match it. Explore the French Quarter, the beaches and the cafés of Pondicherry entirely on your own schedule.</p>
+          </article>
+
+          <article class="story-step" data-story-step="2">
+            <span class="story-step-num">03</span>
+            <h3>Rent with Trust: Our Commitment to Your Safety</h3>
+            <p>Our scooters undergo regular maintenance and safety checks to ensure that they are in good condition, and we strictly comply with all safety regulations. We provide helmets free of cost, and our staff will help you select the right scooter for your needs and give you proper instructions on how to use it. Rent a scooter with Vijay Arya Bike Rentals and enjoy the beauty of Pondicherry with complete peace of mind.</p>
+          </article>
+          </div>
+
+          <div class="story-visual" aria-hidden="true">
+            <div class="story-visual-frame">
+              <video class="story-visual-video" autoplay muted loop playsinline preload="metadata"
+                poster="assets/video/scooter-loop-poster.jpg?v=2" aria-hidden="true">
+                <source src="assets/video/scooter-loop.mp4?v=2" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        var steps = document.querySelectorAll('[data-story-step]');
+        var imgs = document.querySelectorAll('[data-story-img]');
+        if (!steps.length || !('IntersectionObserver' in window)) return;
+        function activate(i) {
+          steps.forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-story-step') === i); });
+          imgs.forEach(function (im) { im.classList.toggle('is-active', im.getAttribute('data-story-img') === i); });
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) activate(e.target.getAttribute('data-story-step')); });
+        }, { rootMargin: '-45% 0px -45% 0px' });
+        steps.forEach(function (s) { io.observe(s); });
+      })();
+      (function () {
+        var v = document.querySelector('.story-visual-video');
+        if (v && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          v.removeAttribute('autoplay'); v.pause();
+        }
+      })();
+    </script>
+
     <!-- ============================ GALLERY PREVIEW ============================ -->
     <section class="section section-tint gallery" id="gallery" aria-labelledby="galTitle">
       <div class="wrap">
@@ -773,6 +874,142 @@
       </div>
     </section>
 
+    <!-- ============================ FAQ ============================ -->
+    <section class="section faq-sec" id="faq" aria-labelledby="faqTitle">
+      <div class="wrap faq-grid">
+        <div class="faq-intro">
+          <p class="eyebrow eyebrow-red"><span class="eyebrow-rule"></span>FAQ</p>
+          <h2 id="faqTitle">Frequently Asked Questions</h2>
+          <p class="section-sub">Everything you need to know before you rent. Still have a question? Call or WhatsApp us.</p>
+          <div class="faq-contact">
+            <a class="btn btn-red" href="tel:+917200011799">Call +91 72000 11 799</a>
+            <a class="btn btn-outline" href="https://wa.me/919600334488" target="_blank" rel="noopener">WhatsApp Us</a>
+          </div>
+        </div>
+
+        <div class="faq-list">
+            <details class="faq-item" name="faq" open>
+              <summary class="faq-q"><span>Can I get a scooter without a Driving Licence?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>No. A valid Driving Licence is mandatory to rent a scooter.</p></div>
+            </details>
+            <details class="faq-item" name="faq">
+              <summary class="faq-q"><span>Where are you located?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>We are very close to the Pondicherry Bus Stand (2 minutes walk) and the Railway Station (10 minutes walk) &mdash; No: 31A, Thennanjalai Road, Near Govt Veterinary Clinic / Passport Office, Puducherry 605001.</p></div>
+            </details>
+            <details class="faq-item" name="faq">
+              <summary class="faq-q"><span>Do I have to deposit my photo ID?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>Yes. Your valid original photo ID has to be deposited with us &mdash; Aadhaar, Voter ID, Driving Licence or Passport. It is returned when you bring the scooter back.</p></div>
+            </details>
+            <details class="faq-item" name="faq">
+              <summary class="faq-q"><span>What is the price of a scooter?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>Rental starts at &#8377;500 per day. A flat &#8377;500 advance books your scooter, and the rental is settled at the shop when you pick it up.</p></div>
+            </details>
+            <details class="faq-item" name="faq">
+              <summary class="faq-q"><span>How do I book a scooter?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>Choose your scooter on this website and pay the &#8377;500 advance by Google Pay or any UPI app. Then send the payment screenshot on WhatsApp to +91 9600 33 44 88. Your booking is confirmed once we verify the payment.</p></div>
+            </details>
+            <details class="faq-item" name="faq">
+              <summary class="faq-q"><span>What are your working hours?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>Monday to Friday we are open 9:00 AM &ndash; 9:00 PM. Saturday and Sunday we open earlier, 7:00 AM &ndash; 9:00 PM.</p></div>
+            </details>
+            <details class="faq-item" name="faq">
+              <summary class="faq-q"><span>Which scooters do you have?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>We have a wide range of scooters: Vespa, Honda Activa, TVS Jupiter, Suzuki Access 125, Honda Dio, Yamaha Fascino, Yamaha Ray and Honda Cliq. All are RTO-authorised black-number-plate scooters.</p></div>
+            </details>
+            <details class="faq-item" name="faq">
+              <summary class="faq-q"><span>Are helmets included?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>Yes. Helmets are provided free of cost for you and your pillion.</p></div>
+            </details>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      /* FAQ: only one answer open at a time (fallback for browsers without <details name>) */
+      (function () {
+        var items = document.querySelectorAll('.faq-item');
+        items.forEach(function (d) {
+          d.addEventListener('toggle', function () {
+            if (!d.open) return;
+            items.forEach(function (o) { if (o !== d && o.open) o.open = false; });
+          });
+        });
+      })();
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I get a scooter without a Driving Licence?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A valid Driving Licence is mandatory to rent a scooter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where are you located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We are very close to the Pondicherry Bus Stand (2 minutes walk) and the Railway Station (10 minutes walk) — No: 31A, Thennanjalai Road, Near Govt Veterinary Clinic / Passport Office, Puducherry 605001."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I have to deposit my photo ID?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Your valid original photo ID has to be deposited with us — Aadhaar, Voter ID, Driving Licence or Passport. It is returned when you bring the scooter back."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the price of a scooter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rental starts at ₹500 per day. A flat ₹500 advance books your scooter, and the rental is settled at the shop when you pick it up."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I book a scooter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Choose your scooter on this website and pay the ₹500 advance by Google Pay or any UPI app. Then send the payment screenshot on WhatsApp to +91 9600 33 44 88. Your booking is confirmed once we verify the payment."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are your working hours?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Monday to Friday we are open 9:00 AM – 9:00 PM. Saturday and Sunday we open earlier, 7:00 AM – 9:00 PM."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which scooters do you have?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We have a wide range of scooters: Vespa, Honda Activa, TVS Jupiter, Suzuki Access 125, Honda Dio, Yamaha Fascino, Yamaha Ray and Honda Cliq. All are RTO-authorised black-number-plate scooters."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are helmets included?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Helmets are provided free of cost for you and your pillion."
+          }
+        }
+      ]
+    }
+    </script>
+
     <!-- ============================ CONTACT + MAP ============================ -->
     <section class="section section-tint contact" id="contact" aria-labelledby="contactTitle">
       <div class="wrap">
@@ -824,25 +1061,8 @@
                 </div>
               </div>
 
-              <!-- Address -->
-              <div class="contact-item contact-item-full">
-                <div class="contact-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                  </svg>
-                </div>
-                <div class="contact-item-info">
-                  <span class="contact-label">Shop Location</span>
-                  <address class="address-text">
-                    No: 31A, Thennanjalai Road, Near Govt Veterinary Clinic / Passport Office, Puducherry 605001
-                  </address>
-                </div>
-              </div>
-
               <!-- Hours -->
-              <div class="contact-item contact-item-full">
+              <div class="contact-item">
                 <div class="contact-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -855,6 +1075,23 @@
                   <div class="contact-value">
                     Mon &ndash; Fri: 9:00 AM &ndash; 9:00 PM<br>Sat &amp; Sun: 7:00 AM &ndash; 9:00 PM
                   </div>
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <div class="contact-item-info">
+                  <span class="contact-label">Shop Location</span>
+                  <address class="address-text">
+                    No: 31A, Thennanjalai Road, Near Govt Veterinary Clinic / Passport Office, Puducherry 605001
+                  </address>
                 </div>
               </div>
             </div>
@@ -977,7 +1214,7 @@
                   <path d="M12 5l7 7-7 7"></path>
                 </svg>
               </button>
-              <a class="btn-ref-outline" href="index.html#models">
+              <a class="btn-ref-outline" href="index.html#fleet">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path
@@ -991,6 +1228,17 @@
             </div>
 
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ PONDY ROAD (moving Vespa) ============================ -->
+    <section class="pondy-road" aria-labelledby="pondyRoadTitle">
+      <h2 id="pondyRoadTitle" class="pondy-road-title">Explore &amp; Experience Pondicherry on our scooters.</h2>
+      <div class="pondy-road-scene">
+        <img class="pondy-road-bg" src="assets/banners/pondy_2d_image.png" alt="Illustrated Pondicherry landmarks: Arc de Triomphe, Gandhi statue and Matrimandir" width="1953" height="805" loading="lazy" decoding="async">
+        <div class="pondy-road-lane" aria-hidden="true">
+          <img class="pondy-road-vespa" src="assets/video/vespa-run.webp" alt="" width="360" height="289" loading="lazy" decoding="async">
         </div>
       </div>
     </section>
@@ -1426,7 +1674,7 @@
     if (window._connectLiveFleet) window._connectLiveFleet();
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="js/script.js?v=4.7" defer></script>
+  <script src="js/script.js?v=5.1" defer></script>
 </body>
 
 </html>
