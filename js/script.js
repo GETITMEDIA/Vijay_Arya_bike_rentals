@@ -111,6 +111,10 @@
     if (closeBt) closeBt.addEventListener('click', function () { close(); });
     overlay.addEventListener('click', function () { close(); });
 
+    $$('.js-book', nav).forEach(function (btn) {
+      btn.addEventListener('click', function () { close(false); });
+    });
+
     $$('.nav-link-m', nav).forEach(function (link) {
       link.addEventListener('click', function () { close(false); });
     });
@@ -913,15 +917,7 @@
       e.preventDefault();
       
       var bike = trigger.dataset.bike;
-      if (!bike) {
-        var fleet = document.getElementById('fleet');
-        if (fleet) {
-          fleet.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.location.href = 'index.html#fleet';
-        }
-        return;
-      }
+      if (!bike) return; // the global Book handler sends these to the fleet
       open(bike, trigger.dataset.color || '');
     });
 
@@ -1068,18 +1064,138 @@
 })();
 
   /* ------------------------------------------------------------------
-     18. Hero Background Carousel
+     18. Hero Visual Banner Slider
      ------------------------------------------------------------------ */
-  (function heroCarousel() {
-    var images = document.querySelectorAll('.hero-light-bg-img');
-    if (images.length < 2) return;
-    
+  (function initHeroSlider() {
+    var slider = document.getElementById('heroSlider');
+    if (!slider) return;
+
+    var slides = slider.querySelectorAll('.hero-slide');
+    var dots = slider.querySelectorAll('.hero-dot');
+    var prevBtn = document.getElementById('heroPrevBtn');
+    var nextBtn = document.getElementById('heroNextBtn');
+    var total = slides.length;
+    if (total === 0) return;
+
     var current = 0;
-    setInterval(function() {
-      images[current].classList.remove('active');
-      current = (current + 1) % images.length;
-      images[current].classList.add('active');
-    }, 4000);
+    var timer = null;
+    var autoplayInterval = 4500;
+
+    function goToSlide(idx) {
+      if (idx < 0) idx = total - 1;
+      if (idx >= total) idx = 0;
+      current = idx;
+
+      slides.forEach(function(slide, i) {
+        if (i === current) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      dots.forEach(function(dot, i) {
+        if (i === current) {
+          dot.classList.add('active');
+          dot.setAttribute('aria-selected', 'true');
+        } else {
+          dot.classList.remove('active');
+          dot.setAttribute('aria-selected', 'false');
+        }
+      });
+    }
+
+    function nextSlide() {
+      goToSlide(current + 1);
+    }
+
+    function prevSlide() {
+      goToSlide(current - 1);
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      timer = setInterval(nextSlide, autoplayInterval);
+    }
+
+    function stopAutoplay() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        prevSlide();
+        startAutoplay();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        nextSlide();
+        startAutoplay();
+      });
+    }
+
+    dots.forEach(function(dot) {
+      dot.addEventListener('click', function(e) {
+        e.preventDefault();
+        var targetIndex = parseInt(dot.getAttribute('data-slide-to') || dot.getAttribute('data-index'), 10);
+        if (!isNaN(targetIndex)) {
+          goToSlide(targetIndex);
+          startAutoplay();
+        }
+      });
+    });
+
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+    slider.addEventListener('focusin', stopAutoplay);
+    slider.addEventListener('focusout', startAutoplay);
+
+    // Touch Swipe Support for Mobile
+    var touchStartX = 0;
+    var touchEndX = 0;
+
+    slider.addEventListener('touchstart', function(e) {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        touchStartX = e.changedTouches[0].screenX;
+      }
+      stopAutoplay();
+    }, { passive: true });
+
+    slider.addEventListener('touchend', function(e) {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        touchEndX = e.changedTouches[0].screenX;
+        var diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 45) {
+          if (diff > 0) {
+            nextSlide();
+          } else {
+            prevSlide();
+          }
+        }
+      }
+      startAutoplay();
+    }, { passive: true });
+
+    // Keyboard navigation
+    slider.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+        startAutoplay();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+        startAutoplay();
+      }
+    });
+
+    // Start auto slider on load
+    startAutoplay();
   })();
 
   /* ------------------------------------------------------------------
@@ -1573,6 +1689,13 @@
         if (!bike) {
           var card = btn.closest('[data-bike]');
           if (card) bike = card.getAttribute('data-bike');
+        }
+        // No vehicle chosen yet: send them to the fleet to pick one
+        if (!bike) {
+          var fleetSec = document.getElementById('fleet');
+          if (fleetSec) fleetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          else window.location.href = 'index.html#fleet';
+          return;
         }
         openModal(bike, btn.getAttribute('data-color') || '');
       }
@@ -2190,3 +2313,13 @@
       });
     }
   })();
+
+
+/* Arriving from another page via a Book button: land on the fleet once layout settles */
+(function () {
+  if (location.hash !== '#fleet') return;
+  window.addEventListener('load', function () {
+    var fleet = document.getElementById('fleet');
+    if (fleet) fleet.scrollIntoView({ block: 'start' });
+  });
+})();
