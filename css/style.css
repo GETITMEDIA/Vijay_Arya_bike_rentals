@@ -71,8 +71,8 @@
   /* Type */
   --serif: "Josefin Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --sans:  "Josefin Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  /* Nav bar keeps Tw Cen MT */
-  --nav:   "Tw Cen MT Web", "Tw Cen MT", "Tw Cen MT Std", "Century Gothic", Jost, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Nav bar uses Jost */
+  --nav:   Jost, "Century Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --script: "Caveat", cursive;
 
   /* Rhythm */
@@ -8558,3 +8558,31 @@ html, body { overflow-x: hidden; }
   .faq-a p { font-size: 14.5px; }
   .faq-contact .btn { flex: 1 1 100%; justify-content: center; }
 }
+
+
+/* ---------- Header brand name: same as the old site (Tw Cen MT Std Semibold, wide tracking, two lines) ---------- */
+.brand-title {
+  font-family: "Tw Cen MT Web", "Tw Cen MT Std", "Tw Cen MT", Jost, sans-serif;
+  font-weight: 400;
+  -webkit-text-stroke: 0.25px currentColor;   /* Regular + hairline stroke = semibold weight */
+  text-transform: none;
+  font-variant-caps: normal;
+  letter-spacing: 0.2em;
+  line-height: 1.15;
+  color: #000000;
+  white-space: normal;
+}
+.brand-title .brand-l1,
+.brand-title .brand-l2 { display: block; white-space: nowrap; }
+@media (min-width: 768px) { .brand-title { font-size: 22px; } }
+@media (max-width: 767px) { .brand-title { font-size: 14px; letter-spacing: 0.16em; } }
+@media (max-width: 360px) { .brand-title { font-size: 12px; } }
+
+/* Brand name: larger on tablet and phones */
+@media (min-width: 768px) and (max-width: 1023px) { .brand-title { font-size: 24px; } }
+@media (max-width: 767px) { .brand-title { font-size: 17px; letter-spacing: 0.14em; } }
+@media (max-width: 360px) { .brand-title { font-size: 15px; letter-spacing: 0.12em; } }
+
+/* Brand name colours: VIJAY ARYA in theme red, Bike Rentals in black */
+.brand-title .brand-l1 { color: var(--red); }
+.brand-title .brand-l2 { color: #000000; }
