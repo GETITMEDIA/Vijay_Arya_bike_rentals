@@ -1,0 +1,80 @@
+================================================================
+VIJAY ARYA BIKE RENTALS — FIREBASE SECURITY RULES
+Paste each block in the Firebase console and click "Publish".
+================================================================
+
+
+----------------------------------------------------------------
+1) FIRESTORE RULES
+   Firebase console → Build → Firestore Database → Rules
+----------------------------------------------------------------
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Vehicles: Public can view, full CRUD operations enabled
+    match /vehicles/{vehicleId} {
+      allow read, write: if true;
+    }
+
+    // Bookings: Customers can create, Admin can read/update/delete
+    match /bookings/{bookingId} {
+      allow read, write: if true;
+    }
+
+    // All collections accessible
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+
+
+----------------------------------------------------------------
+2) STORAGE RULES
+   Firebase console → Build → Storage → Rules
+----------------------------------------------------------------
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Vehicle photos & Color variants: public to view, upload enabled
+    match /vehicles/{vehicleId}/{allPaths=**} {
+      allow read, write: if true;
+    }
+
+    // KYC documents: Customer upload during booking, Admin view
+    match /kyc/{bookingId}/{allPaths=**} {
+      allow read, write: if true;
+    }
+
+    // Allow all storage files
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}
+
+
+----------------------------------------------------------------
+3) ADMIN LOGIN
+   Firebase console → Build → Authentication → Sign-in method
+   → Email/Password → Enable → Save
+
+   Then: Users tab → Add user
+     Email:    (the shop's admin email)
+     Password: (a strong password)
+
+   That email + password becomes the admin panel login.
+   Add more staff logins the same way.
+----------------------------------------------------------------
+
+
+----------------------------------------------------------------
+4) AUTHORISED DOMAINS (needed once you host the site)
+   Authentication → Settings → Authorised domains → Add domain
+   e.g. vijayaryabikerentals.com
+   (localhost is allowed by default for testing)
+----------------------------------------------------------------
